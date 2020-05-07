@@ -1,5 +1,5 @@
-const app = require("./index");
-const request = require("supertest");
+import app from "../index";
+import request from "supertest";
 
 describe("GET / ", () => {
   describe("연결이 성공할 경우 ", () => {
