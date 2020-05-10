@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha './dist/spec/index.spec.js'",
-    "start": "nodemon server.js"
+    "start": "tsc && nodemon ./dist/server.js"
   },
   "repository": {
     "type": "git",
