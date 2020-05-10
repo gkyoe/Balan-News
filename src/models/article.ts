@@ -36,4 +36,7 @@ const ArticleSchema = new Schema({
   },
 });
 
-export const ArticleModel = model<IArticleSchema>("IArticle", ArticleSchema);
+export const ArticleModel = model<IArticleSchema>(
+  "ArticleModel",
+  ArticleSchema
+);
