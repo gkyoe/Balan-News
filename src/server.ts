@@ -6,10 +6,8 @@ const { MONGO_USER, MONGO_PASSWORD } = process.env;
 
 const port = process.env.PORT || 3000;
 mongoose.connect(
-  `mongodb://${MONGO_USER}:${MONGO_PASSWORD}:27017/admin`,
-  {
-    dbName: "Balan",
-  },
+  `mongodb://localhost:27017/admin`,
+  { useNewUrlParser: true, useUnifiedTopology: true },
   (error) => {
     if (error) {
       throw error.message;
