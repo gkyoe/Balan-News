@@ -18,4 +18,16 @@ describe("GET / ", function () {
             });
         });
     });
+    describe("몽고디비에 연결이 성공할 경우 ", function () {
+        it("상태코드 200을 응답한다.", function (done) {
+            supertest_1.default(index_1.default)
+                .get("/")
+                .expect(200)
+                .end(function (err, res) {
+                if (err)
+                    throw err;
+                done();
+            });
+        });
+    });
 });
