@@ -1,20 +1,21 @@
 import app from "../index";
 import request from "supertest";
+import mongoose from "mongoose";
 
-describe("GET / ", () => {
-  describe("연결이 성공할 경우 ", () => {
-    it("상태코드 200을 응답한다.", (done) => {
-      request(app)
-        .get("/")
-        .expect(200)
-        .end((err, res) => {
-          if (err) throw err;
-          done();
+describe("Test를 시작하기 전에 ", () => {
+  it("몽고디비를 연결한다 ", () => {
+    before((done) => {
+      if (mongoose.connection.db) {
+        mongoose.connect("mongodb://localhost/admin", {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
         });
+        done();
+      }
     });
   });
 
-  describe("몽고디비에 연결이 성공할 경우 ", () => {
+  describe("GET / 연결이 성공할 경우 ", () => {
     it("상태코드 200을 응답한다.", (done) => {
       request(app)
         .get("/")
