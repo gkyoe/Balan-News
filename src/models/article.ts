@@ -1,4 +1,5 @@
 import { Document, Model, model, Types, Schema, Query } from "mongoose";
+import { UserModel } from "./user";
 
 interface IArticleSchema extends Document {
   title: string;
@@ -10,6 +11,12 @@ interface IArticleSchema extends Document {
 }
 
 const ArticleSchema = new Schema({
+  id: [
+    {
+      ref: "UserModel",
+      type: Schema.Types.ObjectId,
+    },
+  ],
   title: {
     type: String,
     required: true,

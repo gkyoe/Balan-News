@@ -2,6 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var ArticleSchema = new mongoose_1.Schema({
+    id: [
+        {
+            ref: "UserModel",
+            type: mongoose_1.Schema.Types.ObjectId,
+        },
+    ],
     title: {
         type: String,
         required: true,
