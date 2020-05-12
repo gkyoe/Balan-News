@@ -22,6 +22,12 @@ var UserSchema = new mongoose_1.Schema({
         type: [String],
         required: false,
     },
+    scrap: [
+        {
+            ref: "ArticleModel",
+            type: mongoose_1.Schema.Types.ObjectId,
+        },
+    ],
 }, {
     timestamps: true,
 });

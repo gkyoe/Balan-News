@@ -1,4 +1,5 @@
 import { Document, Model, model, Types, Schema, Query } from "mongoose";
+import { ArticleModel } from "./article";
 
 interface IUserSchema extends Document {
   name: string;
@@ -31,6 +32,12 @@ const UserSchema = new Schema(
       type: [String],
       required: false,
     },
+    scrap: [
+      {
+        ref: "ArticleModel",
+        type: Schema.Types.ObjectId,
+      },
+    ],
   },
   {
     timestamps: true,
