@@ -30,4 +30,40 @@ describe("Test를 시작하기 전에 ", function () {
             });
         });
     });
+    describe("GET/login 연결이 성공할 경우 ", function () {
+        it("상태코드 200을 응답한다.", function (done) {
+            supertest_1.default(index_1.default)
+                .get("/login")
+                .expect(200)
+                .end(function (err, res) {
+                if (err)
+                    throw err;
+                done();
+            });
+        });
+    });
+    describe("GET/singup 연결이 성공할 경우 ", function () {
+        it("상태코드 200을 응답한다.", function (done) {
+            supertest_1.default(index_1.default)
+                .get("/signup")
+                .expect(200)
+                .end(function (err, res) {
+                if (err)
+                    throw err;
+                done();
+            });
+        });
+    });
+    describe("GET/logout 연결이 성공할 경우 ", function () {
+        it("상태코드 200을 응답한다.", function (done) {
+            supertest_1.default(index_1.default)
+                .get("/signup")
+                .expect(200)
+                .end(function (err, res) {
+                if (err)
+                    throw err;
+                done();
+            });
+        });
+    });
 });

@@ -7,6 +7,9 @@ var Routes = /** @class */ (function () {
     }
     Routes.prototype.routes = function (app) {
         app.route("/").get(this.controller.index);
+        app.route("/login").get(this.controller.login);
+        app.route("/signup").get(this.controller.signup);
+        app.route("/logout").get(this.controller.logout);
     };
     return Routes;
 }());
