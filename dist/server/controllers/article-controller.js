@@ -21,4 +21,4 @@ var Controller = /** @class */ (function () {
     };
     return Controller;
 }());
-exports.Controller = Controller;
+exports.default = Controller;

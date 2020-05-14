@@ -1,4 +1,4 @@
-import app from "../index";
+import app from "../app.index";
 import request from "supertest";
 import mongoose from "mongoose";
 
