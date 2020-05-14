@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var index_1 = __importDefault(require("../index"));
+var app_index_1 = __importDefault(require("../app.index"));
 var supertest_1 = __importDefault(require("supertest"));
 var mongoose_1 = __importDefault(require("mongoose"));
 describe("Test를 시작하기 전에 ", function () {
@@ -20,7 +20,7 @@ describe("Test를 시작하기 전에 ", function () {
     });
     describe("GET / 연결이 성공할 경우 ", function () {
         it("상태코드 200을 응답한다.", function (done) {
-            supertest_1.default(index_1.default)
+            supertest_1.default(app_index_1.default)
                 .get("/")
                 .expect(200)
                 .end(function (err, res) {
@@ -32,7 +32,7 @@ describe("Test를 시작하기 전에 ", function () {
     });
     describe("GET/login 연결이 성공할 경우 ", function () {
         it("상태코드 200을 응답한다.", function (done) {
-            supertest_1.default(index_1.default)
+            supertest_1.default(app_index_1.default)
                 .get("/login")
                 .expect(200)
                 .end(function (err, res) {
@@ -44,7 +44,7 @@ describe("Test를 시작하기 전에 ", function () {
     });
     describe("GET/singup 연결이 성공할 경우 ", function () {
         it("상태코드 200을 응답한다.", function (done) {
-            supertest_1.default(index_1.default)
+            supertest_1.default(app_index_1.default)
                 .get("/signup")
                 .expect(200)
                 .end(function (err, res) {
@@ -56,7 +56,7 @@ describe("Test를 시작하기 전에 ", function () {
     });
     describe("GET/logout 연결이 성공할 경우 ", function () {
         it("상태코드 200을 응답한다.", function (done) {
-            supertest_1.default(index_1.default)
+            supertest_1.default(app_index_1.default)
                 .get("/signup")
                 .expect(200)
                 .end(function (err, res) {
