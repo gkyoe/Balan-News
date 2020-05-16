@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import * as User from "../models/user";
 import { runInNewContext } from "vm";
+import { useReducer } from "react";
 
 export default class UserController {
   public async signup(req: Request, res: Response) {
@@ -9,23 +10,14 @@ export default class UserController {
     console.log(email, password);
     // res.status(200).send("ok done!");
     try {
-      await User.UserModel.find()
-        .exists(email, true)
-        .then((result) => {
-          if (result) res.status(409).send("이미 가입한 유저입니다.");
-          else {
-            User.UserModel.create({
-              email,
-              password,
-            });
-          }
-        })
-        .then((check: void) => {
-          res.json(check).status(200);
-        })
-        .catch((err: Error) => {
-          throw err;
-        });
+      let checkUser = await User.UserModel.findOne({ email });
+      if (checkUser) {
+        res.status(204).send("이미 가입한 유저입니다");
+      } else {
+        let result = await User.UserModel.create({ email, password });
+        res.status(200).send(result);
+        console.log("성공");
+      }
     } catch {
       (err: Error) => {
         throw err;

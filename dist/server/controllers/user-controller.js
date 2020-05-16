@@ -61,7 +61,7 @@ var UserController = /** @class */ (function () {
     }
     UserController.prototype.signup = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, password, _b;
+            var _a, email, password, checkUser, result, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -69,35 +69,27 @@ var UserController = /** @class */ (function () {
                         console.log(email, password);
                         _c.label = 1;
                     case 1:
-                        _c.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, User.UserModel.find()
-                                .exists(email, true)
-                                .then(function (result) {
-                                if (result)
-                                    res.status(409).send("이미 가입한 유저입니다.");
-                                else {
-                                    User.UserModel.create({
-                                        email: email,
-                                        password: password,
-                                    })
-                                        .then(function (check) {
-                                        res.json(check).status(200);
-                                    })
-                                        .catch(function (err) {
-                                        throw err;
-                                    });
-                                }
-                            })];
+                        _c.trys.push([1, 6, , 7]);
+                        return [4 /*yield*/, User.UserModel.findOne({ email: email })];
                     case 2:
-                        _c.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
+                        checkUser = _c.sent();
+                        if (!checkUser) return [3 /*break*/, 3];
+                        res.status(204).send("이미 가입한 유저입니다");
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, User.UserModel.create({ email: email, password: password })];
+                    case 4:
+                        result = _c.sent();
+                        res.status(200).send(result);
+                        console.log("성공");
+                        _c.label = 5;
+                    case 5: return [3 /*break*/, 7];
+                    case 6:
                         _b = _c.sent();
                         (function (err) {
                             throw err;
                         });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 7];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
