@@ -5,11 +5,11 @@ var mongoose_1 = require("mongoose");
 var UserSchema = new mongoose_1.Schema({
     id: {
         type: String,
-        required: true,
+        required: false,
     },
     gender: {
         type: String,
-        required: true,
+        required: false,
     },
     mail: {
         type: String,
