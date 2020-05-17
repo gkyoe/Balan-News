@@ -1,4 +1,4 @@
-import * as article from "./article";
-import * as user from "./user";
+import * as ArticleModel from "./article";
+import * as UserModel from "./user";
 
-export default { article, user };
+export default { ArticleModel, UserModel };

@@ -1,7 +1,7 @@
 import { Document, Model, model, Types, Schema, Query } from "mongoose";
 import { ArticleModel } from "./article";
 
-interface IUserSchema extends Document {
+export interface IUserSchema extends Document {
   name: string;
   gender: string;
   mail: string;
@@ -45,3 +45,4 @@ const UserSchema = new Schema(
 );
 
 export const UserModel = model<IUserSchema>("UserModel", UserSchema);
+// model의 첫번째 인자는 컬렉션의 이름,

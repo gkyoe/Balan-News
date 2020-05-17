@@ -19,6 +19,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var article = __importStar(require("./article"));
-var user = __importStar(require("./user"));
-exports.default = { article: article, user: user };
+var ArticleModel = __importStar(require("./article"));
+var UserModel = __importStar(require("./user"));
+exports.default = { ArticleModel: ArticleModel, UserModel: UserModel };

@@ -61,36 +61,26 @@ var UserController = /** @class */ (function () {
     }
     UserController.prototype.signup = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, password, checkUser, result, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        _a = req.body, email = _a.email, password = _a.password;
-                        console.log(email, password);
-                        _c.label = 1;
-                    case 1:
-                        _c.trys.push([1, 6, , 7]);
-                        return [4 /*yield*/, User.UserModel.findOne({ email: email })];
-                    case 2:
-                        checkUser = _c.sent();
-                        if (!checkUser) return [3 /*break*/, 3];
-                        res.status(204).send("이미 가입한 유저입니다");
-                        return [3 /*break*/, 5];
-                    case 3: return [4 /*yield*/, User.UserModel.create({ email: email, password: password })];
-                    case 4:
-                        result = _c.sent();
-                        res.status(200).send(result);
-                        console.log("성공");
-                        _c.label = 5;
-                    case 5: return [3 /*break*/, 7];
-                    case 6:
-                        _b = _c.sent();
-                        (function (err) {
-                            throw err;
-                        });
-                        return [3 /*break*/, 7];
-                    case 7: return [2 /*return*/];
-                }
+            var _a, email, password, create, onError;
+            return __generator(this, function (_b) {
+                _a = req.body, email = _a.email, password = _a.password;
+                console.log(email, password);
+                create = function (user) {
+                    if (user) {
+                        throw new Error("username exists");
+                    }
+                    else {
+                        return User.UserModel.create(email, password);
+                    }
+                };
+                onError = function (err) {
+                    res.status(409).json({
+                        message: err.message,
+                    });
+                    console.log(err.message);
+                };
+                User.UserModel.findOne({ email: email, password: password }).then(create).catch(onError);
+                return [2 /*return*/];
             });
         });
     };
