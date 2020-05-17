@@ -33,3 +33,4 @@ var UserSchema = new mongoose_1.Schema({
     timestamps: true,
 });
 exports.UserModel = mongoose_1.model("UserModel", UserSchema);
+// model의 첫번째 인자는 컬렉션의 이름,

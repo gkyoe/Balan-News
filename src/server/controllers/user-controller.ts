@@ -9,19 +9,23 @@ export default class UserController {
     const { email, password } = req.body;
     console.log(email, password);
     // res.status(200).send("ok done!");
-    try {
-      let checkUser = await User.UserModel.findOne({ email });
-      if (checkUser) {
-        res.status(204).send("이미 가입한 유저입니다");
+
+    const create = (
+      user: User.IUserSchema | null
+    ): Promise<User.IUserSchema> => {
+      if (user) {
+        throw new Error("username exists");
       } else {
-        let result = await User.UserModel.create({ email, password });
-        res.status(200).send(result);
-        console.log("성공");
+        return User.UserModel.create(email, password);
       }
-    } catch {
-      (err: Error) => {
-        throw err;
-      };
-    }
+    };
+    const onError = (err: Error) => {
+      res.status(409).json({
+        message: err.message,
+      });
+      console.log(err.message);
+    };
+
+    User.UserModel.findOne({ email, password }).then(create).catch(onError);
   }
 }
