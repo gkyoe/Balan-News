@@ -6,7 +6,9 @@ export class Routes {
   public userController: UserController = new UserController();
 
   public routes(app: Application): void {
-    // app.route("/").get(this.controller.index);
+    app.route("/").get((req: Request, res: Response) => {
+      res.status(200).send("main page");
+    });
     // app.route("/login").get(this.controller.login);
     app.route("/signup").post(this.userController.signup);
     // app.route("/logout").get(this.controller.logout);
