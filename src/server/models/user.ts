@@ -2,24 +2,14 @@ import { Document, Model, model, Types, Schema, Query } from "mongoose";
 import { ArticleModel } from "./article";
 
 export interface IUserSchema extends Document {
-  name: string;
-  gender: string;
   mail: string;
   password: string;
-  interest?: string;
-  saved_articles?: Types.Array<string>;
+  inter_press?: string;
+  scrap?: Types.Array<string>;
 }
 
 const UserSchema = new Schema(
   {
-    id: {
-      type: String,
-      required: false,
-    },
-    gender: {
-      type: String,
-      required: false,
-    },
     mail: {
       type: String,
       required: true,
@@ -36,6 +26,7 @@ const UserSchema = new Schema(
       {
         ref: "ArticleModel",
         type: Schema.Types.ObjectId,
+        required: false,
       },
     ],
   },
@@ -44,5 +35,5 @@ const UserSchema = new Schema(
   }
 );
 
-export const UserModel = model<IUserSchema>("UserModel", UserSchema);
+export const user = model<IUserSchema>("user", UserSchema);
 // model의 첫번째 인자는 컬렉션의 이름,

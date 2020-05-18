@@ -1,5 +1,5 @@
 import { Document, Model, model, Types, Schema, Query } from "mongoose";
-import { UserModel } from "./user";
+import { user } from "./user";
 
 interface IArticleSchema extends Document {
   title: string;
