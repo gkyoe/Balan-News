@@ -22,15 +22,4 @@ var App = /** @class */ (function () {
     };
     return App;
 }());
-//rousseau-alexandre.fr/en/programming/2019/06/19/express-typescript.html
-// http: require("dotenv").config();
-// const env = process.env.NODE_ENV || "development";
-// console.log(env);
-// if (process.env.NODE_ENV !== "test") {
-//   app.use(morgan("dev"));
-// }
-// app.get("/", (req, res) => {
-//   res.status(200);
-//   res.send("Hello World!");
-// });
 exports.default = new App().app;
