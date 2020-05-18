@@ -1,16 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModel = void 0;
+exports.user = void 0;
 var mongoose_1 = require("mongoose");
 var UserSchema = new mongoose_1.Schema({
-    id: {
-        type: String,
-        required: false,
-    },
-    gender: {
-        type: String,
-        required: false,
-    },
     mail: {
         type: String,
         required: true,
@@ -27,10 +19,11 @@ var UserSchema = new mongoose_1.Schema({
         {
             ref: "ArticleModel",
             type: mongoose_1.Schema.Types.ObjectId,
+            required: false,
         },
     ],
 }, {
     timestamps: true,
 });
-exports.UserModel = mongoose_1.model("UserModel", UserSchema);
+exports.user = mongoose_1.model("user", UserSchema);
 // model의 첫번째 인자는 컬렉션의 이름,
