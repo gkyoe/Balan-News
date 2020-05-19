@@ -1,16 +1,18 @@
 import app from "../app.index";
 import request from "supertest";
 import mongoose from "mongoose";
+import * as models from "../models";
+import "dotenv";
+import { doesNotMatch } from "assert";
 
 describe("Test를 시작하기 전에 ", () => {
   it("몽고디비를 연결한다 ", () => {
-    before((done) => {
+    before(async () => {
       if (mongoose.connection.db) {
-        mongoose.connect("mongodb://localhost/admin", {
+        await mongoose.connect(`${process.env.MONGO_URL}`, {
           useNewUrlParser: true,
           useUnifiedTopology: true,
         });
-        done();
       }
     });
   });
@@ -22,8 +24,8 @@ describe("Test를 시작하기 전에 ", () => {
         .expect(200)
         .end((err, res) => {
           if (err) throw err;
-          done();
         });
+      done();
     });
   });
 
@@ -34,16 +36,18 @@ describe("Test를 시작하기 전에 ", () => {
         .expect(200)
         .end((err, res) => {
           if (err) throw err;
-          done();
         });
+      done();
     });
   });
 
-  describe("GET/singup 연결이 성공할 경우 ", () => {
-    it("상태코드 200을 응답한다.", (done) => {
+  describe("POST/singup 연결이 성공할 경우 ", () => {
+    it("이미 가입된 유저가 요청 시 409 코드로 응답한다", (done) => {
       request(app)
-        .get("/signup")
-        .expect(200)
+        .post("/signup")
+        .send({ mail: "duli@gmail.com", password: "ffff" })
+        .set("Accept", "application/json")
+        .expect(409)
         .end((err, res) => {
           if (err) throw err;
           done();
@@ -51,15 +55,15 @@ describe("Test를 시작하기 전에 ", () => {
     });
   });
 
-  describe("GET/logout 연결이 성공할 경우 ", () => {
-    it("상태코드 200을 응답한다.", (done) => {
-      request(app)
-        .get("/signup")
-        .expect(200)
-        .end((err, res) => {
-          if (err) throw err;
-          done();
-        });
-    });
-  });
+  // describe("GET/logout 연결이 성공할 경우 ", () => {
+  //   it("상태코드 200을 응답한다.", (done) => {
+  //     request(app)
+  //       .get("/signup")
+  //       .expect(200)
+  //       .end((err, res) => {
+  //         if (err) throw err;
+  //       });
+  //     done();
+  //   });
+  // });
 });

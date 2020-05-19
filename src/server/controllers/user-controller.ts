@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
+import mongoose, { Error } from "mongoose";
 import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
 import { useReducer } from "react";
@@ -18,9 +18,11 @@ export default class UserController {
       }
     };
 
-    const check = (data: IUserSchema | Error) => {
+    const check = (data: IUserSchema) => {
       if (data) {
         res.status(200).send("회원가입이 완료되었습니다!");
+      } else {
+        throw new Error("회원가입이 실패하였습니다.");
       }
     };
 
