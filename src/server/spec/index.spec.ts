@@ -23,16 +23,18 @@ describe("Test를 시작하기 전에 ", () => {
         .get("/")
         .expect(200)
         .end((err, res) => {
-          if (err) throw err;
+          if (err) done(err);
+          done();
         });
-      done();
     });
   });
 
-  describe("GET/login 연결이 성공할 경우 ", () => {
+  describe("POST/signin 연결이 성공할 경우 ", () => {
     it("상태코드 200을 응답한다.", (done) => {
       request(app)
-        .get("/login")
+        .post("/signin")
+        .send({ mail: "duli@gmail.com", password: "ffff" })
+        .set("Accept", "application/json")
         .expect(200)
         .end((err, res) => {
           if (err) throw err;
@@ -50,8 +52,8 @@ describe("Test를 시작하기 전에 ", () => {
         .expect(409)
         .end((err, res) => {
           if (err) throw err;
-          done();
         });
+      done();
     });
   });
 

@@ -69,15 +69,17 @@ describe("Test를 시작하기 전에 ", function () {
                 .expect(200)
                 .end(function (err, res) {
                 if (err)
-                    throw err;
+                    done(err);
+                done();
             });
-            done();
         });
     });
-    describe("GET/login 연결이 성공할 경우 ", function () {
+    describe("POST/signin 연결이 성공할 경우 ", function () {
         it("상태코드 200을 응답한다.", function (done) {
             supertest_1.default(app_index_1.default)
-                .get("/login")
+                .post("/signin")
+                .send({ mail: "duli@gmail.com", password: "ffff" })
+                .set("Accept", "application/json")
                 .expect(200)
                 .end(function (err, res) {
                 if (err)
@@ -96,20 +98,19 @@ describe("Test를 시작하기 전에 ", function () {
                 .end(function (err, res) {
                 if (err)
                     throw err;
-                done();
-            });
-        });
-    });
-    describe("GET/logout 연결이 성공할 경우 ", function () {
-        it("상태코드 200을 응답한다.", function (done) {
-            supertest_1.default(app_index_1.default)
-                .get("/signup")
-                .expect(200)
-                .end(function (err, res) {
-                if (err)
-                    throw err;
             });
             done();
         });
     });
+    // describe("GET/logout 연결이 성공할 경우 ", () => {
+    //   it("상태코드 200을 응답한다.", (done) => {
+    //     request(app)
+    //       .get("/signup")
+    //       .expect(200)
+    //       .end((err, res) => {
+    //         if (err) throw err;
+    //       });
+    //     done();
+    //   });
+    // });
 });
