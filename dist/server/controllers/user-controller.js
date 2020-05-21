@@ -66,7 +66,6 @@ var UserController = /** @class */ (function () {
                         };
                         return [4 /*yield*/, user_1.user
                                 .findOne({ mail: mail, password: password })
-                                .exec()
                                 .then(check)
                                 .catch(onError)];
                     case 1:
