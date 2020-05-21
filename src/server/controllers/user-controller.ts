@@ -3,11 +3,16 @@ import mongoose, { Error } from "mongoose";
 import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
 import { useReducer } from "react";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export default class UserController {
   // 로그인 함수
   public async signin(req: Request, res: Response) {
     const { mail, password } = req.body;
+    const secret = req.app.get("jwt-secret");
     console.log(mail, password);
 
     const check = (data: IUserSchema | null) => {
@@ -37,17 +42,22 @@ export default class UserController {
     console.log(mail, password);
     // res.status(200).send("ok done!");
 
-    const create = (data: IUserSchema | null): Promise<IUserSchema> => {
+    const create = (data: IUserSchema | null): string => {
       if (data) {
         throw new Error("username exists");
       } else {
-        return user.create({ mail: mail, password: password });
+        const secret: string = String(process.env.secret);
+        const token = jwt.sign({ mail: mail, password: password }, secret, {
+          expiresIn: "7d",
+        });
+        user.create({ mail: mail, password: token });
+        return token;
       }
     };
 
-    const check = (data: IUserSchema) => {
-      if (data) {
-        res.status(200).send("회원가입이 완료되었습니다!");
+    const check = (token: string) => {
+      if (token) {
+        res.status(200).json({ message: "logged in successfully", token });
       } else {
         throw new Error("회원가입이 실패하였습니다.");
       }
