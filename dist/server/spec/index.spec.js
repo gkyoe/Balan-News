@@ -102,6 +102,20 @@ describe("Test를 시작하기 전에 ", function () {
             done();
         });
     });
+    describe("POST/singup 연결이 성공할 경우 ", function () {
+        it("새로운 유저가 요청 시 200 코드로 응답한다", function (done) {
+            supertest_1.default(app_index_1.default)
+                .post("/signup")
+                .send({ mail: "gagamel@gmail.com", password: "asdf" })
+                .set("Accept", "application/json")
+                .expect(200)
+                .end(function (err, res) {
+                if (err)
+                    throw err;
+            });
+            done();
+        });
+    });
     // describe("GET/logout 연결이 성공할 경우 ", () => {
     //   it("상태코드 200을 응답한다.", (done) => {
     //     request(app)
