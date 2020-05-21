@@ -14,7 +14,7 @@ var Routes = /** @class */ (function () {
         app.route("/").get(function (req, res) {
             res.status(200).send("main page");
         });
-        // app.route("/login").get(this.controller.login);
+        app.route("/login").post(this.userController.signin);
         app.route("/signup").post(this.userController.signup);
         // app.route("/logout").get(this.controller.logout);
     };
