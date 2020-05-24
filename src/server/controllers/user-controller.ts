@@ -4,6 +4,7 @@ import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
 import { useReducer } from "react";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -12,15 +13,27 @@ export default class UserController {
   // 로그인 함수
   public async signin(req: Request, res: Response) {
     const { mail, password } = req.body;
-    const secret = req.app.get("jwt-secret");
-    console.log(mail, password);
+    const token: string = String(
+      req.headers["x-access-token"] || req.query.token
+    );
+    const secret = String(process.env.secret);
+    console.log(mail, token);
 
-    const check = (data: IUserSchema | null) => {
+    const decode = (data: IUserSchema | null) => {
       if (data) {
-        res.status(200).send("로그인 되었습니다.");
-      } else {
-        throw new Error("가입된 유저가 아닙니다.");
+        bcrypt.compare(data, "hash", (err, res) => {
+          if (res) {
+            // Passwords match
+          } else {
+            // Passwords don't match
+            throw new Error("가입된 유저가 아닙니다.");
+          }
+        });
       }
+    };
+
+    const check = (decoded: void) => {
+      res.status(200).json({ message: "로그인 되었습니다.", info: token });
     };
 
     const onError = (err: Error) => {
@@ -30,10 +43,7 @@ export default class UserController {
       console.log(err.message);
     };
 
-    await user
-      .findOne({ mail: mail, password: password })
-      .then(check)
-      .catch(onError);
+    await user.findOne({ mail: mail }).then(decode).then(check).catch(onError);
   }
 
   // 회원가입 함수
