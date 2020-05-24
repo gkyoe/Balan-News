@@ -69,20 +69,24 @@ var UserController = /** @class */ (function () {
     // 로그인 함수
     UserController.prototype.signin = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, mail, password, secret, check, onError;
+            var _a, mail, password, token, secret, decode, check, onError;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _a = req.body, mail = _a.mail, password = _a.password;
-                        secret = req.app.get("jwt-secret");
-                        console.log(mail, password);
-                        check = function (data) {
+                        token = String(req.headers["x-access-token"] || req.query.token);
+                        secret = String(process.env.secret);
+                        console.log(mail, token);
+                        decode = function (data) {
                             if (data) {
-                                res.status(200).send("로그인 되었습니다.");
+                                jsonwebtoken_1.default.verify(token, secret);
                             }
                             else {
                                 throw new mongoose_1.Error("가입된 유저가 아닙니다.");
                             }
+                        };
+                        check = function (decoded) {
+                            res.status(200).json({ message: "로그인 되었습니다.", info: token });
                         };
                         onError = function (err) {
                             res.status(404).json({
@@ -90,10 +94,7 @@ var UserController = /** @class */ (function () {
                             });
                             console.log(err.message);
                         };
-                        return [4 /*yield*/, user_1.user
-                                .findOne({ mail: mail, password: password })
-                                .then(check)
-                                .catch(onError)];
+                        return [4 /*yield*/, user_1.user.findOne({ mail: mail }).then(decode).then(check).catch(onError)];
                     case 1:
                         _b.sent();
                         return [2 /*return*/];
@@ -125,7 +126,7 @@ var UserController = /** @class */ (function () {
                         };
                         check = function (token) {
                             if (token) {
-                                res.status(200).json(token);
+                                res.status(200).json({ message: "logged in successfully", token: token });
                             }
                             else {
                                 throw new mongoose_1.Error("회원가입이 실패하였습니다.");
