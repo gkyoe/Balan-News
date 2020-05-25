@@ -30,15 +30,16 @@ var UserSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
+// https://stackoverflow.com/questions/46182826/mongoose-hooks-not-working-with-typescript
 UserSchema.pre("save", function (next) {
     var _user = this;
     if (!_user.isModified("password"))
         return next();
-    // generate a salt
+    // generate a salt: 솔트값 생성
     bcrypt_1.default.genSalt(SALT_WORK_FACTOR, function (err, salt) {
         if (err)
             return next(err);
-        // hash the password using our new salt
+        // hash the password using our new salt: 해쉬 생성
         bcrypt_1.default.hash(_user.password, salt, function (err, hash) {
             if (err)
                 return next(err);
@@ -50,7 +51,9 @@ UserSchema.pre("save", function (next) {
         });
     });
 });
+// 로그인 시 사용자가 입력한 비밀번호의 해시값이 데이터베이스에 저장된 해시값과 같은지 비교
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+    // bcrypt.compare(비교해볼 문자열, 해사값, 콜백메소드) => 비교해 볼 문자열과 해시 값 같으면 true, 다르면 false
     bcrypt_1.default.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err)
             return cb(err);
