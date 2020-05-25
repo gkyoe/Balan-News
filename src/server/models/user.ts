@@ -5,6 +5,7 @@ import { ArticleModel } from "./article";
 const SALT_WORK_FACTOR = 10;
 
 export interface IUserSchema extends Document {
+  [x: string]: any;
   mail: string;
   password: string;
   inter_press?: string;
