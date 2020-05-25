@@ -25,7 +25,7 @@ export default class UserController {
               message: "로그인이 되었습니다.",
             });
           } else {
-            throw new Error("가입된 유저가 아닙니다.");
+            res.status(409).send("비밀번호가 틀렸습니다.");
           }
         });
       }
