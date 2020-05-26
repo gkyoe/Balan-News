@@ -82,9 +82,12 @@ var UserController = /** @class */ (function () {
                                         });
                                     }
                                     else {
-                                        throw new mongoose_1.Error("가입된 유저가 아닙니다.");
+                                        res.status(409).send("비밀번호가 틀렸습니다.");
                                     }
                                 });
+                            }
+                            else {
+                                res.status(404).send("가입된 유저가 없습니다.");
                             }
                         };
                         onError = function (err) {
