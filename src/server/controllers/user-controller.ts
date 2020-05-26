@@ -28,6 +28,8 @@ export default class UserController {
             res.status(409).send("비밀번호가 틀렸습니다.");
           }
         });
+      } else {
+        res.status(404).send("가입된 유저가 없습니다.");
       }
     };
 

@@ -86,6 +86,9 @@ var UserController = /** @class */ (function () {
                                     }
                                 });
                             }
+                            else {
+                                res.status(404).send("가입된 유저가 없습니다.");
+                            }
                         };
                         onError = function (err) {
                             res.status(404).json({
