@@ -70,8 +70,10 @@ var UserController = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = req.body, mail = _a.mail, password = _a.password;
+                        console.log(mail, password);
                         compare = function (data) {
                             if (data) {
+                                console.log("data: ", data);
                                 data.comparePassword(password, function (err, isMatch) {
                                     if (err)
                                         throw new mongoose_1.Error.messages();
@@ -87,6 +89,7 @@ var UserController = /** @class */ (function () {
                                 });
                             }
                             else {
+                                console.log("else");
                                 res.status(404).send("가입된 유저가 없습니다.");
                             }
                         };
@@ -114,6 +117,7 @@ var UserController = /** @class */ (function () {
                         _a = req.body, mail = _a.mail, password = _a.password;
                         console.log(mail, password);
                         create = function (data) {
+                            console.log(data);
                             if (data)
                                 res.status(404).send("이미 가입되어 있습니다.");
                             else {
