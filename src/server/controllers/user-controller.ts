@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import mongoose, { Error } from "mongoose";
+import passport from "passport";
 import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
 import { useReducer } from "react";
@@ -15,6 +16,11 @@ export default class UserController {
   public async signin(req: Request, res: Response) {
     const { mail, password } = req.body;
     console.log(mail, password);
+
+    const auth = passport.authenticate("local", {
+      successRedirect: "/",
+      failureRedirect: "/login",
+    });
 
     const compare = (data: IUserSchema | null) => {
       if (data) {

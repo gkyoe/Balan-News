@@ -7,13 +7,15 @@ import "dotenv";
 import { doesNotMatch, doesNotReject } from "assert";
 
 describe("Test를 시작하기 전에 ", () => {
-  it("몽고디비를 연결한다 ", () => {
-    beforeEach(() => {
-      mongoose.connect(`${process.env.MONGO_URL}`, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+  beforeEach(async () => {
+    await mongoose.connect(`${process.env.MONGO_URL}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
+  });
+
+  afterEach(async () => {
+    await mongoose.disconnect();
   });
 
   describe("GET / 연결이 성공할 경우 ", () => {
@@ -63,7 +65,7 @@ describe("Test를 시작하기 전에 ", () => {
     it("새로운 유저가 요청 시 200 코드로 응답한다", (done) => {
       request(app)
         .post("/signup")
-        .send({ mail: "choco@gmail.com", password: "choco" })
+        .send({ mail: "chocolate@gmail.com", password: "chocolate" })
         // .set("Accept", "application/json")
         .expect(200)
         .end((err, res) => {
