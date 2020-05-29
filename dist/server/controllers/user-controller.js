@@ -57,11 +57,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var user_1 = require("../models/user");
+var jwt = __importStar(require("jsonwebtoken"));
 var dotenv = __importStar(require("dotenv"));
 dotenv.config();
+var secret = process.env.secret;
 var UserController = /** @class */ (function () {
     function UserController() {
     }
+    // public initialize = () => {
+    //   passport.use("jwt", this.getStrategy());
+    //   return passport.initialize();
+    // }
+    // public authenticate = (cb: any) => passport.authenticate("jwt", {session:false, failWithError:true}, cb)
+    // private genToken = (user: IUserSchema): Object => {
+    //   let token = jwt.sign()
+    // }
     // 로그인 함수
     UserController.prototype.signin = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
@@ -78,8 +88,11 @@ var UserController = /** @class */ (function () {
                                     if (err)
                                         throw new mongoose_1.Error.messages();
                                     if (isMatch) {
-                                        res.status(200).set("x-token", data.password).json({
-                                            data: data,
+                                        var token = jwt.sign({ id: data.id, email: data.email }, String(secret), {
+                                            expiresIn: "2day",
+                                        });
+                                        res.set("jwt-token", token).status(200).json({
+                                            token: token,
                                             message: "로그인이 되었습니다.",
                                         });
                                     }
@@ -128,8 +141,11 @@ var UserController = /** @class */ (function () {
                                 newUser.save(function (err, result) {
                                     if (err)
                                         throw err.message("회원가입이 실패했습니다.");
-                                    res.status(200).send({
-                                        newUser: result,
+                                    var token = jwt.sign({ id: result.id, email: result.email }, String(secret), {
+                                        expiresIn: "2day",
+                                    });
+                                    res.status(200).json({
+                                        token: token,
                                         message: "회원가입 되었습니다.",
                                     });
                                 });
