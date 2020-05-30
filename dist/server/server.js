@@ -61,7 +61,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var app_index_1 = __importDefault(require("./app.index"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv = __importStar(require("dotenv"));
-var _a = process.env, MONGO_USER = _a.MONGO_USER, MONGO_PASSWORD = _a.MONGO_PASSWORD;
+var _a = process.env, MONGO_PRODUCT = _a.MONGO_PRODUCT, MONGO_DEV = _a.MONGO_DEV, MONGO_USER = _a.MONGO_USER, MONGO_PASSWORD = _a.MONGO_PASSWORD;
 var port = process.env.PORT || 3000;
 dotenv.config();
 app_index_1.default.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -73,7 +73,7 @@ app_index_1.default.listen(port, function () { return __awaiter(void 0, void 0, 
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, mongoose_1.default.connect("" + process.env.MONGO_URL, {
+                return [4 /*yield*/, mongoose_1.default.connect("" + MONGO_DEV, {
                         // dbName: "balanNews",
                         useNewUrlParser: true,
                         useUnifiedTopology: true,

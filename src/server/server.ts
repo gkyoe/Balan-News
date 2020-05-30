@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import * as models from "./models";
 
-const { MONGO_USER, MONGO_PASSWORD } = process.env;
-
+const { MONGO_PRODUCT, MONGO_DEV, MONGO_USER, MONGO_PASSWORD } = process.env;
 const port = process.env.PORT || 3000;
 
 dotenv.config();
@@ -12,7 +11,7 @@ dotenv.config();
 app.listen(port, async () => {
   console.log("server is running");
   try {
-    await mongoose.connect(`${process.env.MONGO_URL}`, {
+    await mongoose.connect(`${MONGO_DEV}`, {
       // dbName: "balanNews",
       useNewUrlParser: true,
       useUnifiedTopology: true,

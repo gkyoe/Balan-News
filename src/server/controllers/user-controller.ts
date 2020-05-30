@@ -1,35 +1,55 @@
 import { Request, Response } from "express";
 import mongoose, { Error } from "mongoose";
-import passport from "passport";
 import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
 import { useReducer } from "react";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import * as dotenv from "dotenv";
 import { createBrotliCompress } from "zlib";
 
 dotenv.config();
+const secret: string | undefined = process.env.secret;
 
 export default class UserController {
+  // public initialize = () => {
+  //   passport.use("jwt", this.getStrategy());
+  //   return passport.initialize();
+  // }
+
+  // public authenticate = (cb: any) => passport.authenticate("jwt", {session:false, failWithError:true}, cb)
+
+  // private genToken = (user: IUserSchema): Object => {
+  //   let token = jwt.sign()
+  // }
+
   // 로그인 함수
   public async signin(req: Request, res: Response) {
     const { mail, password } = req.body;
     console.log(mail, password);
 
-    const auth = passport.authenticate("local", {
-      successRedirect: "/",
-      failureRedirect: "/login",
-    });
+    // const auth = passport.authenticate("local", {
+    //   successRedirect: "/",
+    //   failureRedirect: "/login",
+    // });
 
     const compare = (data: IUserSchema | null) => {
       if (data) {
         console.log("data: ", data);
         data.comparePassword(password, (err: Error, isMatch: Boolean) => {
           if (err) throw new Error.messages();
+
           if (isMatch) {
-            res.status(200).set("x-token", data.password).json({
-              data: data,
+            let token = jwt.sign(
+              { id: data.id, email: data.email },
+              String(secret),
+              {
+                expiresIn: "2day",
+              }
+            );
+
+            res.set("jwt-token", token).status(200).json({
+              token: token,
               message: "로그인이 되었습니다.",
             });
           } else {
@@ -68,8 +88,17 @@ export default class UserController {
 
         newUser.save((err, result) => {
           if (err) throw err.message("회원가입이 실패했습니다.");
-          res.status(200).send({
-            newUser: result,
+
+          let token = jwt.sign(
+            { id: result.id, email: result.email },
+            String(secret),
+            {
+              expiresIn: "2day",
+            }
+          );
+
+          res.set("jwt-token", token).status(200).json({
+            token: token,
             message: "회원가입 되었습니다.",
           });
         });
