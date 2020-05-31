@@ -64,14 +64,6 @@ var secret = process.env.secret;
 var UserController = /** @class */ (function () {
     function UserController() {
     }
-    // public initialize = () => {
-    //   passport.use("jwt", this.getStrategy());
-    //   return passport.initialize();
-    // }
-    // public authenticate = (cb: any) => passport.authenticate("jwt", {session:false, failWithError:true}, cb)
-    // private genToken = (user: IUserSchema): Object => {
-    //   let token = jwt.sign()
-    // }
     // 로그인 함수
     UserController.prototype.signin = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
@@ -83,7 +75,7 @@ var UserController = /** @class */ (function () {
                         console.log(mail, password);
                         compare = function (data) {
                             if (data) {
-                                console.log("data: ", data);
+                                console.log(data);
                                 data.comparePassword(password, function (err, isMatch) {
                                     if (err)
                                         throw new mongoose_1.Error.messages();
@@ -102,7 +94,6 @@ var UserController = /** @class */ (function () {
                                 });
                             }
                             else {
-                                console.log("else");
                                 res.status(404).send("가입된 유저가 없습니다.");
                             }
                         };
@@ -130,7 +121,6 @@ var UserController = /** @class */ (function () {
                         _a = req.body, mail = _a.mail, password = _a.password;
                         console.log(mail, password);
                         create = function (data) {
-                            console.log(data);
                             if (data)
                                 res.status(404).send("이미 가입되어 있습니다.");
                             else {
@@ -141,10 +131,11 @@ var UserController = /** @class */ (function () {
                                 newUser.save(function (err, result) {
                                     if (err)
                                         throw err.message("회원가입이 실패했습니다.");
+                                    console.log(result);
                                     var token = jwt.sign({ id: result.id, email: result.email }, String(secret), {
                                         expiresIn: "2day",
                                     });
-                                    res.status(200).json({
+                                    res.set("jwt-token", token).status(200).json({
                                         token: token,
                                         message: "회원가입 되었습니다.",
                                     });

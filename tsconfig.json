@@ -12,7 +12,8 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "jsx": "react",
     // "sourceMap": true,
-    "listEmittedFiles": true
+    "listEmittedFiles": true,
+    "resolveJsonModule": true
   },
   "compileOnSave": true
 }
