@@ -12,30 +12,14 @@ dotenv.config();
 const secret: string | undefined = process.env.secret;
 
 export default class UserController {
-  // public initialize = () => {
-  //   passport.use("jwt", this.getStrategy());
-  //   return passport.initialize();
-  // }
-
-  // public authenticate = (cb: any) => passport.authenticate("jwt", {session:false, failWithError:true}, cb)
-
-  // private genToken = (user: IUserSchema): Object => {
-  //   let token = jwt.sign()
-  // }
-
   // 로그인 함수
   public async signin(req: Request, res: Response) {
     const { mail, password } = req.body;
     console.log(mail, password);
 
-    // const auth = passport.authenticate("local", {
-    //   successRedirect: "/",
-    //   failureRedirect: "/login",
-    // });
-
     const compare = (data: IUserSchema | null) => {
       if (data) {
-        console.log("data: ", data);
+        console.log(data);
         data.comparePassword(password, (err: Error, isMatch: Boolean) => {
           if (err) throw new Error.messages();
 
@@ -57,7 +41,6 @@ export default class UserController {
           }
         });
       } else {
-        console.log("else");
         res.status(404).send("가입된 유저가 없습니다.");
       }
     };
@@ -78,7 +61,6 @@ export default class UserController {
     console.log(mail, password);
 
     const create = (data: IUserSchema | null): void => {
-      console.log(data);
       if (data) res.status(404).send("이미 가입되어 있습니다.");
       else {
         let newUser = new user({
@@ -88,6 +70,7 @@ export default class UserController {
 
         newUser.save((err, result) => {
           if (err) throw err.message("회원가입이 실패했습니다.");
+          // console.log(result);
 
           let token = jwt.sign(
             { id: result.id, email: result.email },

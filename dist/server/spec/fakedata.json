@@ -1,0 +1,20 @@
+[
+    {
+        "mail": "apple@gmail.com",
+        "pasword": "$2b$10$ovQxUt8toqcGzseaEKrO.u7oyAOoi66uxgDyOO2fZPS7r1YEKo5XC",
+        "inter_press": [],
+        "scrap": []
+    },
+    {
+        "mail": "banana@gmail.com",
+        "pasword": "$2b$10$XRuimmRHRXCn81sT247/PuLcwbxQRDyxhbixDr9VDjcSjP38zEc2q",
+        "inter_press": [],
+        "scrap": []
+    },
+    {
+        "mail": "melon@gmail.com",
+        "pasword": "$2b$10$Pgfjqf0Q7XYjbVlRY61Aae9Eiue2p46BDtEsv5/1Li1fgxRmML7ZO",
+        "inter_press": [],
+        "scrap": []
+    }
+]
