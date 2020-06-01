@@ -12,7 +12,7 @@ export interface IUserSchema extends Document {
   scrap?: Types.Array<string>;
 }
 
-const UserSchema = new Schema(
+export const UserSchema = new Schema(
   {
     mail: {
       type: String,

@@ -19,8 +19,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.Article = void 0;
-var Article = __importStar(require("./article"));
-exports.Article = Article;
-var User = __importStar(require("./user"));
-exports.User = User;
+var React = __importStar(require("react"));
+var ReactDOM = __importStar(require("react-dom"));
+var app_1 = require("./components/app");
+// import Counter from "./components/counter";
+ReactDOM.render(React.createElement(app_1.App, null), document.getElementById("root"));

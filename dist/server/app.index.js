@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var body_parser_1 = __importDefault(require("body-parser"));
+var cors_1 = __importDefault(require("cors"));
 var routes_1 = require("./config/routes");
 var morgan_1 = __importDefault(require("morgan"));
 var App = /** @class */ (function () {
@@ -19,6 +20,7 @@ var App = /** @class */ (function () {
         this.app.use(body_parser_1.default.json());
         this.app.use(body_parser_1.default.urlencoded({ extended: false }));
         this.app.use(morgan_1.default("dev"));
+        this.app.use(cors_1.default());
     };
     return App;
 }());

@@ -19,8 +19,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.Article = void 0;
-var Article = __importStar(require("./article"));
-exports.Article = Article;
-var User = __importStar(require("./user"));
-exports.User = User;
+var React = __importStar(require("react"));
+var Counter = function (props) {
+    var name = props.name;
+    return React.createElement("p", null,
+        name,
+        " counter");
+};
+exports.default = Counter;

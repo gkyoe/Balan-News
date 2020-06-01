@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import { Routes } from "./config/routes";
 import morgan from "morgan";
 
@@ -18,6 +19,7 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(morgan("dev"));
+    this.app.use(cors());
   }
 }
 
