@@ -19,8 +19,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = exports.Article = void 0;
-var Article = __importStar(require("./article"));
-exports.Article = Article;
-var User = __importStar(require("./user"));
-exports.User = User;
+var React = __importStar(require("react"));
+var react_router_dom_1 = require("react-router-dom");
+// interface LogProps {
+//   btn: string;
+// }
+// const pushSignin = () => {
+//   return axios({
+//     method: "GET",
+//     url: `http://localhost:8080/signin`,
+//   });
+// };
+// const pushSignup = () => {
+//   return axios({
+//     method: "GET",
+//     url: `http://localhost:8080/signup`,
+//   });
+// };
+var LogInOut = function () {
+    return (React.createElement("div", null,
+        React.createElement(react_router_dom_1.Link, { to: "/signin" },
+            React.createElement("button", { id: "signin" }, "\uB85C\uADF8\uC778")),
+        React.createElement(react_router_dom_1.Link, { to: "/signup" },
+            React.createElement("button", { id: "signup" }, "\uD68C\uC6D0\uAC00\uC785"))));
+};
+exports.default = LogInOut;

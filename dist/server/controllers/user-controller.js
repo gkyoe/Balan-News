@@ -131,7 +131,7 @@ var UserController = /** @class */ (function () {
                                 newUser.save(function (err, result) {
                                     if (err)
                                         throw err.message("회원가입이 실패했습니다.");
-                                    console.log(result);
+                                    // console.log(result);
                                     var token = jwt.sign({ id: result.id, email: result.email }, String(secret), {
                                         expiresIn: "2day",
                                     });

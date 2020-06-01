@@ -1,6 +1,6 @@
 module.exports = {
   mode: "development",
-  entry: "./src/client/app.tsx",
+  entry: "./src/client/index.client.tsx",
   output: {
     path: __dirname + "/dist/client",
     filename: "app.js",

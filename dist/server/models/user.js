@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.user = void 0;
+exports.user = exports.UserSchema = void 0;
 var mongoose_1 = require("mongoose");
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var SALT_WORK_FACTOR = 10;
-var UserSchema = new mongoose_1.Schema({
+exports.UserSchema = new mongoose_1.Schema({
     mail: {
         type: String,
         required: true,
@@ -31,7 +31,7 @@ var UserSchema = new mongoose_1.Schema({
     timestamps: true,
 });
 // https://stackoverflow.com/questions/46182826/mongoose-hooks-not-working-with-typescript
-UserSchema.pre("save", function (next) {
+exports.UserSchema.pre("save", function (next) {
     var _user = this;
     if (!_user.isModified("password"))
         return next();
@@ -52,7 +52,7 @@ UserSchema.pre("save", function (next) {
     });
 });
 // 로그인 시 사용자가 입력한 비밀번호의 해시값이 데이터베이스에 저장된 해시값과 같은지 비교
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+exports.UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     // bcrypt.compare(비교해볼 문자열, 해사값, 콜백메소드) => 비교해 볼 문자열과 해시 값 같으면 true, 다르면 false
     bcrypt_1.default.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err)
@@ -60,4 +60,4 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
-exports.user = mongoose_1.model("user", UserSchema);
+exports.user = mongoose_1.model("user", exports.UserSchema);
