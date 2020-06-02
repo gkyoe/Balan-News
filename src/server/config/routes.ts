@@ -12,6 +12,7 @@ export class Routes {
     });
     app.route("/signin").post(this.userController.signin);
     app.route("/signup").post(this.userController.signup);
-    app.route("/select").get(this.articleController.select);
+    // app.route("/search").get(this.articleController.naverNews);
+    app.route("/search").get(this.articleController.googleNews);
   }
 }

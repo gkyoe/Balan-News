@@ -66,34 +66,21 @@ var secret = process.env.secret;
 var articleController = /** @class */ (function () {
     function articleController() {
     }
-    articleController.prototype.select = function (req, res) {
+    articleController.prototype.searchingNews = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var subject, encoded, api_url, client_id, client_scret, options;
+            var newsApiKey, keyword;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        subject = "날씨";
-                        encoded = urlencode_1.default(subject);
-                        console.log(encoded); //%EB%82%A0%EC%94%A8
-                        api_url = "https://openapi.naver.com/v1/search/news.json?query=" + encoded;
-                        client_id = process.env.naverNewsApi_id;
-                        client_scret = process.env.naverNewsApi_ScretKey;
-                        options = {
-                            // url: api_url,
-                            headers: {
-                                "X-Naver-Client-Id": client_id,
-                                "X-Naver-Client-Secret": client_scret,
-                            },
-                        };
-                        // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
+                        newsApiKey = process.env.koreanNewApi_key;
+                        keyword = urlencode_1.default("연합뉴스");
                         return [4 /*yield*/, axios_1.default
-                                .get("https://openapi.naver.com/v1/search/news.json?query=" + encoded, options)
-                                .then(function (res) { return console.log("res.data: ", res.data); })
+                                .get("https://newsapi.org/v2/top-headlines?country=kr&apiKey=" + newsApiKey)
+                                .then(function (res) { return console.log(res.data); })
                                 .catch(function (err) {
                                 console.log("err: ", err);
                             })];
                     case 1:
-                        // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
                         _a.sent();
                         return [2 /*return*/];
                 }

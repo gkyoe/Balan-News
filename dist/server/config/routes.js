@@ -17,7 +17,7 @@ var Routes = /** @class */ (function () {
         });
         app.route("/signin").post(this.userController.signin);
         app.route("/signup").post(this.userController.signup);
-        app.route("/select").get(this.articleController.select);
+        app.route("/select").get(this.articleController.searchingNews);
     };
     return Routes;
 }());
