@@ -12,44 +12,43 @@ dotenv.config();
 const secret: string | undefined = process.env.secret;
 
 export default class articleController {
-  public async googleNews(req: Request, res: Response) {
-    const newsApiKey = process.env.koreanNewApi_key;
-    await axios
-      .get(
-        `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${newsApiKey}`
-      )
-      .then((res) => console.log(res.data))
-      .catch((err) => {
-        console.log("err: ", err);
-      });
-  }
-
-  // public async naverNews(req: Request, res: Response) {
-  //   const subject = "날씨";
-  //   const encoded = urlencode(subject);
-  //   console.log(encoded); //%EB%82%A0%EC%94%A8
-
-  //   const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}`;
-  //   const client_id = process.env.naverNewsApi_id;
-  //   const client_scret = process.env.naverNewsApi_ScretKey;
-
-  //   const options = {
-  //     // url: api_url,
-  //     headers: {
-  //       "X-Naver-Client-Id": client_id,
-  //       "X-Naver-Client-Secret": client_scret,
-  //     },
-  //   };
-  //   // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
-
+  // public async googleNews(req: Request, res: Response) {
+  //   const newsApiKey = process.env.koreanNewApi_key;
   //   await axios
   //     .get(
-  //       `https://openapi.naver.com/v1/search/news.json?query=${encoded}`,
-  //       options
+  //       `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${newsApiKey}`
   //     )
-  //     .then((res) => console.log("res.data: ", res.data))
+  //     .then((res) => console.log(res.data))
   //     .catch((err) => {
   //       console.log("err: ", err);
   //     });
   // }
+
+  public async naverNews(req: Request, res: Response) {
+    const encoded = urlencode(req.body.data);
+    console.log(encoded); //%EB%82%A0%EC%94%A8
+    const limit = 5;
+
+    const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
+    const client_id = process.env.naverNewsApi_id;
+    const client_scret = process.env.naverNewsApi_ScretKey;
+
+    const options = {
+      // url: api_url,
+      headers: {
+        "X-Naver-Client-Id": client_id,
+        "X-Naver-Client-Secret": client_scret,
+      },
+    };
+    // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
+    await axios
+      .get(api_url, options)
+      .then((result) => {
+        res.status(200).json(result.data);
+        console.log("data: ", result.data);
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+      });
+  }
 }

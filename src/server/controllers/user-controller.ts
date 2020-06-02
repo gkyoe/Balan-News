@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import mongoose, { Error } from "mongoose";
 import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
-import { useReducer } from "react";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import * as dotenv from "dotenv";

@@ -43,12 +43,14 @@ var app_index_1 = __importDefault(require("../app.index"));
 var supertest_1 = __importDefault(require("supertest"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var chai_1 = require("chai");
+var models_1 = require("../models");
 require("dotenv");
 describe("Test를 시작하기 전에 ", function () {
+    var user = mongoose_1.default.model("User", models_1.User.UserSchema);
     beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose_1.default.connect("" + process.env.MONGO_URL, {
+                case 0: return [4 /*yield*/, mongoose_1.default.connect("" + process.env.MONGO_DEV, {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
                     })];
@@ -92,7 +94,7 @@ describe("Test를 시작하기 전에 ", function () {
                     throw err;
                 console.log(res.body);
                 chai_1.expect(res.status).to.equal(200);
-                chai_1.expect(res.body).has.all.keys(["data", "message"]);
+                chai_1.expect(res.body).has.all.keys(["token", "message"]);
                 done();
             });
         });
