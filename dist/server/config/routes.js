@@ -17,7 +17,8 @@ var Routes = /** @class */ (function () {
         });
         app.route("/signin").post(this.userController.signin);
         app.route("/signup").post(this.userController.signup);
-        app.route("/select").get(this.articleController.searchingNews);
+        // app.route("/googleNews").post(this.articleController.googleNews);
+        app.route("/naverNews").post(this.articleController.naverNews);
     };
     return Routes;
 }());

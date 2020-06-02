@@ -2,16 +2,31 @@ import app from "../app.index";
 import request from "supertest";
 import mongoose from "mongoose";
 import { expect } from "chai";
-import * as models from "../models";
+import { Article, User } from "../models";
+import fakedata from "./fakedata.json";
 import "dotenv";
 import { doesNotMatch, doesNotReject } from "assert";
+import UserController from "../controllers/user-controller";
 
 describe("Test를 시작하기 전에 ", () => {
+  const user = mongoose.model("User", User.UserSchema);
+
   beforeEach(async () => {
-    await mongoose.connect(`${process.env.MONGO_URL}`, {
+    await mongoose.connect(`${process.env.MONGO_DEV}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    // const user = mongoose.model("User", User.UserSchema);
+    // await user.collection.remove({});
+    // await user.collection
+    //   .insertMany(fakedata)
+    //   .then((doc) => {
+    //     console.log(doc);
+    //   })
+    //   .catch((err) => {
+    //     throw err.message;
+    //     console.log("failed to insert fakedata");
+    //   });
   });
 
   afterEach(async () => {
@@ -41,7 +56,7 @@ describe("Test를 시작하기 전에 ", () => {
           if (err) throw err;
           console.log(res.body);
           expect(res.status).to.equal(200);
-          expect(res.body).has.all.keys(["data", "message"]);
+          expect(res.body).has.all.keys(["token", "message"]);
           done();
         });
     });

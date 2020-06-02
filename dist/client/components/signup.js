@@ -36,6 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
+var react_router_dom_1 = require("react-router-dom");
 var axios_1 = __importDefault(require("axios"));
 var Signup = /** @class */ (function (_super) {
     __extends(Signup, _super);
@@ -67,12 +68,14 @@ var Signup = /** @class */ (function (_super) {
             axios_1.default.post("http://localhost:3000/signup", user).then(function (res) {
                 console.log(res);
                 console.log(res.data);
+                _this.setState({ isSignUp: true });
             });
         };
         _this.state = {
             name: "",
             mail: "",
             password: "",
+            isSignUp: false,
         };
         _this.handleChangeName = _this.handleChangeName.bind(_this);
         _this.handleChangeMail = _this.handleChangeMail.bind(_this);
@@ -81,6 +84,9 @@ var Signup = /** @class */ (function (_super) {
         return _this;
     }
     Signup.prototype.render = function () {
+        if (this.state.isSignUp) {
+            return React.createElement(react_router_dom_1.Redirect, { to: "/" });
+        }
         return (React.createElement("form", { onSubmit: this.handleSubmit },
             React.createElement("label", null,
                 "name:",

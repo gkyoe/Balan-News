@@ -1,0 +1,19 @@
+.searchBar {
+  width: 300px;
+  height: 40px;
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.searchBtn {
+  width: 45px;
+  height: 36px;
+  vertical-align: middle;
+  margin-left: 10px;
+  font-size: 10px;
+}
+
+.search-Zone {
+  margin-top: 50px;
+  text-align: left;
+}

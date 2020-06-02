@@ -18,8 +18,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Sidebar = void 0;
 var React = __importStar(require("react"));
-var ReactDOM = __importStar(require("react-dom"));
-var app_1 = require("./components/app");
-ReactDOM.render(React.createElement(app_1.App, null), document.getElementById("root"));
+var searchBar_1 = __importDefault(require("./searchBar"));
+exports.Sidebar = function (props) {
+    return (React.createElement("div", { className: "side-bar" },
+        React.createElement(searchBar_1.default, null)));
+};

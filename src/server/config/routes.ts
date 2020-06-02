@@ -12,7 +12,7 @@ export class Routes {
     });
     app.route("/signin").post(this.userController.signin);
     app.route("/signup").post(this.userController.signup);
-    // app.route("/search").get(this.articleController.naverNews);
-    app.route("/search").get(this.articleController.googleNews);
+    // app.route("/googleNews").post(this.articleController.googleNews);
+    app.route("/naverNews").post(this.articleController.naverNews);
   }
 }
