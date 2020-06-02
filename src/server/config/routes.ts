@@ -1,9 +1,10 @@
 import { Request, Response, Application } from "express";
-// import articleController from "../controllers/article-controller";
+import ArticleController from "../controllers/article-controller";
 import UserController from "../controllers/user-controller";
 
 export class Routes {
   public userController: UserController = new UserController();
+  public articleController: ArticleController = new ArticleController();
 
   public routes(app: Application): void {
     app.route("/").get((req: Request, res: Response) => {
@@ -11,6 +12,6 @@ export class Routes {
     });
     app.route("/signin").post(this.userController.signin);
     app.route("/signup").post(this.userController.signup);
-    // app.route("/logout").get(this.controller.logout);
+    app.route("/select").get(this.articleController.select);
   }
 }
