@@ -41,13 +41,18 @@ var react_router_dom_1 = require("react-router-dom");
 var axios_1 = __importDefault(require("axios"));
 var login_1 = __importDefault(require("./login"));
 var signup_1 = __importDefault(require("./signup"));
-var searchBar_1 = __importDefault(require("./searchBar"));
+var sideBar_1 = __importDefault(require("./sideBar"));
 require("./app.css");
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {};
+        _this.state = {
+            count: 0,
+            width: 500,
+            height: "100vh",
+            transform: 0,
+        };
         return _this;
     }
     App.prototype.componentDidMount = function () {
@@ -73,8 +78,8 @@ var App = /** @class */ (function (_super) {
                         React.createElement("button", { className: "signup-button" }, "\uD68C\uC6D0\uAC00\uC785")))),
             React.createElement("main", null,
                 React.createElement(react_router_dom_1.Route, { path: "/signin", component: login_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default }),
-                React.createElement(searchBar_1.default, null))));
+                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default })),
+            React.createElement(sideBar_1.default, { width: this.state.width, height: this.state.height, transform: this.state.transform })));
     };
     return App;
 }(React.Component));

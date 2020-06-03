@@ -1,3 +1,12 @@
 .side-bar {
   border: red 3px solid;
 }
+
+/* .search-bar {
+  width: 400px;
+} */
+
+.toggle-bar {
+  width: 20px;
+  border: blue 3px solid;
+}

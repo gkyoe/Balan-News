@@ -8,19 +8,26 @@ import SideBar from "./sideBar";
 import "./app.css";
 
 interface CounterProps {
-  name: string;
+  // name: string;
 }
 
 interface CounterState {
   count: number;
-  width: string;
+  width: number;
   height: string;
+  transform: number;
 }
 
-export class App extends React.Component {
+export class App extends React.Component<CounterProps, CounterState> {
   constructor(props: CounterProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      count: 0,
+      width: 450,
+      height: "100vh",
+      transform: 0,
+    };
+    // this.handleToggle = this.handleCloseToggle.bind(this);
   }
 
   componentDidMount() {
@@ -34,8 +41,18 @@ export class App extends React.Component {
       });
   }
 
+  handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+    if (this.state.transform === 0) {
+      this.setState({ transform: -450 });
+    } else {
+      this.setState({ transform: 0 });
+    }
+    console.log(this.state.transform);
+  };
+
   render() {
-    // const { name } = this.props;
+    // const handleToggle = this.handleCloseToggle;
 
     return (
       <BrowserRouter>
@@ -60,7 +77,12 @@ export class App extends React.Component {
           <Route path="/signup" component={Signup}></Route>
           {/* <SearchBar /> */}
         </main>
-        <SideBar width={500} height={"100vh"}></SideBar>
+        <SideBar
+          width={this.state.width}
+          height={this.state.height}
+          transform={this.state.transform}
+          handleToggle={this.handleCloseToggle}
+        ></SideBar>
       </BrowserRouter>
     );
   }
