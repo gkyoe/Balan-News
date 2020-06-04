@@ -41,14 +41,30 @@ var react_router_dom_1 = require("react-router-dom");
 var axios_1 = __importDefault(require("axios"));
 var login_1 = __importDefault(require("./login"));
 var signup_1 = __importDefault(require("./signup"));
-var searchBar_1 = __importDefault(require("./searchBar"));
+var sideBar_1 = __importDefault(require("./sideBar"));
 require("./app.css");
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {};
+        _this.handleCloseToggle = function (e) {
+            e.preventDefault();
+            if (_this.state.transform === 0) {
+                _this.setState({ transform: -450 });
+            }
+            else {
+                _this.setState({ transform: 0 });
+            }
+            console.log(_this.state.transform);
+        };
+        _this.state = {
+            count: 0,
+            width: 450,
+            height: "100vh",
+            transform: 0,
+        };
         return _this;
+        // this.handleToggle = this.handleCloseToggle.bind(this);
     }
     App.prototype.componentDidMount = function () {
         axios_1.default
@@ -61,7 +77,7 @@ var App = /** @class */ (function (_super) {
         });
     };
     App.prototype.render = function () {
-        // const { name } = this.props;
+        // const handleToggle = this.handleCloseToggle;
         return (React.createElement(react_router_dom_1.BrowserRouter, null,
             React.createElement("header", null,
                 React.createElement("div", { className: "home-3button" },
@@ -73,8 +89,8 @@ var App = /** @class */ (function (_super) {
                         React.createElement("button", { className: "signup-button" }, "\uD68C\uC6D0\uAC00\uC785")))),
             React.createElement("main", null,
                 React.createElement(react_router_dom_1.Route, { path: "/signin", component: login_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default }),
-                React.createElement(searchBar_1.default, null))));
+                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default })),
+            React.createElement(sideBar_1.default, { width: this.state.width, height: this.state.height, transform: this.state.transform, handleToggle: this.handleCloseToggle })));
     };
     return App;
 }(React.Component));
