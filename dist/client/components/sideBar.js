@@ -41,27 +41,31 @@ var searchBar_1 = __importDefault(require("./searchBar"));
 require("./sideBar.css");
 var Sidebar = /** @class */ (function (_super) {
     __extends(Sidebar, _super);
-    function Sidebar(props) {
-        var _this = _super.call(this, props) || this;
-        _this.handleCloseToggle = function (event) {
-            if (_this.props.transform === 0) {
-                _this.setState({ transform: -470 });
-            }
-            else {
-                _this.setState({ transform: 0 });
-            }
-            console.log(_this.state);
-        };
-        _this.handleCloseToggle = _this.handleCloseToggle.bind(_this);
-        return _this;
+    function Sidebar() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
+    //   constructor(props: Props) {
+    //     super(props);
+    //   }
     Sidebar.prototype.render = function () {
-        return (React.createElement("div", { className: "side-bar", onClick: this.handleCloseToggle, style: {
-                width: this.props.width,
-                minHeight: this.props.height,
-                transform: "translateX(" + this.props.transform + "px)",
-            } },
-            React.createElement(searchBar_1.default, null)));
+        var transform = this.props.transform;
+        console.log(transform);
+        return (React.createElement("table", null,
+            React.createElement("tr", { style: {
+                    transform: "translateX(" + this.props.transform + "px)",
+                } },
+                React.createElement("th", null,
+                    React.createElement("div", { className: "side-bar", style: {
+                            width: this.props.width,
+                            minHeight: this.props.height,
+                            transform: "translateX(" + this.props.transform + "px)",
+                        } },
+                        React.createElement(searchBar_1.default, null))),
+                React.createElement("th", null,
+                    React.createElement("div", { className: "toggle-bar", style: {
+                            width: 50,
+                            minHeight: this.props.height,
+                        }, onClick: this.props.handleToggle })))));
     };
     return Sidebar;
 }(React.Component));
