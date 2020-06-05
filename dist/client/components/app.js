@@ -38,48 +38,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 var React = __importStar(require("react"));
 var react_router_dom_1 = require("react-router-dom");
-var axios_1 = __importDefault(require("axios"));
 var login_1 = __importDefault(require("./login"));
 var signup_1 = __importDefault(require("./signup"));
 var sideBar_1 = __importDefault(require("./sideBar"));
 require("./app.css");
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
-    function App(props) {
-        var _this = _super.call(this, props) || this;
-        _this.handleCloseToggle = function (e) {
-            e.preventDefault();
-            if (_this.state.transform === 0) {
-                _this.setState({ transform: -450 });
-            }
-            else {
-                _this.setState({ transform: 0 });
-            }
-            console.log(_this.state.transform);
-        };
-        _this.state = {
-            count: 0,
-            width: 450,
-            height: "100vh",
-            transform: 0,
-        };
-        return _this;
-        // this.handleToggle = this.handleCloseToggle.bind(this);
+    function App() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    App.prototype.componentDidMount = function () {
-        axios_1.default
-            .get("http://localhost:3000")
-            .then(function (res) {
-            console.log("clinet server is running!");
-        })
-            .catch(function (err) {
-            throw err.message;
-        });
-    };
     App.prototype.render = function () {
-        // const handleToggle = this.handleCloseToggle;
-        return (React.createElement(react_router_dom_1.BrowserRouter, null,
-            React.createElement("header", null,
+        return (React.createElement("div", null,
+            React.createElement("ul", null,
                 React.createElement("div", { className: "home-3button" },
                     React.createElement(react_router_dom_1.Link, { to: "/" },
                         React.createElement("button", { className: "home-button" }, "Home")),
@@ -87,10 +57,10 @@ var App = /** @class */ (function (_super) {
                         React.createElement("button", { className: "login-button" }, "\uB85C\uADF8\uC778")),
                     React.createElement(react_router_dom_1.Link, { to: "/signup" },
                         React.createElement("button", { className: "signup-button" }, "\uD68C\uC6D0\uAC00\uC785")))),
-            React.createElement("main", null,
+            React.createElement(react_router_dom_1.Switch, null,
+                React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: sideBar_1.default }),
                 React.createElement(react_router_dom_1.Route, { path: "/signin", component: login_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default })),
-            React.createElement(sideBar_1.default, { width: this.state.width, height: this.state.height, transform: this.state.transform, handleToggle: this.handleCloseToggle })));
+                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default }))));
     };
     return App;
 }(React.Component));

@@ -21,7 +21,7 @@ interface SidebarState {
     description: string;
     pubDate: string;
   }[];
-  selectedArticles: {}[];
+  //   selectedArticles: {}[];
 }
 
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
@@ -36,13 +36,11 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       count: 0,
       checked: 0,
       articles: [],
-      selectedArticles: [],
     };
 
     this.handleCloseToggle = this.handleCloseToggle.bind(this);
     this.handleSubmitSearching = this.handleSubmitSearching.bind(this);
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
-    this.onCheckChange = this.onCheckChange.bind(this);
   }
 
   handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -69,35 +67,13 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       .then((err) => {
         throw err;
       });
+    console.log(this.state.articles);
   };
 
   handleChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>): void => {
     // const { name, value } = event.target;
     this.setState({ keyword: event.target.value });
     console.log(this.state);
-  };
-
-  onCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("1. length: ", this.state.selectedArticles.length);
-    console.log("state: ", [...this.state.selectedArticles].length);
-    let Nodelists: any = document.querySelectorAll(".select-checkbox");
-
-    // if (this.state.checked >= 3) {
-    //   alert("최대 3개까지 선택할 수 있습니다.");
-    // } else {
-    if (this.state.selectedArticles) {
-      this.setState({ selectedArticles: [] });
-      Array.from(Nodelists).filter((el: any) => {
-        if (el.checked) {
-          this.state.selectedArticles.push(el);
-        }
-      });
-    }
-    // }
-    console.log(Nodelists);
-
-    this.setState({ checked: this.state.selectedArticles.length });
-    console.log("2. length: ", this.state.checked);
   };
 
   render() {
@@ -127,7 +103,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                   count={this.state.count}
                   handleSubmitSearching={this.handleSubmitSearching}
                   handleChangeKeyword={this.handleChangeKeyword}
-                  onCheckChange={this.onCheckChange}
+                  //   onCheckChange={this.onCheckChange}
                 />
               </div>
             </th>

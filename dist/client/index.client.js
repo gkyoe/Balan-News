@@ -22,4 +22,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
 var ReactDOM = __importStar(require("react-dom"));
 var app_1 = require("./components/app");
-ReactDOM.render(React.createElement(app_1.App, null), document.getElementById("root"));
+var react_router_dom_1 = require("react-router-dom");
+ReactDOM.render(React.createElement(react_router_dom_1.BrowserRouter, null,
+    React.createElement(app_1.App, null)), document.getElementById("root"));
