@@ -36,57 +36,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
-var axios_1 = __importDefault(require("axios"));
 var articleList_1 = __importDefault(require("./articleList"));
 require("./searchBar.css");
 var SearchBar = /** @class */ (function (_super) {
     __extends(SearchBar, _super);
     function SearchBar(props) {
         var _this = _super.call(this, props) || this;
-        _this.handleChangeKeyword = function (event) {
-            // const { name, value } = event.target;
-            _this.setState({ keyword: event.target.value });
-            console.log(_this.state);
-        };
-        _this.handleSubmit = function (e) {
-            e.preventDefault();
-            var keyword = _this.state.keyword;
-            axios_1.default
-                .post("http://localhost:3000/naverNews", { data: keyword })
-                .then(function (res) {
-                console.log(res.data);
-                _this.setState({ articles: res.data.items });
-            })
-                .then(function (err) {
-                throw err;
+        _this.onCheckChange = function (e) {
+            // let Nodelists: any = document.querySelectorAll(".select-checkbox");
+            // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
+            //   value.DOCUMENT_NODE.
+            // })
+            var allCheckBoxes = document.querySelectorAll("input[type='checkbox']");
+            allCheckBoxes.forEach(function (checkBox) {
+                console.log(checkBox);
+                if (checkBox && checkBox.checked)
+                    checkBox.checked = true;
             });
         };
-        _this.state = {
-            keyword: "",
-            articles: [],
-            sidebarOpen: false,
-        };
-        _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
-        _this.handleSubmit = _this.handleSubmit.bind(_this);
-        _this.onSetSidebarOpen = _this.onSetSidebarOpen.bind(_this);
+        _this.onCheckChange = _this.onCheckChange.bind(_this);
         return _this;
     }
-    SearchBar.prototype.onSetSidebarOpen = function (open) {
-        this.setState({ sidebarOpen: open });
-    };
     SearchBar.prototype.render = function () {
-        return (
-        //   <div className="search-Zone">
-        React.createElement(React.Fragment, null,
-            React.createElement("form", { onSubmit: this.handleSubmit },
-                React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.state.keyword, onChange: this.handleChangeKeyword }),
-                React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
-            React.createElement("div", { className: "newsList" },
-                React.createElement("ul", null, this.state.articles.map(function (contact, i) {
-                    return React.createElement(articleList_1.default, { title: contact.title, key: i });
-                }))))
-        //   </div>
-        );
+        var _this = this;
+        return (React.createElement("div", { className: "search-Zone" },
+            React.createElement(React.Fragment, null,
+                React.createElement("form", { onSubmit: this.props.handleSubmitSearching },
+                    React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword }),
+                    React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
+                React.createElement("div", { className: "newsList" },
+                    React.createElement("ul", { className: "article-list", onChange: this.onCheckChange }, this.props.articles.map(function (contact, idx) {
+                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count }));
+                    }))))));
     };
     return SearchBar;
 }(React.Component));

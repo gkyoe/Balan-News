@@ -33,13 +33,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
+require("./articleList.css");
 var ArticleList = /** @class */ (function (_super) {
     __extends(ArticleList, _super);
-    function ArticleList() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function ArticleList(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            // selectedArticles: [],
+            chkbox: false,
+        };
+        return _this;
+        // this.onCheckChange = this.onCheckChange.bind(this);
     }
     ArticleList.prototype.render = function () {
-        return React.createElement("li", null, this.props.title);
+        // let Nodelists: any = document.querySelectorAll(".select-checkbox");
+        // console.log("Nodelists: ", Nodelists);
+        var onCheckChange = function (e) { };
+        return (React.createElement("li", { className: "article-title", onChange: onCheckChange },
+            React.createElement("input", { className: "select-checkbox", type: "checkbox", defaultChecked: this.state.chkbox }),
+            this.props.news.title));
     };
     return ArticleList;
 }(React.Component));

@@ -12,18 +12,6 @@ dotenv.config();
 const secret: string | undefined = process.env.secret;
 
 export default class articleController {
-  // public async googleNews(req: Request, res: Response) {
-  //   const newsApiKey = process.env.koreanNewApi_key;
-  //   await axios
-  //     .get(
-  //       `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${newsApiKey}`
-  //     )
-  //     .then((res) => console.log(res.data))
-  //     .catch((err) => {
-  //       console.log("err: ", err);
-  //     });
-  // }
-
   public async naverNews(req: Request, res: Response) {
     const encoded = urlencode(req.body.data);
     console.log(encoded); //%EB%82%A0%EC%94%A8

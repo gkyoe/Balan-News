@@ -3,6 +3,7 @@ import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import Sidebar from "react-sidebar";
 import axios from "axios";
 import ArticleList from "./articleList";
+import Tbloid from "./tabloid";
 import "./searchBar.css";
 
 interface searchProps {
@@ -20,11 +21,11 @@ interface searchProps {
   count: number;
   handleSubmitSearching: any;
   handleChangeKeyword: any;
-  onCheckChange: any;
+  // onCheckChange: any;
 }
 
 interface searchState {
-  count: number;
+  checkedBox: NodeListOf<HTMLInputElement> | null;
 }
 
 export default class SearchBar extends React.Component<
@@ -33,19 +34,25 @@ export default class SearchBar extends React.Component<
 > {
   constructor(props: searchProps) {
     super(props);
-    // this.state = {
-    //   count: 0;
-    // };
-
-    // this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
-    // this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
-    // this.onCheckChange = this.onCheckChange.bind(this);
+    this.state = {
+      checkedBox: null,
+    };
+    this.onCheckChange = this.onCheckChange.bind(this);
   }
 
-  //   onSetSidebarOpen(open: any) {
-  //     this.setState({ sidebarOpen: open });
-  //   }
+  onCheckChange = (e: React.FormEvent<HTMLUListElement>) => {
+    // let Nodelists: any = document.querySelectorAll(".select-checkbox");
+    // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
+    //   value.DOCUMENT_NODE.
+    // })
+
+    const allCheckBoxes = document.querySelectorAll(
+      "input[type='checkbox']:checked"
+    ) as NodeListOf<HTMLInputElement>;
+    console.log("allCheckBoxes: ", allCheckBoxes);
+
+    this.setState({ checkedBox: allCheckBoxes });
+  };
 
   render() {
     return (
@@ -65,11 +72,11 @@ export default class SearchBar extends React.Component<
             </button>
           </form>
           <div className="newsList">
-            <ul className="article-list" onChange={this.props.onCheckChange}>
+            <ul className="article-list" onChange={this.onCheckChange}>
               {this.props.articles.map((contact, idx) => {
                 return (
                   <ArticleList
-                    title={contact.title}
+                    news={contact}
                     key={idx}
                     limit={this.props.limit}
                     count={this.props.count}
@@ -79,6 +86,7 @@ export default class SearchBar extends React.Component<
               })}
             </ul>
           </div>
+          <Tbloid checkedBox={this.state.checkedBox}></Tbloid>
         </React.Fragment>
       </div>
     );

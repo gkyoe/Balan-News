@@ -37,35 +37,77 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Sidebar = void 0;
 var React = __importStar(require("react"));
+var axios_1 = __importDefault(require("axios"));
 var searchBar_1 = __importDefault(require("./searchBar"));
 require("./sideBar.css");
 var Sidebar = /** @class */ (function (_super) {
     __extends(Sidebar, _super);
-    function Sidebar() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function Sidebar(props) {
+        var _this = _super.call(this, props) || this;
+        _this.handleCloseToggle = function (e) {
+            e.preventDefault();
+            if (_this.state.transform === 0) {
+                _this.setState({ transform: -450 });
+            }
+            else {
+                _this.setState({ transform: 0 });
+            }
+            console.log(_this.state.transform);
+        };
+        _this.handleSubmitSearching = function (e) {
+            e.preventDefault();
+            var keyword = _this.state.keyword;
+            axios_1.default
+                .post("http://localhost:3000/naverNews", { data: keyword })
+                .then(function (res) {
+                console.log(res.data);
+                _this.setState({ articles: res.data.items });
+            })
+                .then(function (err) {
+                throw err;
+            });
+            console.log(_this.state.articles);
+        };
+        _this.handleChangeKeyword = function (event) {
+            // const { name, value } = event.target;
+            _this.setState({ keyword: event.target.value });
+            console.log(_this.state);
+        };
+        _this.state = {
+            width: 450,
+            height: "100vh",
+            transform: 0,
+            keyword: "",
+            limit: 3,
+            count: 0,
+            checked: 0,
+            articles: [],
+        };
+        _this.handleCloseToggle = _this.handleCloseToggle.bind(_this);
+        _this.handleSubmitSearching = _this.handleSubmitSearching.bind(_this);
+        _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
+        return _this;
     }
-    //   constructor(props: Props) {
-    //     super(props);
-    //   }
     Sidebar.prototype.render = function () {
-        var transform = this.props.transform;
+        var transform = this.state.transform;
         console.log(transform);
         return (React.createElement("table", null,
-            React.createElement("tr", { style: {
-                    transform: "translateX(" + this.props.transform + "px)",
-                } },
-                React.createElement("th", null,
-                    React.createElement("div", { className: "side-bar", style: {
-                            width: this.props.width,
-                            minHeight: this.props.height,
-                            transform: "translateX(" + this.props.transform + "px)",
-                        } },
-                        React.createElement(searchBar_1.default, null))),
-                React.createElement("th", null,
-                    React.createElement("div", { className: "toggle-bar", style: {
-                            width: 50,
-                            minHeight: this.props.height,
-                        }, onClick: this.props.handleToggle })))));
+            React.createElement("tbody", null,
+                React.createElement("tr", { style: {
+                        transform: "translateX(" + this.state.transform + "px)",
+                    } },
+                    React.createElement("th", null,
+                        React.createElement("div", { className: "side-bar", style: {
+                                width: this.state.width,
+                                minHeight: this.state.height,
+                                transform: "translateX(" + this.state.transform + "px)",
+                            } },
+                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword }))),
+                    React.createElement("th", null,
+                        React.createElement("div", { className: "toggle-bar", style: {
+                                width: 50,
+                                minHeight: this.state.height,
+                            }, onClick: this.handleCloseToggle }))))));
     };
     return Sidebar;
 }(React.Component));
