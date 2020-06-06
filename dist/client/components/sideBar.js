@@ -31,13 +31,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -73,27 +66,12 @@ var Sidebar = /** @class */ (function (_super) {
                 .then(function (err) {
                 throw err;
             });
+            console.log(_this.state.articles);
         };
         _this.handleChangeKeyword = function (event) {
             // const { name, value } = event.target;
             _this.setState({ keyword: event.target.value });
             console.log(_this.state);
-        };
-        _this.onCheckChange = function (e) {
-            console.log("1. length: ", _this.state.selectedArticles.length);
-            console.log("state: ", __spreadArrays(_this.state.selectedArticles).length);
-            var Nodelists = document.querySelectorAll(".select-checkbox");
-            if (_this.state.selectedArticles) {
-                _this.setState({ selectedArticles: [] });
-                Array.from(Nodelists).filter(function (el) {
-                    if (el.checked) {
-                        _this.state.selectedArticles.push(el);
-                    }
-                });
-            }
-            console.log(Nodelists);
-            _this.setState({ checked: _this.state.selectedArticles.length });
-            console.log("2. length: ", _this.state.checked);
         };
         _this.state = {
             width: 450,
@@ -104,12 +82,10 @@ var Sidebar = /** @class */ (function (_super) {
             count: 0,
             checked: 0,
             articles: [],
-            selectedArticles: [],
         };
         _this.handleCloseToggle = _this.handleCloseToggle.bind(_this);
         _this.handleSubmitSearching = _this.handleSubmitSearching.bind(_this);
         _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
-        _this.onCheckChange = _this.onCheckChange.bind(_this);
         return _this;
     }
     Sidebar.prototype.render = function () {
@@ -126,7 +102,7 @@ var Sidebar = /** @class */ (function (_super) {
                                 minHeight: this.state.height,
                                 transform: "translateX(" + this.state.transform + "px)",
                             } },
-                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, onCheckChange: this.onCheckChange }))),
+                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword }))),
                     React.createElement("th", null,
                         React.createElement("div", { className: "toggle-bar", style: {
                                 width: 50,

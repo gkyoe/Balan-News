@@ -37,40 +37,21 @@ require("./articleList.css");
 var ArticleList = /** @class */ (function (_super) {
     __extends(ArticleList, _super);
     function ArticleList(props) {
-        return _super.call(this, props) || this;
-        // this.state = {
-        //   count: 0,
-        // };
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            // selectedArticles: [],
+            chkbox: false,
+        };
+        return _this;
         // this.onCheckChange = this.onCheckChange.bind(this);
     }
-    // onCheckChange(e: React.ChangeEvent<HTMLInputElement>) {
-    //   const checked = e.target.checked;
-    //   const counted = this.state.count;
-    //   const limited = this.props.limit;
-    //   console.log(
-    //     "checked: ",
-    //     checked,
-    //     " counted: ",
-    //     counted,
-    //     " limited: ",
-    //     limited
-    //   );
-    //   if (checked && counted >= limited) {
-    //     console.log(this.state.count);
-    //     alert("최대 3개까지 선택할 수 있습니다.");
-    //   } else if (checked && counted < limited) {
-    //     console.log("여기에 들어오나?");
-    //     console.log(this.state);
-    //     this.setState({ count: counted + 1 });
-    //   } else if (checked) {
-    //     console.log(this.state);
-    //     this.setState({ count: counted - 1 });
-    //   }
-    // }
     ArticleList.prototype.render = function () {
-        return (React.createElement("li", { className: "article-title" },
-            React.createElement("input", { className: "select-checkbox", type: "checkbox" }),
-            this.props.title));
+        // let Nodelists: any = document.querySelectorAll(".select-checkbox");
+        // console.log("Nodelists: ", Nodelists);
+        var onCheckChange = function (e) { };
+        return (React.createElement("li", { className: "article-title", onChange: onCheckChange },
+            React.createElement("input", { className: "select-checkbox", type: "checkbox", defaultChecked: this.state.chkbox }),
+            this.props.news.title));
     };
     return ArticleList;
 }(React.Component));

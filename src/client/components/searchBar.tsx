@@ -3,6 +3,7 @@ import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import Sidebar from "react-sidebar";
 import axios from "axios";
 import ArticleList from "./articleList";
+import Tbloid from "./tabloid";
 import "./searchBar.css";
 
 interface searchProps {
@@ -24,7 +25,7 @@ interface searchProps {
 }
 
 interface searchState {
-  // count: number;
+  checkedBox: NodeListOf<HTMLInputElement> | null;
 }
 
 export default class SearchBar extends React.Component<
@@ -33,14 +34,27 @@ export default class SearchBar extends React.Component<
 > {
   constructor(props: searchProps) {
     super(props);
+    this.state = {
+      checkedBox: null,
+    };
     this.onCheckChange = this.onCheckChange.bind(this);
   }
 
-  onCheckChange = (e: React.FormEvent<HTMLUListElement>) => {};
+  onCheckChange = (e: React.FormEvent<HTMLUListElement>) => {
+    // let Nodelists: any = document.querySelectorAll(".select-checkbox");
+    // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
+    //   value.DOCUMENT_NODE.
+    // })
+
+    const allCheckBoxes = document.querySelectorAll(
+      "input[type='checkbox']:checked"
+    ) as NodeListOf<HTMLInputElement>;
+    console.log("allCheckBoxes: ", allCheckBoxes);
+
+    this.setState({ checkedBox: allCheckBoxes });
+  };
 
   render() {
-    let Nodelists: any = document.querySelectorAll(".select-checkbox");
-
     return (
       <div className="search-Zone">
         <React.Fragment>
@@ -72,6 +86,7 @@ export default class SearchBar extends React.Component<
               })}
             </ul>
           </div>
+          <Tbloid checkedBox={this.state.checkedBox}></Tbloid>
         </React.Fragment>
       </div>
     );

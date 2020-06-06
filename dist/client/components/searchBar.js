@@ -41,18 +41,22 @@ require("./searchBar.css");
 var SearchBar = /** @class */ (function (_super) {
     __extends(SearchBar, _super);
     function SearchBar(props) {
-        return _super.call(this, props) || this;
-        // this.state = {
-        //   count: 0;
-        // };
-        // this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
-        // this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
-        // this.onCheckChange = this.onCheckChange.bind(this);
+        var _this = _super.call(this, props) || this;
+        _this.onCheckChange = function (e) {
+            // let Nodelists: any = document.querySelectorAll(".select-checkbox");
+            // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
+            //   value.DOCUMENT_NODE.
+            // })
+            var allCheckBoxes = document.querySelectorAll("input[type='checkbox']");
+            allCheckBoxes.forEach(function (checkBox) {
+                console.log(checkBox);
+                if (checkBox && checkBox.checked)
+                    checkBox.checked = true;
+            });
+        };
+        _this.onCheckChange = _this.onCheckChange.bind(_this);
+        return _this;
     }
-    //   onSetSidebarOpen(open: any) {
-    //     this.setState({ sidebarOpen: open });
-    //   }
     SearchBar.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "search-Zone" },
@@ -61,8 +65,8 @@ var SearchBar = /** @class */ (function (_super) {
                     React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword }),
                     React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
                 React.createElement("div", { className: "newsList" },
-                    React.createElement("ul", { className: "article-list", onChange: this.props.onCheckChange }, this.props.articles.map(function (contact, idx) {
-                        return (React.createElement(articleList_1.default, { title: contact.title, key: idx, limit: _this.props.limit, count: _this.props.count }));
+                    React.createElement("ul", { className: "article-list", onChange: this.onCheckChange }, this.props.articles.map(function (contact, idx) {
+                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count }));
                     }))))));
     };
     return SearchBar;

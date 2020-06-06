@@ -66,17 +66,6 @@ var secret = process.env.secret;
 var articleController = /** @class */ (function () {
     function articleController() {
     }
-    // public async googleNews(req: Request, res: Response) {
-    //   const newsApiKey = process.env.koreanNewApi_key;
-    //   await axios
-    //     .get(
-    //       `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${newsApiKey}`
-    //     )
-    //     .then((res) => console.log(res.data))
-    //     .catch((err) => {
-    //       console.log("err: ", err);
-    //     });
-    // }
     articleController.prototype.naverNews = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var encoded, limit, api_url, client_id, client_scret, options;
