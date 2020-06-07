@@ -3,7 +3,6 @@ import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
 import Sidebar from "react-sidebar";
 import axios from "axios";
 import ArticleList from "./articleList";
-import Tbloid from "./tabloid";
 import "./searchBar.css";
 
 interface searchProps {
@@ -21,7 +20,7 @@ interface searchProps {
   count: number;
   handleSubmitSearching: any;
   handleChangeKeyword: any;
-  // onCheckChange: any;
+  showArticleBody: any;
 }
 
 interface searchState {
@@ -80,13 +79,13 @@ export default class SearchBar extends React.Component<
                     key={idx}
                     limit={this.props.limit}
                     count={this.props.count}
-                    // onCheckChange={this.onCheckChange}
+                    checkedBox={this.state.checkedBox}
+                    showArticleBody={this.props.showArticleBody}
                   />
                 );
               })}
             </ul>
           </div>
-          <Tbloid checkedBox={this.state.checkedBox}></Tbloid>
         </React.Fragment>
       </div>
     );

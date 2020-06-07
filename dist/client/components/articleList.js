@@ -31,27 +31,36 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
+var tabloid_1 = __importDefault(require("./tabloid"));
 require("./articleList.css");
 var ArticleList = /** @class */ (function (_super) {
     __extends(ArticleList, _super);
     function ArticleList(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {
-            // selectedArticles: [],
-            chkbox: false,
-        };
+        _this.state = {};
         return _this;
         // this.onCheckChange = this.onCheckChange.bind(this);
     }
     ArticleList.prototype.render = function () {
-        // let Nodelists: any = document.querySelectorAll(".select-checkbox");
-        // console.log("Nodelists: ", Nodelists);
-        var onCheckChange = function (e) { };
-        return (React.createElement("li", { className: "article-title", onChange: onCheckChange },
-            React.createElement("input", { className: "select-checkbox", type: "checkbox", defaultChecked: this.state.chkbox }),
-            this.props.news.title));
+        var _this = this;
+        var checkedBox = this.props.checkedBox;
+        console.log(checkedBox);
+        var handleCheck = function (e) {
+            var checkbox = document.querySelectorAll("input[type='checkbox']:checked");
+            {
+                _this.props.news.description;
+            }
+        };
+        return (React.createElement("div", null,
+            React.createElement("li", { className: "article-title" },
+                React.createElement("input", { className: "select-checkbox", type: "checkbox", key: "key" }),
+                this.props.news.title),
+            React.createElement(tabloid_1.default, { checkedBox: this.props.checkedBox })));
     };
     return ArticleList;
 }(React.Component));

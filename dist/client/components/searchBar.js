@@ -47,12 +47,12 @@ var SearchBar = /** @class */ (function (_super) {
             // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
             //   value.DOCUMENT_NODE.
             // })
-            var allCheckBoxes = document.querySelectorAll("input[type='checkbox']");
-            allCheckBoxes.forEach(function (checkBox) {
-                console.log(checkBox);
-                if (checkBox && checkBox.checked)
-                    checkBox.checked = true;
-            });
+            var allCheckBoxes = document.querySelectorAll("input[type='checkbox']:checked");
+            console.log("allCheckBoxes: ", allCheckBoxes);
+            _this.setState({ checkedBox: allCheckBoxes });
+        };
+        _this.state = {
+            checkedBox: null,
         };
         _this.onCheckChange = _this.onCheckChange.bind(_this);
         return _this;
@@ -66,7 +66,7 @@ var SearchBar = /** @class */ (function (_super) {
                     React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
                 React.createElement("div", { className: "newsList" },
                     React.createElement("ul", { className: "article-list", onChange: this.onCheckChange }, this.props.articles.map(function (contact, idx) {
-                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count }));
+                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox }));
                     }))))));
     };
     return SearchBar;
