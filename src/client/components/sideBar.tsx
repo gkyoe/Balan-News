@@ -2,6 +2,7 @@ import * as React from "react";
 import { Link, Route, Switch, BrowserRouter, Router } from "react-router-dom";
 import axios from "axios";
 import SearchBar from "./searchBar";
+import Tabloid from "./tabloid";
 import "./sideBar.css";
 
 interface SidebarProps {}
@@ -21,7 +22,13 @@ interface SidebarState {
     description: string;
     pubDate: string;
   }[];
-  //   selectedArticles: {}[];
+  selectedArticles: {
+    title: string;
+    originallink: string;
+    link: string;
+    description: string;
+    pubDate: string;
+  }[];
 }
 
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
@@ -36,6 +43,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       count: 0,
       checked: 0,
       articles: [],
+      selectedArticles: [],
     };
 
     this.handleCloseToggle = this.handleCloseToggle.bind(this);
@@ -76,6 +84,15 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     console.log(this.state);
   };
 
+  showArticleBody = (
+    // event: React.ChangeEvent<HTMLInputElement>,
+    slectedArticle: any
+  ): void => {
+    this.setState((prevState: Readonly<any>) => ({
+      selectedArticles: [...(prevState.selectedArticles ?? []), slectedArticle],
+    }));
+  };
+
   render() {
     const transform = this.state.transform;
     console.log(transform);
@@ -103,6 +120,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                   count={this.state.count}
                   handleSubmitSearching={this.handleSubmitSearching}
                   handleChangeKeyword={this.handleChangeKeyword}
+                  showArticleBody={this.showArticleBody}
                   //   onCheckChange={this.onCheckChange}
                 />
               </div>
@@ -116,6 +134,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 }}
                 onClick={this.handleCloseToggle}
               ></div>
+            </th>
+            <th>
+              <Tabloid news={this.state.selectedArticles}></Tabloid>
             </th>
           </tr>
         </tbody>
