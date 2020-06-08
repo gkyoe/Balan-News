@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
+import NewsBody from "./newsBody";
 import "./searchBar.css";
 
 interface tabloidProps {
@@ -26,9 +27,15 @@ export default class Tabloid extends React.Component<
 
   render() {
     return (
-      <div>
-        <div></div>
-      </div>
+      <ul>
+        {this.props.news.map((data, idx) => {
+          return (
+            <div>
+              <NewsBody news={data} key={idx}></NewsBody>
+            </div>
+          );
+        })}
+      </ul>
     );
   }
 }
