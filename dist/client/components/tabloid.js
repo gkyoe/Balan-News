@@ -31,8 +31,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
+var newsBody_1 = __importDefault(require("./newsBody"));
 require("./searchBar.css");
 var Tabloid = /** @class */ (function (_super) {
     __extends(Tabloid, _super);
@@ -42,12 +46,10 @@ var Tabloid = /** @class */ (function (_super) {
         return _this;
     }
     Tabloid.prototype.render = function () {
-        var checkBox = this.props.checkedBox;
-        // if (checkBox !== null) {
-        //   checkBox.forEach((el) => console.log(el.key));
-        // }
-        return (React.createElement("div", null,
-            React.createElement("div", null)));
+        return (React.createElement("ul", null, this.props.news.map(function (data, idx) {
+            return (React.createElement("div", null,
+                React.createElement(newsBody_1.default, { news: data, key: idx })));
+        })));
     };
     return Tabloid;
 }(React.Component));

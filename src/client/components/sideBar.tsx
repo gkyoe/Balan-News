@@ -36,7 +36,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     super(props);
     this.state = {
       width: 450,
-      height: "100vh",
+      height: "300vh",
       transform: 0,
       keyword: "",
       limit: 3,

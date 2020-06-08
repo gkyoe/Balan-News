@@ -31,6 +31,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -39,6 +46,7 @@ exports.Sidebar = void 0;
 var React = __importStar(require("react"));
 var axios_1 = __importDefault(require("axios"));
 var searchBar_1 = __importDefault(require("./searchBar"));
+var tabloid_1 = __importDefault(require("./tabloid"));
 require("./sideBar.css");
 var Sidebar = /** @class */ (function (_super) {
     __extends(Sidebar, _super);
@@ -73,15 +81,26 @@ var Sidebar = /** @class */ (function (_super) {
             _this.setState({ keyword: event.target.value });
             console.log(_this.state);
         };
+        _this.showArticleBody = function (
+        // event: React.ChangeEvent<HTMLInputElement>,
+        slectedArticle) {
+            _this.setState(function (prevState) {
+                var _a;
+                return ({
+                    selectedArticles: __spreadArrays(((_a = prevState.selectedArticles) !== null && _a !== void 0 ? _a : []), [slectedArticle]),
+                });
+            });
+        };
         _this.state = {
             width: 450,
-            height: "100vh",
+            height: "300vh",
             transform: 0,
             keyword: "",
             limit: 3,
             count: 0,
             checked: 0,
             articles: [],
+            selectedArticles: [],
         };
         _this.handleCloseToggle = _this.handleCloseToggle.bind(_this);
         _this.handleSubmitSearching = _this.handleSubmitSearching.bind(_this);
@@ -102,12 +121,14 @@ var Sidebar = /** @class */ (function (_super) {
                                 minHeight: this.state.height,
                                 transform: "translateX(" + this.state.transform + "px)",
                             } },
-                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword }))),
+                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, showArticleBody: this.showArticleBody }))),
                     React.createElement("th", null,
                         React.createElement("div", { className: "toggle-bar", style: {
                                 width: 50,
                                 minHeight: this.state.height,
-                            }, onClick: this.handleCloseToggle }))))));
+                            }, onClick: this.handleCloseToggle })),
+                    React.createElement("th", null,
+                        React.createElement(tabloid_1.default, { news: this.state.selectedArticles }))))));
     };
     return Sidebar;
 }(React.Component));

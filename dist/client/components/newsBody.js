@@ -33,33 +33,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
-require("./articleList.css");
 var ArticleList = /** @class */ (function (_super) {
     __extends(ArticleList, _super);
     function ArticleList(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {};
         return _this;
-        // this.handleChange = this.handleChange.bind(this);
     }
     ArticleList.prototype.render = function () {
-        var _this = this;
-        var checkedBox = this.props.checkedBox;
-        console.log(checkedBox);
-        var articleBody;
-        var handleCheck = function (e) {
-            var checkCbx = document.querySelectorAll("input[type='checkbox']:checked");
-            if (e.target.checked) {
-                // articleBody = <Tbloid news={this.props.news}></Tbloid>;
-                var slectedArticle = _this.props.news;
-                _this.props.showArticleBody(slectedArticle);
-            }
-        };
         return (React.createElement("div", null,
-            React.createElement("li", { className: "article-title" },
-                React.createElement("input", { className: "select-checkbox", type: "checkbox", key: "key", onChange: handleCheck }),
-                this.props.news.title),
-            articleBody));
+            React.createElement("div", null, this.props.news.title),
+            React.createElement("div", null, this.props.news.pubDate),
+            React.createElement("div", null, this.props.news.description)));
     };
     return ArticleList;
 }(React.Component));
