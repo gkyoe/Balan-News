@@ -6,8 +6,6 @@ import ArticleList from "./articleList";
 import "./searchBar.css";
 
 interface searchProps {
-  //   name: string;
-  //   value: any;
   articles: {
     title: string;
     originallink: string;
@@ -36,22 +34,27 @@ export default class SearchBar extends React.Component<
     this.state = {
       checkedBox: null,
     };
-    this.onCheckChange = this.onCheckChange.bind(this);
+    // this.handleCheckedOn = this.handleCheckedOn.bind(this);
+    // this.handleCheckedOff = this.handleCheckedOff.bind(this);
   }
 
-  onCheckChange = (e: React.FormEvent<HTMLUListElement>) => {
-    // let Nodelists: any = document.querySelectorAll(".select-checkbox");
-    // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
-    //   value.DOCUMENT_NODE.
-    // })
+  // handleCheckedOn = (e: React.FormEvent<HTMLUListElement>) => {
+  //   const allCheckBoxes = document.querySelectorAll(
+  //     "input[type='checkbox checked']"
+  //   ) as NodeListOf<HTMLInputElement>;
+  //   console.log("allCheckBoxes: ", allCheckBoxes);
 
-    const allCheckBoxes = document.querySelectorAll(
-      "input[type='checkbox']:checked"
-    ) as NodeListOf<HTMLInputElement>;
-    console.log("allCheckBoxes: ", allCheckBoxes);
+  //   this.setState({ checkedBox: allCheckBoxes });
+  // };
 
-    this.setState({ checkedBox: allCheckBoxes });
-  };
+  // handleCheckedOff = (e: React.FormEvent<HTMLUListElement>) => {
+  //   const allCheckBoxes = document.querySelectorAll(
+  //     "input[type='checkbox']:checked"
+  //   ) as NodeListOf<HTMLInputElement>;
+  //   console.log("allCheckBoxes: ", allCheckBoxes);
+
+  //   this.setState({ checkedBox: allCheckBoxes });
+  // };
 
   render() {
     return (
@@ -71,7 +74,8 @@ export default class SearchBar extends React.Component<
             </button>
           </form>
           <div className="newsList">
-            <ul className="article-list" onChange={this.onCheckChange}>
+            {/* <ul className="article-list" onChange={this.handleCheckedOn}> */}
+            <ul className="article-list">
               {this.props.articles.map((contact, idx) => {
                 return (
                   <ArticleList
@@ -91,21 +95,3 @@ export default class SearchBar extends React.Component<
     );
   }
 }
-
-// const SearchBar: React.FC = () => {
-//   return (
-//     <div className="searchBarZone">
-//       <input
-//         className="searchBar"
-//         name="searchbar"
-//         type="text"
-//         placeholder="키워드를 검색하세요."
-//         // value={this.state.mail}
-//         // onChange={this.handleChangeMail}
-//       />
-//       <div className="newList"></div>
-//     </div>
-//   );
-// };
-
-// export default SearchBar;

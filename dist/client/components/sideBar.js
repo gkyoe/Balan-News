@@ -93,7 +93,7 @@ var Sidebar = /** @class */ (function (_super) {
         };
         _this.state = {
             width: 450,
-            height: "300vh",
+            height: "100vh",
             transform: 0,
             keyword: "",
             limit: 3,

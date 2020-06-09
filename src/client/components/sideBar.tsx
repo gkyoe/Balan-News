@@ -36,7 +36,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     super(props);
     this.state = {
       width: 450,
-      height: "300vh",
+      height: "100vh",
       transform: 0,
       keyword: "",
       limit: 3,
@@ -49,6 +49,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.handleCloseToggle = this.handleCloseToggle.bind(this);
     this.handleSubmitSearching = this.handleSubmitSearching.bind(this);
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
+    this.showArticleBody = this.showArticleBody.bind(this);
   }
 
   handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
