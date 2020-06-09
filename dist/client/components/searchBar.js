@@ -42,21 +42,27 @@ var SearchBar = /** @class */ (function (_super) {
     __extends(SearchBar, _super);
     function SearchBar(props) {
         var _this = _super.call(this, props) || this;
-        _this.onCheckChange = function (e) {
-            // let Nodelists: any = document.querySelectorAll(".select-checkbox");
-            // Nodelists.forEach((value: Node, key: number, parent: NodeList): void => {
-            //   value.DOCUMENT_NODE.
-            // })
-            var allCheckBoxes = document.querySelectorAll("input[type='checkbox']:checked");
-            console.log("allCheckBoxes: ", allCheckBoxes);
-            _this.setState({ checkedBox: allCheckBoxes });
-        };
         _this.state = {
             checkedBox: null,
         };
-        _this.onCheckChange = _this.onCheckChange.bind(_this);
         return _this;
+        // this.handleCheckedOn = this.handleCheckedOn.bind(this);
+        // this.handleCheckedOff = this.handleCheckedOff.bind(this);
     }
+    // handleCheckedOn = (e: React.FormEvent<HTMLUListElement>) => {
+    //   const allCheckBoxes = document.querySelectorAll(
+    //     "input[type='checkbox checked']"
+    //   ) as NodeListOf<HTMLInputElement>;
+    //   console.log("allCheckBoxes: ", allCheckBoxes);
+    //   this.setState({ checkedBox: allCheckBoxes });
+    // };
+    // handleCheckedOff = (e: React.FormEvent<HTMLUListElement>) => {
+    //   const allCheckBoxes = document.querySelectorAll(
+    //     "input[type='checkbox']:checked"
+    //   ) as NodeListOf<HTMLInputElement>;
+    //   console.log("allCheckBoxes: ", allCheckBoxes);
+    //   this.setState({ checkedBox: allCheckBoxes });
+    // };
     SearchBar.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "search-Zone" },
@@ -65,26 +71,10 @@ var SearchBar = /** @class */ (function (_super) {
                     React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword }),
                     React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
                 React.createElement("div", { className: "newsList" },
-                    React.createElement("ul", { className: "article-list", onChange: this.onCheckChange }, this.props.articles.map(function (contact, idx) {
+                    React.createElement("ul", { className: "article-list" }, this.props.articles.map(function (contact, idx) {
                         return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox, showArticleBody: _this.props.showArticleBody }));
                     }))))));
     };
     return SearchBar;
 }(React.Component));
 exports.default = SearchBar;
-// const SearchBar: React.FC = () => {
-//   return (
-//     <div className="searchBarZone">
-//       <input
-//         className="searchBar"
-//         name="searchbar"
-//         type="text"
-//         placeholder="키워드를 검색하세요."
-//         // value={this.state.mail}
-//         // onChange={this.handleChangeMail}
-//       />
-//       <div className="newList"></div>
-//     </div>
-//   );
-// };
-// export default SearchBar;
