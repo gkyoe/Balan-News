@@ -14,7 +14,9 @@ interface ListProps {
   key: number;
   limit: number;
   count: number;
-  showArticleBody: any;
+  addArticleBody: any;
+  reCheckArticleBody: any;
+  emptyArticleBody: any;
 }
 
 interface ListState {}
@@ -35,10 +37,12 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
       let checkCbx: NodeListOf<Element> = document.querySelectorAll(
         "input[type='checkbox']:checked"
       );
+      const slectedArticle = this.props.news;
       if (e.target.checked) {
         // articleBody = <Tbloid news={this.props.news}></Tbloid>;
-        const slectedArticle = this.props.news;
-        this.props.showArticleBody(slectedArticle);
+        this.props.addArticleBody(slectedArticle);
+      } else if (!e.target.checked) {
+        this.props.emptyArticleBody(slectedArticle);
       }
     };
     return (
