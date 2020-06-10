@@ -18,7 +18,9 @@ interface searchProps {
   count: number;
   handleSubmitSearching: any;
   handleChangeKeyword: any;
-  showArticleBody: any;
+  addArticleBody: any;
+  reCheckArticleBody: any;
+  emptyArticleBody: any;
 }
 
 interface searchState {
@@ -84,7 +86,9 @@ export default class SearchBar extends React.Component<
                     limit={this.props.limit}
                     count={this.props.count}
                     checkedBox={this.state.checkedBox}
-                    showArticleBody={this.props.showArticleBody}
+                    addArticleBody={this.props.addArticleBody}
+                    reCheckArticleBody={this.props.reCheckArticleBody}
+                    emptyArticleBody={this.props.emptyArticleBody}
                   />
                 );
               })}

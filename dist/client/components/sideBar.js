@@ -81,15 +81,22 @@ var Sidebar = /** @class */ (function (_super) {
             _this.setState({ keyword: event.target.value });
             console.log(_this.state);
         };
-        _this.showArticleBody = function (
+        _this.addArticleBody = function (
         // event: React.ChangeEvent<HTMLInputElement>,
-        slectedArticle) {
-            _this.setState(function (prevState) {
-                var _a;
-                return ({
-                    selectedArticles: __spreadArrays(((_a = prevState.selectedArticles) !== null && _a !== void 0 ? _a : []), [slectedArticle]),
-                });
+        selectedArticle) {
+            _this.setState(function (prevState) { return ({
+                // selectedArticles: [...(prevState.selectedArticles ?? []), slectedArticle],
+                selectedArticles: __spreadArrays(prevState.selectedArticles, [selectedArticle]),
+            }); });
+        };
+        _this.reCheckArticleBody = function (selectedArticle) {
+            _this.setState(function () {
+                selectedArticles: __spreadArrays([], [selectedArticle]);
             });
+        };
+        _this.emptyArticleBody = function (slectedArticle) {
+            _this.setState({ selectedArticles: [] });
+            _this.reCheckArticleBody(slectedArticle);
         };
         _this.state = {
             width: 450,
@@ -105,6 +112,8 @@ var Sidebar = /** @class */ (function (_super) {
         _this.handleCloseToggle = _this.handleCloseToggle.bind(_this);
         _this.handleSubmitSearching = _this.handleSubmitSearching.bind(_this);
         _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
+        _this.addArticleBody = _this.addArticleBody.bind(_this);
+        _this.reCheckArticleBody = _this.reCheckArticleBody.bind(_this);
         return _this;
     }
     Sidebar.prototype.render = function () {
@@ -121,7 +130,7 @@ var Sidebar = /** @class */ (function (_super) {
                                 minHeight: this.state.height,
                                 transform: "translateX(" + this.state.transform + "px)",
                             } },
-                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, showArticleBody: this.showArticleBody }))),
+                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, reCheckArticleBody: this.reCheckArticleBody, emptyArticleBody: this.emptyArticleBody }))),
                     React.createElement("th", null,
                         React.createElement("div", { className: "toggle-bar", style: {
                                 width: 50,

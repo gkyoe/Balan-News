@@ -49,10 +49,13 @@ var ArticleList = /** @class */ (function (_super) {
         var articleBody;
         var handleCheck = function (e) {
             var checkCbx = document.querySelectorAll("input[type='checkbox']:checked");
+            var slectedArticle = _this.props.news;
             if (e.target.checked) {
                 // articleBody = <Tbloid news={this.props.news}></Tbloid>;
-                var slectedArticle = _this.props.news;
-                _this.props.showArticleBody(slectedArticle);
+                _this.props.addArticleBody(slectedArticle);
+            }
+            else if (!e.target.checked) {
+                _this.props.emptyArticleBody(slectedArticle);
             }
         };
         return (React.createElement("div", null,

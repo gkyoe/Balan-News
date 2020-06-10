@@ -49,7 +49,8 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.handleCloseToggle = this.handleCloseToggle.bind(this);
     this.handleSubmitSearching = this.handleSubmitSearching.bind(this);
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
-    this.showArticleBody = this.showArticleBody.bind(this);
+    this.addArticleBody = this.addArticleBody.bind(this);
+    this.reCheckArticleBody = this.reCheckArticleBody.bind(this);
   }
 
   handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -85,13 +86,25 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     console.log(this.state);
   };
 
-  showArticleBody = (
+  addArticleBody = (
     // event: React.ChangeEvent<HTMLInputElement>,
-    slectedArticle: any
+    selectedArticle: any
   ): void => {
     this.setState((prevState: Readonly<any>) => ({
-      selectedArticles: [...(prevState.selectedArticles ?? []), slectedArticle],
+      // selectedArticles: [...(prevState.selectedArticles ?? []), slectedArticle],
+      selectedArticles: [...prevState.selectedArticles, selectedArticle],
     }));
+  };
+
+  reCheckArticleBody = (selectedArticle: any): void => {
+    this.setState(() => {
+      selectedArticles: [...[], selectedArticle];
+    });
+  };
+
+  emptyArticleBody = (slectedArticle: any): void => {
+    this.setState({ selectedArticles: [] });
+    this.reCheckArticleBody(slectedArticle);
   };
 
   render() {
@@ -121,8 +134,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                   count={this.state.count}
                   handleSubmitSearching={this.handleSubmitSearching}
                   handleChangeKeyword={this.handleChangeKeyword}
-                  showArticleBody={this.showArticleBody}
-                  //   onCheckChange={this.onCheckChange}
+                  addArticleBody={this.addArticleBody}
+                  reCheckArticleBody={this.reCheckArticleBody}
+                  emptyArticleBody={this.emptyArticleBody}
                 />
               </div>
             </th>
