@@ -55,7 +55,11 @@ var ArticleList = /** @class */ (function (_super) {
                 _this.props.addArticleBody(slectedArticle);
             }
             else if (!e.target.checked) {
-                _this.props.emptyArticleBody(slectedArticle);
+                // this.props.emptyArticleBody(() =>
+                //   this.props.addArticleBody(slectedArticle)()
+                // );
+                console.log("!e.target.checked: ", e.target.checked);
+                _this.props.reCheckArticleBody(slectedArticle);
             }
         };
         return (React.createElement("div", null,
