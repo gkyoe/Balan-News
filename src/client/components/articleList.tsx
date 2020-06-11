@@ -42,7 +42,11 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
         // articleBody = <Tbloid news={this.props.news}></Tbloid>;
         this.props.addArticleBody(slectedArticle);
       } else if (!e.target.checked) {
-        this.props.emptyArticleBody(slectedArticle);
+        // this.props.emptyArticleBody(() =>
+        //   this.props.addArticleBody(slectedArticle)()
+        // );
+        console.log("!e.target.checked: ", e.target.checked);
+        this.props.reCheckArticleBody(slectedArticle);
       }
     };
     return (

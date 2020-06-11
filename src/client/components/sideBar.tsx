@@ -97,14 +97,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
   };
 
   reCheckArticleBody = (selectedArticle: any): void => {
+    console.log("selectedArticles: ", this.state.selectedArticles);
     this.setState(() => {
-      selectedArticles: [...[], selectedArticle];
+      selectedArticles: this.state.selectedArticles.filter((art) => {
+        art.originallink !== selectedArticle.originallink;
+      });
     });
   };
 
   emptyArticleBody = (slectedArticle: any): void => {
-    this.setState({ selectedArticles: [] });
-    this.reCheckArticleBody(slectedArticle);
+    this.setState({ selectedArticles: [] }, () =>
+      this.addArticleBody(slectedArticle)
+    );
   };
 
   render() {

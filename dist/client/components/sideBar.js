@@ -90,13 +90,17 @@ var Sidebar = /** @class */ (function (_super) {
             }); });
         };
         _this.reCheckArticleBody = function (selectedArticle) {
+            console.log("selectedArticles: ", _this.state.selectedArticles);
             _this.setState(function () {
-                selectedArticles: __spreadArrays([], [selectedArticle]);
+                selectedArticles: _this.state.selectedArticles.filter(function (art) {
+                    art.originallink !== selectedArticle.originallink;
+                });
             });
         };
         _this.emptyArticleBody = function (slectedArticle) {
-            _this.setState({ selectedArticles: [] });
-            _this.reCheckArticleBody(slectedArticle);
+            _this.setState({ selectedArticles: [] }, function () {
+                return _this.addArticleBody(slectedArticle);
+            });
         };
         _this.state = {
             width: 450,
