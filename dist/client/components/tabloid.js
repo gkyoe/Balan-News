@@ -48,7 +48,7 @@ var Tabloid = /** @class */ (function (_super) {
     Tabloid.prototype.render = function () {
         return (React.createElement("ul", null, this.props.news.map(function (data, idx) {
             return (React.createElement("div", null,
-                React.createElement(newsBody_1.default, { news: data, key: idx })));
+                React.createElement(newsBody_1.default, { news: data, key: idx + 100 })));
         })));
     };
     return Tabloid;

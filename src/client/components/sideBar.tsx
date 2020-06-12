@@ -31,6 +31,14 @@ interface SidebarState {
   }[];
 }
 
+interface Selected {
+  title: string;
+  originallink: string;
+  link: string;
+  description: string;
+  pubDate: string;
+}
+
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
   constructor(props: SidebarProps) {
     super(props);
@@ -90,26 +98,37 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     // event: React.ChangeEvent<HTMLInputElement>,
     selectedArticle: any
   ): void => {
-    this.setState((prevState: Readonly<any>) => ({
+    this.setState((prevState: SidebarState) => ({
       // selectedArticles: [...(prevState.selectedArticles ?? []), slectedArticle],
       selectedArticles: [...prevState.selectedArticles, selectedArticle],
     }));
   };
 
-  reCheckArticleBody = (selectedArticle: any): void => {
-    console.log("selectedArticles: ", this.state.selectedArticles);
-    this.setState(() => {
-      selectedArticles: this.state.selectedArticles.filter((art) => {
-        art.originallink !== selectedArticle.originallink;
-      });
+  reCheckArticleBody = (data: Selected): void => {
+    // let preSelected: SidebarState["selectedArticles"] = this.state
+    //   .selectedArticles;
+    // console.log("preSelected: ", preSelected);
+    // let arr = preSelected.filter((art) => {
+    //   console.log("art.originallink; ", art.originallink);
+    //   console.log("data.originallink; ", data.originallink);
+    //   art.originallink !== data.originallink;
+    // }); // arr 가 왜 빈배열 일까?
+    // console.log("arr: ", arr);
+
+    // this.setState({ selectedArticles: arr });
+    this.setState({
+      ...this.state,
+      selectedArticles: this.state.selectedArticles.filter(
+        (art) => art.originallink !== data.originallink
+      ),
     });
   };
 
-  emptyArticleBody = (slectedArticle: any): void => {
-    this.setState({ selectedArticles: [] }, () =>
-      this.addArticleBody(slectedArticle)
-    );
-  };
+  // emptyArticleBody = (slectedArticle: any): void => {
+  //   this.setState({ selectedArticles: [] }, () =>
+  //     this.addArticleBody(slectedArticle)
+  //   );
+  // };
 
   render() {
     const transform = this.state.transform;
@@ -140,7 +159,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                   handleChangeKeyword={this.handleChangeKeyword}
                   addArticleBody={this.addArticleBody}
                   reCheckArticleBody={this.reCheckArticleBody}
-                  emptyArticleBody={this.emptyArticleBody}
+                  // emptyArticleBody={this.emptyArticleBody}
                 />
               </div>
             </th>

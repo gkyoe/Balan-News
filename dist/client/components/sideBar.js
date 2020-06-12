@@ -12,6 +12,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -89,18 +100,18 @@ var Sidebar = /** @class */ (function (_super) {
                 selectedArticles: __spreadArrays(prevState.selectedArticles, [selectedArticle]),
             }); });
         };
-        _this.reCheckArticleBody = function (selectedArticle) {
-            console.log("selectedArticles: ", _this.state.selectedArticles);
-            _this.setState(function () {
-                selectedArticles: _this.state.selectedArticles.filter(function (art) {
-                    art.originallink !== selectedArticle.originallink;
-                });
-            });
-        };
-        _this.emptyArticleBody = function (slectedArticle) {
-            _this.setState({ selectedArticles: [] }, function () {
-                return _this.addArticleBody(slectedArticle);
-            });
+        _this.reCheckArticleBody = function (data) {
+            // let preSelected: SidebarState["selectedArticles"] = this.state
+            //   .selectedArticles;
+            // console.log("preSelected: ", preSelected);
+            // let arr = preSelected.filter((art) => {
+            //   console.log("art.originallink; ", art.originallink);
+            //   console.log("data.originallink; ", data.originallink);
+            //   art.originallink !== data.originallink;
+            // }); // arr 가 왜 빈배열 일까?
+            // console.log("arr: ", arr);
+            // this.setState({ selectedArticles: arr });
+            _this.setState(__assign(__assign({}, _this.state), { selectedArticles: _this.state.selectedArticles.filter(function (art) { return art.originallink !== data.originallink; }) }));
         };
         _this.state = {
             width: 450,
@@ -120,6 +131,11 @@ var Sidebar = /** @class */ (function (_super) {
         _this.reCheckArticleBody = _this.reCheckArticleBody.bind(_this);
         return _this;
     }
+    // emptyArticleBody = (slectedArticle: any): void => {
+    //   this.setState({ selectedArticles: [] }, () =>
+    //     this.addArticleBody(slectedArticle)
+    //   );
+    // };
     Sidebar.prototype.render = function () {
         var transform = this.state.transform;
         console.log(transform);
@@ -134,7 +150,7 @@ var Sidebar = /** @class */ (function (_super) {
                                 minHeight: this.state.height,
                                 transform: "translateX(" + this.state.transform + "px)",
                             } },
-                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, reCheckArticleBody: this.reCheckArticleBody, emptyArticleBody: this.emptyArticleBody }))),
+                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, reCheckArticleBody: this.reCheckArticleBody }))),
                     React.createElement("th", null,
                         React.createElement("div", { className: "toggle-bar", style: {
                                 width: 50,

@@ -16,7 +16,7 @@ interface ListProps {
   count: number;
   addArticleBody: any;
   reCheckArticleBody: any;
-  emptyArticleBody: any;
+  // emptyArticleBody: any;
 }
 
 interface ListState {}
@@ -29,14 +29,14 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
   }
 
   render() {
-    const checkedBox = this.props.checkedBox;
-    console.log(checkedBox);
-    let articleBody: any;
+    // const checkedBox = this.props.checkedBox;
+    // console.log(checkedBox);
+    // let articleBody: any;
 
     const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-      let checkCbx: NodeListOf<Element> = document.querySelectorAll(
-        "input[type='checkbox']:checked"
-      );
+      // let checkCbx: NodeListOf<Element> = document.querySelectorAll(
+      //   "input[type='checkbox']:checked"
+      // );
       const slectedArticle = this.props.news;
       if (e.target.checked) {
         // articleBody = <Tbloid news={this.props.news}></Tbloid>;
@@ -60,7 +60,7 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
           />
           {this.props.news.title}
         </li>
-        {articleBody}
+        {/* {articleBody} */}
       </div>
     );
   }

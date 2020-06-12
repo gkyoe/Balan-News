@@ -46,23 +46,7 @@ var SearchBar = /** @class */ (function (_super) {
             checkedBox: null,
         };
         return _this;
-        // this.handleCheckedOn = this.handleCheckedOn.bind(this);
-        // this.handleCheckedOff = this.handleCheckedOff.bind(this);
     }
-    // handleCheckedOn = (e: React.FormEvent<HTMLUListElement>) => {
-    //   const allCheckBoxes = document.querySelectorAll(
-    //     "input[type='checkbox checked']"
-    //   ) as NodeListOf<HTMLInputElement>;
-    //   console.log("allCheckBoxes: ", allCheckBoxes);
-    //   this.setState({ checkedBox: allCheckBoxes });
-    // };
-    // handleCheckedOff = (e: React.FormEvent<HTMLUListElement>) => {
-    //   const allCheckBoxes = document.querySelectorAll(
-    //     "input[type='checkbox']:checked"
-    //   ) as NodeListOf<HTMLInputElement>;
-    //   console.log("allCheckBoxes: ", allCheckBoxes);
-    //   this.setState({ checkedBox: allCheckBoxes });
-    // };
     SearchBar.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "search-Zone" },
@@ -72,7 +56,7 @@ var SearchBar = /** @class */ (function (_super) {
                     React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
                 React.createElement("div", { className: "newsList" },
                     React.createElement("ul", { className: "article-list" }, this.props.articles.map(function (contact, idx) {
-                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox, addArticleBody: _this.props.addArticleBody, reCheckArticleBody: _this.props.reCheckArticleBody, emptyArticleBody: _this.props.emptyArticleBody }));
+                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox, addArticleBody: _this.props.addArticleBody, reCheckArticleBody: _this.props.reCheckArticleBody }));
                     }))))));
     };
     return SearchBar;

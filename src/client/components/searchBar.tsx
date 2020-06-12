@@ -20,7 +20,7 @@ interface searchProps {
   handleChangeKeyword: any;
   addArticleBody: any;
   reCheckArticleBody: any;
-  emptyArticleBody: any;
+  // emptyArticleBody: any;
 }
 
 interface searchState {
@@ -36,27 +36,7 @@ export default class SearchBar extends React.Component<
     this.state = {
       checkedBox: null,
     };
-    // this.handleCheckedOn = this.handleCheckedOn.bind(this);
-    // this.handleCheckedOff = this.handleCheckedOff.bind(this);
   }
-
-  // handleCheckedOn = (e: React.FormEvent<HTMLUListElement>) => {
-  //   const allCheckBoxes = document.querySelectorAll(
-  //     "input[type='checkbox checked']"
-  //   ) as NodeListOf<HTMLInputElement>;
-  //   console.log("allCheckBoxes: ", allCheckBoxes);
-
-  //   this.setState({ checkedBox: allCheckBoxes });
-  // };
-
-  // handleCheckedOff = (e: React.FormEvent<HTMLUListElement>) => {
-  //   const allCheckBoxes = document.querySelectorAll(
-  //     "input[type='checkbox']:checked"
-  //   ) as NodeListOf<HTMLInputElement>;
-  //   console.log("allCheckBoxes: ", allCheckBoxes);
-
-  //   this.setState({ checkedBox: allCheckBoxes });
-  // };
 
   render() {
     return (
@@ -88,7 +68,7 @@ export default class SearchBar extends React.Component<
                     checkedBox={this.state.checkedBox}
                     addArticleBody={this.props.addArticleBody}
                     reCheckArticleBody={this.props.reCheckArticleBody}
-                    emptyArticleBody={this.props.emptyArticleBody}
+                    // emptyArticleBody={this.props.emptyArticleBody}
                   />
                 );
               })}
