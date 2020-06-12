@@ -31,7 +31,7 @@ export default class Tabloid extends React.Component<
         {this.props.news.map((data, idx) => {
           return (
             <div>
-              <NewsBody news={data} key={idx}></NewsBody>
+              <NewsBody news={data} key={idx + 100}></NewsBody>
             </div>
           );
         })}

@@ -43,12 +43,14 @@ var ArticleList = /** @class */ (function (_super) {
         // this.handleChange = this.handleChange.bind(this);
     }
     ArticleList.prototype.render = function () {
+        // const checkedBox = this.props.checkedBox;
+        // console.log(checkedBox);
+        // let articleBody: any;
         var _this = this;
-        var checkedBox = this.props.checkedBox;
-        console.log(checkedBox);
-        var articleBody;
         var handleCheck = function (e) {
-            var checkCbx = document.querySelectorAll("input[type='checkbox']:checked");
+            // let checkCbx: NodeListOf<Element> = document.querySelectorAll(
+            //   "input[type='checkbox']:checked"
+            // );
             var slectedArticle = _this.props.news;
             if (e.target.checked) {
                 // articleBody = <Tbloid news={this.props.news}></Tbloid>;
@@ -65,8 +67,7 @@ var ArticleList = /** @class */ (function (_super) {
         return (React.createElement("div", null,
             React.createElement("li", { className: "article-title" },
                 React.createElement("input", { className: "select-checkbox", type: "checkbox", key: "key", onChange: handleCheck }),
-                this.props.news.title),
-            articleBody));
+                this.props.news.title)));
     };
     return ArticleList;
 }(React.Component));
