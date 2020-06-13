@@ -54,12 +54,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = require("mongoose");
 var user_1 = require("../models/user");
 var jwt = __importStar(require("jsonwebtoken"));
+var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
-dotenv.config();
+dotenv.config({
+    path: path_1.default.resolve(process.cwd(), process.env.NODE_ENV == "production" ? ".env" : ".dev.env"),
+});
 var secret = process.env.secret;
 var UserController = /** @class */ (function () {
     function UserController() {

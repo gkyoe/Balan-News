@@ -4,10 +4,16 @@ import { user, IUserSchema } from "../models/user";
 import { runInNewContext } from "vm";
 import * as jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import path from "path";
 import * as dotenv from "dotenv";
 import { createBrotliCompress } from "zlib";
 
-dotenv.config();
+dotenv.config({
+  path: path.resolve(
+    process.cwd(),
+    process.env.NODE_ENV == "production" ? ".env" : ".dev.env"
+  ),
+});
 const secret: string | undefined = process.env.secret;
 
 export default class UserController {

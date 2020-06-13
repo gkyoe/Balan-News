@@ -60,8 +60,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var urlencode_1 = __importDefault(require("urlencode"));
+var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
-dotenv.config();
+dotenv.config({
+    path: path_1.default.resolve(process.cwd(), process.env.NODE_ENV == "production" ? ".env" : ".dev.env"),
+});
 var secret = process.env.secret;
 var articleController = /** @class */ (function () {
     function articleController() {
