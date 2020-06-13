@@ -60,10 +60,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_index_1 = __importDefault(require("./app.index"));
 var mongoose_1 = __importDefault(require("mongoose"));
+var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
 var _a = process.env, MONGO_PRODUCT = _a.MONGO_PRODUCT, MONGO_DEV = _a.MONGO_DEV, MONGO_USER = _a.MONGO_USER, MONGO_PASSWORD = _a.MONGO_PASSWORD;
 var port = process.env.PORT || 3000;
-dotenv.config();
+dotenv.config({
+    path: path_1.default.resolve(process.cwd(), process.env.NODE_ENV == "production" ? ".env" : ".dev.env"),
+});
 app_index_1.default.listen(port, function () { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
