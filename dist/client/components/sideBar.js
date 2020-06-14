@@ -23,25 +23,6 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __spreadArrays = (this && this.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -49,11 +30,17 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Sidebar = void 0;
 var React = __importStar(require("react"));
 var axios_1 = __importDefault(require("axios"));
 var searchBar_1 = __importDefault(require("./searchBar"));
@@ -82,6 +69,7 @@ var Sidebar = /** @class */ (function (_super) {
                 console.log(res.data);
                 _this.setState({ articles: res.data.items });
             })
+                .then(function () { return _this.emptyArticleBody(); })
                 .then(function (err) {
                 throw err;
             });
@@ -113,6 +101,16 @@ var Sidebar = /** @class */ (function (_super) {
             // this.setState({ selectedArticles: arr });
             _this.setState(__assign(__assign({}, _this.state), { selectedArticles: _this.state.selectedArticles.filter(function (art) { return art.originallink !== data.originallink; }) }));
         };
+        _this.emptyArticleBody = function () {
+            var checkCbx = document.querySelectorAll("input[type='checkbox']");
+            console.log("checkCbx: ", checkCbx);
+            checkCbx.forEach(function (cbx) {
+                if (cbx.checked) {
+                    cbx.checked = false;
+                }
+            });
+            _this.setState(__assign(__assign({}, _this.state), { selectedArticles: [] }));
+        };
         _this.state = {
             width: 450,
             height: "100vh",
@@ -129,13 +127,9 @@ var Sidebar = /** @class */ (function (_super) {
         _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
         _this.addArticleBody = _this.addArticleBody.bind(_this);
         _this.reCheckArticleBody = _this.reCheckArticleBody.bind(_this);
+        _this.emptyArticleBody = _this.emptyArticleBody.bind(_this);
         return _this;
     }
-    // emptyArticleBody = (slectedArticle: any): void => {
-    //   this.setState({ selectedArticles: [] }, () =>
-    //     this.addArticleBody(slectedArticle)
-    //   );
-    // };
     Sidebar.prototype.render = function () {
         var transform = this.state.transform;
         console.log(transform);
