@@ -24,7 +24,7 @@ interface ListState {}
 export default class ArticleList extends React.Component<ListProps, ListState> {
   constructor(props: ListProps) {
     super(props);
-    this.state = {};
+    // this.state = {};
     // this.handleChange = this.handleChange.bind(this);
   }
 

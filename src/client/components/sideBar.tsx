@@ -59,6 +59,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
     this.addArticleBody = this.addArticleBody.bind(this);
     this.reCheckArticleBody = this.reCheckArticleBody.bind(this);
+    this.emptyArticleBody = this.emptyArticleBody.bind(this);
   }
 
   handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -82,6 +83,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
         console.log(res.data);
         this.setState({ articles: res.data.items });
       })
+      .then(() => this.emptyArticleBody())
       .then((err) => {
         throw err;
       });
@@ -124,11 +126,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     });
   };
 
-  // emptyArticleBody = (slectedArticle: any): void => {
-  //   this.setState({ selectedArticles: [] }, () =>
-  //     this.addArticleBody(slectedArticle)
-  //   );
-  // };
+  emptyArticleBody = (): void => {
+    let checkCbx: NodeListOf<Element> = document.querySelectorAll(
+      "input[type='checkbox']"
+    );
+    console.log("checkCbx: ", checkCbx);
+    checkCbx.forEach((cbx: any) => {
+      if (cbx.checked) {
+        cbx.checked = false;
+      }
+    });
+    this.setState({ ...this.state, selectedArticles: [] });
+  };
 
   render() {
     const transform = this.state.transform;
