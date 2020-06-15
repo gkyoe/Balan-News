@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link, Route, Switch, BrowserRouter, Router } from "react-router-dom";
 import axios from "axios";
+import cheerio from "cheerio";
 import SearchBar from "./searchBar";
 import Tabloid from "./tabloid";
 import "./sideBar.css";
@@ -58,8 +59,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.handleSubmitSearching = this.handleSubmitSearching.bind(this);
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
     this.addArticleBody = this.addArticleBody.bind(this);
-    this.reCheckArticleBody = this.reCheckArticleBody.bind(this);
+    this.deleteArticleBody = this.deleteArticleBody.bind(this);
     this.emptyArticleBody = this.emptyArticleBody.bind(this);
+    this.crawlingNews = this.crawlingNews.bind(this);
   }
 
   handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -80,10 +82,11 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     axios
       .post(`http://localhost:3000/naverNews`, { data: keyword })
       .then((res) => {
-        console.log(res.data);
+        console.log("res.data", res.data);
         this.setState({ articles: res.data.items });
       })
       .then(() => this.emptyArticleBody())
+      .then(() => this.crawlingNews())
       .then((err) => {
         throw err;
       });
@@ -106,13 +109,11 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     }));
   };
 
-  reCheckArticleBody = (data: Selected): void => {
+  deleteArticleBody = (data: Selected): void => {
     // let preSelected: SidebarState["selectedArticles"] = this.state
     //   .selectedArticles;
     // console.log("preSelected: ", preSelected);
     // let arr = preSelected.filter((art) => {
-    //   console.log("art.originallink; ", art.originallink);
-    //   console.log("data.originallink; ", data.originallink);
     //   art.originallink !== data.originallink;
     // }); // arr 가 왜 빈배열 일까?
     // console.log("arr: ", arr);
@@ -137,6 +138,26 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       }
     });
     this.setState({ ...this.state, selectedArticles: [] });
+  };
+
+  crawlingNews = () => {
+    axios
+      .get(
+        "https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=102&oid=003&aid=0009913386"
+      )
+      .then(
+        (response) => {
+          if (response.status === 200) {
+            // const html = response.data;
+            // const $ = cheerio.load(html);
+            // console.log("$: ", $);
+            console.log("연결은 됨");
+          } else {
+            console.log("status코드 200아님");
+          }
+        },
+        (error) => console.log("여기 에러인가?: ", error)
+      );
   };
 
   render() {
@@ -167,7 +188,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                   handleSubmitSearching={this.handleSubmitSearching}
                   handleChangeKeyword={this.handleChangeKeyword}
                   addArticleBody={this.addArticleBody}
-                  reCheckArticleBody={this.reCheckArticleBody}
+                  deleteArticleBody={this.deleteArticleBody}
                   // emptyArticleBody={this.emptyArticleBody}
                 />
               </div>

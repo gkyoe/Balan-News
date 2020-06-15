@@ -23,6 +23,25 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __spreadArrays = (this && this.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -30,19 +49,14 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Sidebar = void 0;
 var React = __importStar(require("react"));
 var axios_1 = __importDefault(require("axios"));
+var cheerio_1 = __importDefault(require("cheerio"));
 var searchBar_1 = __importDefault(require("./searchBar"));
 var tabloid_1 = __importDefault(require("./tabloid"));
 require("./sideBar.css");
@@ -66,10 +80,11 @@ var Sidebar = /** @class */ (function (_super) {
             axios_1.default
                 .post("http://localhost:3000/naverNews", { data: keyword })
                 .then(function (res) {
-                console.log(res.data);
+                console.log("res.data", res.data);
                 _this.setState({ articles: res.data.items });
             })
                 .then(function () { return _this.emptyArticleBody(); })
+                // .then(() => this.crawlingNews())
                 .then(function (err) {
                 throw err;
             });
@@ -88,13 +103,11 @@ var Sidebar = /** @class */ (function (_super) {
                 selectedArticles: __spreadArrays(prevState.selectedArticles, [selectedArticle]),
             }); });
         };
-        _this.reCheckArticleBody = function (data) {
+        _this.deleteArticleBody = function (data) {
             // let preSelected: SidebarState["selectedArticles"] = this.state
             //   .selectedArticles;
             // console.log("preSelected: ", preSelected);
             // let arr = preSelected.filter((art) => {
-            //   console.log("art.originallink; ", art.originallink);
-            //   console.log("data.originallink; ", data.originallink);
             //   art.originallink !== data.originallink;
             // }); // arr 가 왜 빈배열 일까?
             // console.log("arr: ", arr);
@@ -111,6 +124,20 @@ var Sidebar = /** @class */ (function (_super) {
             });
             _this.setState(__assign(__assign({}, _this.state), { selectedArticles: [] }));
         };
+        _this.crawlingNews = function () {
+            axios_1.default
+                .get("https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=102&oid=003&aid=0009913386")
+                .then(function (response) {
+                if (response.status === 200) {
+                    var html = response.data;
+                    var $ = cheerio_1.default.load(html);
+                    console.log("$: ", $);
+                }
+                else {
+                    console.log("status코드 200아님");
+                }
+            }, function (error) { return console.log("여기 에러인가?: ", error); });
+        };
         _this.state = {
             width: 450,
             height: "100vh",
@@ -126,8 +153,9 @@ var Sidebar = /** @class */ (function (_super) {
         _this.handleSubmitSearching = _this.handleSubmitSearching.bind(_this);
         _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
         _this.addArticleBody = _this.addArticleBody.bind(_this);
-        _this.reCheckArticleBody = _this.reCheckArticleBody.bind(_this);
+        _this.deleteArticleBody = _this.deleteArticleBody.bind(_this);
         _this.emptyArticleBody = _this.emptyArticleBody.bind(_this);
+        _this.crawlingNews = _this.crawlingNews.bind(_this);
         return _this;
     }
     Sidebar.prototype.render = function () {
@@ -144,7 +172,7 @@ var Sidebar = /** @class */ (function (_super) {
                                 minHeight: this.state.height,
                                 transform: "translateX(" + this.state.transform + "px)",
                             } },
-                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, reCheckArticleBody: this.reCheckArticleBody }))),
+                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody }))),
                     React.createElement("th", null,
                         React.createElement("div", { className: "toggle-bar", style: {
                                 width: 50,
