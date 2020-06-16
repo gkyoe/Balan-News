@@ -15,7 +15,7 @@ interface ListProps {
   limit: number;
   count: number;
   addArticleBody: any;
-  reCheckArticleBody: any;
+  deleteArticleBody: any;
   // emptyArticleBody: any;
 }
 
@@ -46,7 +46,7 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
         //   this.props.addArticleBody(slectedArticle)()
         // );
         console.log("!e.target.checked: ", e.target.checked);
-        this.props.reCheckArticleBody(slectedArticle);
+        this.props.deleteArticleBody(slectedArticle);
       }
     };
     return (

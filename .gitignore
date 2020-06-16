@@ -2,3 +2,7 @@ node_modules
 package-lock.json
 .env
 .dev.env
+
+.DS_Store
+dist/.DS_Store
+dist/client/.DS_Store

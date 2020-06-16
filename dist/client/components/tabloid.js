@@ -32,9 +32,32 @@ var Tabloid = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {};
         return _this;
+        // this.crawlingNews = this.crawlingNews.bind(this);
     }
+    // crawlingNews = (url: string) => {
+    //   axios
+    //     .get(
+    //       // "https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=102&oid=003&aid=0009913386"
+    //       url
+    //     )
+    //     .then(
+    //       (response) => {
+    //         if (response.status === 200) {
+    //           const html = response.data;
+    //           const $ = cheerio.load(html);
+    //           // return $;
+    //           console.log("$: ", $);
+    //           console.log("연결은 됨");
+    //         } else {
+    //           console.log("status코드 200아님");
+    //         }
+    //       },
+    //       (error) => console.log("여기 에러인가?: ", error)
+    //     );
+    // };
     Tabloid.prototype.render = function () {
         return (React.createElement("ul", null, this.props.news.map(function (data, idx) {
+            // console.log(this.crawlingNews(data.link));
             return (React.createElement("div", null,
                 React.createElement(newsBody_1.default, { news: data, key: idx + 100 })));
         })));

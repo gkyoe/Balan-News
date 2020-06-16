@@ -77,17 +77,72 @@ var articleController = /** @class */ (function () {
                             },
                         };
                         // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
+                        // await axios
+                        //   .get(api_url, options)
+                        //   .then((result) => {
+                        //     res.status(200).json(result.data);
+                        //     console.log("data: ", result.data);
+                        //   })
+                        //   .catch((err) => {
+                        //     console.log("err: ", err);
+                        //   });
                         return [4 /*yield*/, axios_1.default
                                 .get(api_url, options)
                                 .then(function (result) {
-                                res.status(200).json(result.data);
-                                console.log("data: ", result.data);
+                                return result;
                             })
                                 .catch(function (err) {
                                 console.log("err: ", err);
                             })];
                     case 1:
                         // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
+                        // await axios
+                        //   .get(api_url, options)
+                        //   .then((result) => {
+                        //     res.status(200).json(result.data);
+                        //     console.log("data: ", result.data);
+                        //   })
+                        //   .catch((err) => {
+                        //     console.log("err: ", err);
+                        //   });
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    articleController.prototype.crawlingNews = function (searchingArt) {
+        return __awaiter(this, void 0, void 0, function () {
+            var accessUrl, arr;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        accessUrl = function (url) {
+                            axios_1.default
+                                .get(url)
+                                .then(function (data) {
+                                if (data.status === 200) {
+                                    // const html = response.data;
+                                    // const $ = cheerio.load(html);
+                                    // console.log("$: ", $);
+                                    console.log("연결은 됨");
+                                    return data;
+                                }
+                                else {
+                                    return console.error("status코드 200아님");
+                                }
+                            })
+                                .catch(function (err) {
+                                console.log("여기 err: ", err);
+                            });
+                        };
+                        return [4 /*yield*/, searchingArt.selectedArticles.map(function (art) {
+                                return accessUrl(art.link);
+                            })];
+                    case 1:
+                        arr = _a.sent();
+                        return [4 /*yield*/, console.log(arr)];
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
