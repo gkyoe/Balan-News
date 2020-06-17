@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,15 +57,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var cheerio_1 = __importDefault(require("cheerio"));
 var urlencode_1 = __importDefault(require("urlencode"));
 var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
@@ -89,7 +102,26 @@ var articleController = /** @class */ (function () {
                         return [4 /*yield*/, axios_1.default
                                 .get(api_url, options)
                                 .then(function (result) {
-                                return result;
+                                console.log("result.data.items: ", result.data.items);
+                                result.data.items.forEach(function (art) {
+                                    axios_1.default
+                                        .get(art.link)
+                                        .then(function (art) {
+                                        if (art.status === 200) {
+                                            var html = art.data;
+                                            var $ = cheerio_1.default.load(html);
+                                            console.log("$: ", $);
+                                            console.log("연결은 됨");
+                                            return $;
+                                        }
+                                        else {
+                                            return console.error("status코드 200아님");
+                                        }
+                                    })
+                                        .catch(function (err) {
+                                        console.log("여기 err: ", err);
+                                    });
+                                });
                             })
                                 .catch(function (err) {
                                 console.log("err: ", err);
@@ -105,44 +137,6 @@ var articleController = /** @class */ (function () {
                         //   .catch((err) => {
                         //     console.log("err: ", err);
                         //   });
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    articleController.prototype.crawlingNews = function (searchingArt) {
-        return __awaiter(this, void 0, void 0, function () {
-            var accessUrl, arr;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        accessUrl = function (url) {
-                            axios_1.default
-                                .get(url)
-                                .then(function (data) {
-                                if (data.status === 200) {
-                                    // const html = response.data;
-                                    // const $ = cheerio.load(html);
-                                    // console.log("$: ", $);
-                                    console.log("연결은 됨");
-                                    return data;
-                                }
-                                else {
-                                    return console.error("status코드 200아님");
-                                }
-                            })
-                                .catch(function (err) {
-                                console.log("여기 err: ", err);
-                            });
-                        };
-                        return [4 /*yield*/, searchingArt.selectedArticles.map(function (art) {
-                                return accessUrl(art.link);
-                            })];
-                    case 1:
-                        arr = _a.sent();
-                        return [4 /*yield*/, console.log(arr)];
-                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }
