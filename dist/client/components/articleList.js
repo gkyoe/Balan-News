@@ -48,7 +48,7 @@ var ArticleList = /** @class */ (function (_super) {
                 //   this.props.addArticleBody(slectedArticle)()
                 // );
                 console.log("!e.target.checked: ", e.target.checked);
-                _this.props.reCheckArticleBody(slectedArticle);
+                _this.props.deleteArticleBody(slectedArticle);
             }
         };
         return (React.createElement("div", null,

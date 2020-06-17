@@ -19,7 +19,7 @@ interface searchProps {
   handleSubmitSearching: any;
   handleChangeKeyword: any;
   addArticleBody: any;
-  reCheckArticleBody: any;
+  deleteArticleBody: any;
   // emptyArticleBody: any;
 }
 
@@ -67,7 +67,7 @@ export default class SearchBar extends React.Component<
                     count={this.props.count}
                     checkedBox={this.state.checkedBox}
                     addArticleBody={this.props.addArticleBody}
-                    reCheckArticleBody={this.props.reCheckArticleBody}
+                    deleteArticleBody={this.props.deleteArticleBody}
                     // emptyArticleBody={this.props.emptyArticleBody}
                   />
                 );
