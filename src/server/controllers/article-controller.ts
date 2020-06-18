@@ -60,11 +60,13 @@ export default class articleController {
         result.data.items.forEach((art: Article) => {
           axios
             .get(art.link)
-            .then((art) => {
-              if (art.status === 200) {
-                const html = art.data;
+            .then((art_body) => {
+              if (art_body.status === 200) {
+                const html = art_body.data;
+                // console.log("html: ", html);
                 const $ = cheerio.load(html);
-                console.log("$: ", $);
+                const con = $(".articleBodyContents").text;
+                console.log("con: ", con);
                 console.log("연결은 됨");
                 return $;
               } else {

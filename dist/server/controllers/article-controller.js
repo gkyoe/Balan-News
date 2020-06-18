@@ -106,11 +106,13 @@ var articleController = /** @class */ (function () {
                                 result.data.items.forEach(function (art) {
                                     axios_1.default
                                         .get(art.link)
-                                        .then(function (art) {
-                                        if (art.status === 200) {
-                                            var html = art.data;
+                                        .then(function (art_body) {
+                                        if (art_body.status === 200) {
+                                            var html = art_body.data;
+                                            // console.log("html: ", html);
                                             var $ = cheerio_1.default.load(html);
-                                            console.log("$: ", $);
+                                            var con = $(".articleBodyContents").text;
+                                            console.log("con: ", con);
                                             console.log("연결은 됨");
                                             return $;
                                         }
