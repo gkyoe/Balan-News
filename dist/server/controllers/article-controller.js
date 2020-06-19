@@ -104,6 +104,7 @@ var articleController = /** @class */ (function () {
                                 .then(function (result) {
                                 console.log("result.data.items: ", result.data.items);
                                 result.data.items.forEach(function (art) {
+                                    console.log("art: ", art);
                                     axios_1.default
                                         .get(art.link)
                                         .then(function (art_body) {
@@ -111,8 +112,8 @@ var articleController = /** @class */ (function () {
                                             var html = art_body.data;
                                             // console.log("html: ", html);
                                             var $ = cheerio_1.default.load(html);
-                                            var con = $(".articleBodyContents").text;
-                                            console.log("con: ", con);
+                                            var con = $("#articleBodyContents");
+                                            console.log("con: ", con.html);
                                             console.log("연결은 됨");
                                             return $;
                                         }
