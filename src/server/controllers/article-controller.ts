@@ -58,6 +58,7 @@ export default class articleController {
       .then((result) => {
         console.log("result.data.items: ", result.data.items);
         result.data.items.forEach((art: Article) => {
+          console.log("art: ", art);
           axios
             .get(art.link)
             .then((art_body) => {
@@ -65,8 +66,8 @@ export default class articleController {
                 const html = art_body.data;
                 // console.log("html: ", html);
                 const $ = cheerio.load(html);
-                const con = $(".articleBodyContents").text;
-                console.log("con: ", con);
+                const con = $("#articleBodyContents");
+                console.log("con: ", con.html);
                 console.log("연결은 됨");
                 return $;
               } else {
