@@ -108,18 +108,52 @@ var articleController = /** @class */ (function () {
                                     axios_1.default
                                         .get(art.link)
                                         .then(function (art_body) {
-                                        if (art_body.status === 200) {
-                                            var html = art_body.data;
-                                            // console.log("html: ", html);
-                                            var $ = cheerio_1.default.load(html);
-                                            var con = $("#articleBodyContents");
-                                            console.log("con: ", con.html);
-                                            console.log("연결은 됨");
-                                            return $;
-                                        }
-                                        else {
-                                            return console.error("status코드 200아님");
-                                        }
+                                        var html = art_body.data;
+                                        console.log("html: ", html);
+                                        var $ = cheerio_1.default.load(html);
+                                        // console.log("$:", $);
+                                        var con = $("div.end_ct_area");
+                                        var arr = [];
+                                        con.each(function (i, elm) {
+                                            var itemObj = {
+                                                _text: $(elm).find("div.article_body").text(),
+                                            };
+                                            arr.push(itemObj);
+                                        });
+                                        arr.forEach(function (elm) {
+                                            console.log("itemObj: ", elm);
+                                        });
+                                        // console.log("con: ", con);
+                                        console.log("연결은 됨");
+                                        // function(str) {
+                                        //   // If `str` is undefined, act as a "getter"
+                                        //   if (str === undefined) {
+                                        //     return $.text(this);
+                                        //   } else if (typeof str === 'function') {
+                                        //     // Function support
+                                        //     return domEach(this, function(i, el) {
+                                        //       var $el = [el];
+                                        //       return exports.text.call($el, str.call(el, i, $.text($el)));
+                                        //     });
+                                        //   }
+                                        //   // Append text node to each selected elements
+                                        //   domEach(this, function(i, el) {
+                                        //     _.forEach(el.children, function(child) {
+                                        //       child.next = child.prev = child.parent = null;
+                                        //     });
+                                        //     var elem = {
+                                        //       data: '' + str,
+                                        //       type: 'text',
+                                        //       parent: el,
+                                        //       prev: null,
+                                        //       next: null,
+                                        //       children: []
+                                        //     };
+                                        //     updateDOM(elem, el);
+                                        //   });
+                                        //   return this;
+                                        // }
+                                        return $;
                                     })
                                         .catch(function (err) {
                                         console.log("여기 err: ", err);
