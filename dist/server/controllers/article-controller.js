@@ -59,7 +59,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
-var cheerio_1 = __importDefault(require("cheerio"));
 var urlencode_1 = __importDefault(require("urlencode"));
 var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
@@ -72,109 +71,55 @@ var articleController = /** @class */ (function () {
     }
     articleController.prototype.naverNews = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var encoded, limit, api_url, client_id, client_scret, options;
+            function accessNaverApi(req) {
+                var encoded = urlencode_1.default(req.body.data);
+                console.log(encoded); //%EB%82%A0%EC%94%A8
+                var limit = 5;
+                var api_url = "https://openapi.naver.com/v1/search/news.json?query=" + encoded + "&display=" + limit + "&start=1&sort=sim";
+                var client_id = process.env.naverNewsApi_id;
+                var client_scret = process.env.naverNewsApi_ScretKey;
+                var options = {
+                    // url: api_url,
+                    headers: {
+                        "X-Naver-Client-Id": client_id,
+                        "X-Naver-Client-Secret": client_scret,
+                    },
+                };
+                var url = axios_1.default
+                    .get(api_url, options)
+                    .then(function (result) {
+                    // console.log("result.data.items: ", result.data.items);
+                    return result.data.items;
+                })
+                    .catch(function (err) {
+                    throw err.message;
+                });
+                console.log("url: ", url);
+            }
+            function accessNewsUrl(data) {
+                var linkArr = [];
+                data.forEach(function (d) {
+                    axios_1.default
+                        .get(d.originallink)
+                        .then(function (body) {
+                        linkArr.push(body.data);
+                        console.log(body.data);
+                    })
+                        .catch(function (err) {
+                        throw err.message;
+                    });
+                });
+            }
+            var api, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        encoded = urlencode_1.default(req.body.data);
-                        console.log(encoded); //%EB%82%A0%EC%94%A8
-                        limit = 5;
-                        api_url = "https://openapi.naver.com/v1/search/news.json?query=" + encoded + "&display=" + limit + "&start=1&sort=sim";
-                        client_id = process.env.naverNewsApi_id;
-                        client_scret = process.env.naverNewsApi_ScretKey;
-                        options = {
-                            // url: api_url,
-                            headers: {
-                                "X-Naver-Client-Id": client_id,
-                                "X-Naver-Client-Secret": client_scret,
-                            },
-                        };
-                        // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
-                        // await axios
-                        //   .get(api_url, options)
-                        //   .then((result) => {
-                        //     res.status(200).json(result.data);
-                        //     console.log("data: ", result.data);
-                        //   })
-                        //   .catch((err) => {
-                        //     console.log("err: ", err);
-                        //   });
-                        return [4 /*yield*/, axios_1.default
-                                .get(api_url, options)
-                                .then(function (result) {
-                                console.log("result.data.items: ", result.data.items);
-                                result.data.items.forEach(function (art) {
-                                    console.log("art: ", art);
-                                    axios_1.default
-                                        .get(art.link)
-                                        .then(function (art_body) {
-                                        var html = art_body.data;
-                                        console.log("html: ", html);
-                                        var $ = cheerio_1.default.load(html);
-                                        // console.log("$:", $);
-                                        var con = $("div.end_ct_area");
-                                        var arr = [];
-                                        con.each(function (i, elm) {
-                                            var itemObj = {
-                                                _text: $(elm).find("div.article_body").text(),
-                                            };
-                                            arr.push(itemObj);
-                                        });
-                                        arr.forEach(function (elm) {
-                                            console.log("itemObj: ", elm);
-                                        });
-                                        // console.log("con: ", con);
-                                        console.log("연결은 됨");
-                                        // function(str) {
-                                        //   // If `str` is undefined, act as a "getter"
-                                        //   if (str === undefined) {
-                                        //     return $.text(this);
-                                        //   } else if (typeof str === 'function') {
-                                        //     // Function support
-                                        //     return domEach(this, function(i, el) {
-                                        //       var $el = [el];
-                                        //       return exports.text.call($el, str.call(el, i, $.text($el)));
-                                        //     });
-                                        //   }
-                                        //   // Append text node to each selected elements
-                                        //   domEach(this, function(i, el) {
-                                        //     _.forEach(el.children, function(child) {
-                                        //       child.next = child.prev = child.parent = null;
-                                        //     });
-                                        //     var elem = {
-                                        //       data: '' + str,
-                                        //       type: 'text',
-                                        //       parent: el,
-                                        //       prev: null,
-                                        //       next: null,
-                                        //       children: []
-                                        //     };
-                                        //     updateDOM(elem, el);
-                                        //   });
-                                        //   return this;
-                                        // }
-                                        return $;
-                                    })
-                                        .catch(function (err) {
-                                        console.log("여기 err: ", err);
-                                    });
-                                });
-                            })
-                                .catch(function (err) {
-                                console.log("err: ", err);
-                            })];
+                    case 0: return [4 /*yield*/, accessNaverApi(req)];
                     case 1:
-                        // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
-                        // await axios
-                        //   .get(api_url, options)
-                        //   .then((result) => {
-                        //     res.status(200).json(result.data);
-                        //     console.log("data: ", result.data);
-                        //   })
-                        //   .catch((err) => {
-                        //     console.log("err: ", err);
-                        //   });
-                        _a.sent();
+                        api = _a.sent();
+                        console.log("api: ", api);
+                        return [4 /*yield*/, accessNewsUrl(api)];
+                    case 2:
+                        url = _a.sent();
                         return [2 /*return*/];
                 }
             });
