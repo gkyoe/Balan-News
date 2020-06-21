@@ -28,102 +28,83 @@ interface Article {
 
 export default class articleController {
   public async naverNews(req: Request, res: Response) {
-    const encoded = urlencode(req.body.data);
-    console.log(encoded); //%EB%82%A0%EC%94%A8
-    const limit = 5;
+    function accessNaverApi(req: Request) {
+      const encoded = urlencode(req.body.data);
+      console.log(encoded); //%EB%82%A0%EC%94%A8
+      const limit = 5;
+      const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
+      const client_id = process.env.naverNewsApi_id;
+      const client_scret = process.env.naverNewsApi_ScretKey;
 
-    const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
-    const client_id = process.env.naverNewsApi_id;
-    const client_scret = process.env.naverNewsApi_ScretKey;
+      const options = {
+        // url: api_url,
+        headers: {
+          "X-Naver-Client-Id": client_id,
+          "X-Naver-Client-Secret": client_scret,
+        },
+      };
 
-    const options = {
-      // url: api_url,
-      headers: {
-        "X-Naver-Client-Id": client_id,
-        "X-Naver-Client-Secret": client_scret,
-      },
-    };
-    // https://openapi.naver.com/v1/search/news.json?query=%EB%82%A0%EC%94%A8
-    // await axios
-    //   .get(api_url, options)
-    //   .then((result) => {
-    //     res.status(200).json(result.data);
-    //     console.log("data: ", result.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log("err: ", err);
-    //   });
-    await axios
-      .get(api_url, options)
-      .then((result) => {
-        console.log("result.data.items: ", result.data.items);
-        result.data.items.forEach((art: Article) => {
-          console.log("art: ", art);
-          axios
-            .get(art.link)
-            .then((art_body) => {
-              const html = art_body.data;
-              console.log("html: ", html);
-              const $ = cheerio.load(html);
-              // console.log("$:", $);
-              let con = $("div.end_ct_area");
-              let arr: Array<any> = [];
-
-              con.each((i, elm) => {
-                let itemObj = {
-                  _text: $(elm).find("div.article_body").text(),
-                };
-                arr.push(itemObj);
-              });
-
-              arr.forEach((elm) => {
-                console.log("itemObj: ", elm);
-              });
-              // console.log("con: ", con);
-              console.log("연결은 됨");
-              // function(str) {
-              //   // If `str` is undefined, act as a "getter"
-              //   if (str === undefined) {
-              //     return $.text(this);
-              //   } else if (typeof str === 'function') {
-              //     // Function support
-              //     return domEach(this, function(i, el) {
-              //       var $el = [el];
-              //       return exports.text.call($el, str.call(el, i, $.text($el)));
-              //     });
-              //   }
-
-              //   // Append text node to each selected elements
-              //   domEach(this, function(i, el) {
-              //     _.forEach(el.children, function(child) {
-              //       child.next = child.prev = child.parent = null;
-              //     });
-
-              //     var elem = {
-              //       data: '' + str,
-              //       type: 'text',
-              //       parent: el,
-              //       prev: null,
-              //       next: null,
-              //       children: []
-              //     };
-
-              //     updateDOM(elem, el);
-              //   });
-
-              //   return this;
-              // }
-              return $;
-            })
-            .catch((err) => {
-              console.log("여기 err: ", err);
-            });
+      let url = axios
+        .get(api_url, options)
+        .then((result: any) => {
+          // console.log("result.data.items: ", result.data.items);
+          return result.data.items;
+        })
+        .catch((err) => {
+          throw err.message;
         });
-      })
-      .catch((err) => {
-        console.log("err: ", err);
+      console.log("url: ", url);
+    }
+
+    function accessNewsUrl(data: Array<any>): void {
+      let linkArr: string[] = [];
+      data.forEach((d) => {
+        axios
+          .get(d.originallink)
+          .then((body) => {
+            linkArr.push(body.data);
+            console.log(body.data);
+          })
+          .catch((err) => {
+            throw err.message;
+          });
       });
+    }
+    const api: any = await accessNaverApi(req);
+    console.log("api: ", api);
+    const url: void = await accessNewsUrl(api);
   }
+
+  // result.data.items.forEach((art: Article) => {
+  //   console.log("art: ", art);
+  //   axios
+  //     .get(art.link)
+  //     .then((art_body) => {
+  //       const html = art_body.data;
+  //       // console.log("html: ", html);
+  //       const $ = cheerio.load(html);
+  //       // console.log("$:", $);
+  //       let con = $("div.end_ct_area");
+  //       let arr: Array<any> = [];
+
+  //       con.each((i, elm) => {
+  //         let itemObj = {
+  //           _text: $(elm).find("div.article_body").text(),
+  //         };
+  //         arr.push(itemObj);
+  //       });
+
+  //       arr.forEach((elm) => {
+  //         console.log("itemObj: ", elm);
+  //       });
+  //       // console.log("con: ", con);
+  //       console.log("연결은 됨");
+  //       return $;
+  //     })
+  //     .catch((err) => {
+  //       console.log("여기 err: ", err);
+  //     });
+  // });
 
   // public async crawlingNews(searchingArt: string) {
   //   const accessUrl = (url: string) => {
