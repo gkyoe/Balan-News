@@ -71,8 +71,8 @@ var articleController = /** @class */ (function () {
     }
     articleController.prototype.naverNews = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            function accessNaverApi(req) {
-                var encoded = urlencode_1.default(req.body.data);
+            function accessNaverApi(request) {
+                var encoded = urlencode_1.default(request.body.data);
                 console.log(encoded); //%EB%82%A0%EC%94%A8
                 var limit = 5;
                 var api_url = "https://openapi.naver.com/v1/search/news.json?query=" + encoded + "&display=" + limit + "&start=1&sort=sim";
@@ -85,7 +85,7 @@ var articleController = /** @class */ (function () {
                         "X-Naver-Client-Secret": client_scret,
                     },
                 };
-                var url = axios_1.default
+                return axios_1.default
                     .get(api_url, options)
                     .then(function (result) {
                     // console.log("result.data.items: ", result.data.items);
@@ -94,33 +94,42 @@ var articleController = /** @class */ (function () {
                     .catch(function (err) {
                     throw err.message;
                 });
-                console.log("url: ", url);
             }
             function accessNewsUrl(data) {
+                console.log("여기는 들어오나?");
                 var linkArr = [];
-                data.forEach(function (d) {
+                return data.forEach(function (d) {
                     axios_1.default
                         .get(d.originallink)
                         .then(function (body) {
                         linkArr.push(body.data);
-                        console.log(body.data);
+                        return linkArr;
+                        console.log("linkArr: ", linkArr);
                     })
                         .catch(function (err) {
                         throw err.message;
                     });
                 });
             }
-            var api, url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, accessNaverApi(req)];
+            var apiData, url, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, accessNaverApi(req)];
                     case 1:
-                        api = _a.sent();
-                        console.log("api: ", api);
-                        return [4 /*yield*/, accessNewsUrl(api)];
+                        apiData = _b.sent();
+                        console.log("apiData: ", apiData);
+                        return [4 /*yield*/, accessNewsUrl(apiData)];
                     case 2:
-                        url = _a.sent();
-                        return [2 /*return*/];
+                        url = _b.sent();
+                        console.log("url: ", url);
+                        return [3 /*break*/, 4];
+                    case 3:
+                        _a = _b.sent();
+                        console.error;
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
