@@ -28,8 +28,8 @@ interface Article {
 
 export default class articleController {
   public async naverNews(req: Request, res: Response) {
-    function accessNaverApi(req: Request) {
-      const encoded = urlencode(req.body.data);
+    function accessNaverApi(request: Request) {
+      const encoded = urlencode(request.body.data);
       console.log(encoded); //%EB%82%A0%EC%94%A8
       const limit = 5;
       const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
@@ -44,7 +44,7 @@ export default class articleController {
         },
       };
 
-      let url = axios
+      return axios
         .get(api_url, options)
         .then((result: any) => {
           // console.log("result.data.items: ", result.data.items);
@@ -53,26 +53,32 @@ export default class articleController {
         .catch((err) => {
           throw err.message;
         });
-      console.log("url: ", url);
     }
 
-    function accessNewsUrl(data: Array<any>): void {
+    function accessNewsUrl(data: Array<any>) {
+      console.log("여기는 들어오나?");
       let linkArr: string[] = [];
-      data.forEach((d) => {
+      return data.forEach((d) => {
         axios
           .get(d.originallink)
           .then((body) => {
             linkArr.push(body.data);
-            console.log(body.data);
+            return linkArr;
+            console.log("linkArr: ", linkArr);
           })
           .catch((err) => {
             throw err.message;
           });
       });
     }
-    const api: any = await accessNaverApi(req);
-    console.log("api: ", api);
-    const url: void = await accessNewsUrl(api);
+    try {
+      const apiData: Array<any> = await accessNaverApi(req);
+      console.log("apiData: ", apiData);
+      const url: any = await accessNewsUrl(apiData);
+      console.log("url: ", url);
+    } catch {
+      console.error;
+    }
   }
 
   // result.data.items.forEach((art: Article) => {
