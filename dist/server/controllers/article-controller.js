@@ -59,7 +59,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var cheerio_1 = __importDefault(require("cheerio"));
 var urlencode_1 = __importDefault(require("urlencode"));
+var iconv_lite_1 = __importDefault(require("iconv-lite"));
 var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
 dotenv.config({
@@ -98,37 +100,48 @@ var articleController = /** @class */ (function () {
             function accessNewsUrl(data) {
                 console.log("여기는 들어오나?");
                 var linkArr = [];
-                return data.forEach(function (d) {
+                data.forEach(function (d) {
+                    console.log("originallink: ", d.link);
                     axios_1.default
-                        .get(d.originallink)
-                        .then(function (body) {
-                        linkArr.push(body.data);
-                        return linkArr;
-                        console.log("linkArr: ", linkArr);
+                        .get(d.link)
+                        .then(function (html) {
+                        var $ = cheerio_1.default.load(html.data, { decodeEntities: false }); //{ decodeEntities: false }
+                        // console.log($);
+                        var $body = $("div#articleBodyContents").html();
+                        if ($body !== null) {
+                            var strContents = Buffer.from($body);
+                            // iconv = new iconv('euc-kr', 'UTF8')
+                            var body = iconv_lite_1.default.decode(strContents, "utf-8").toString;
+                            console.log("body; ", body);
+                        }
+                        // const $body = $("div #main_content")
+                        //   .children("div #articleBodyContents")
+                        //   .text();
                     })
                         .catch(function (err) {
-                        throw err.message;
+                        console.log("에러입니당");
+                        console.log(err.message);
                     });
                 });
             }
-            var apiData, url, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var apiData, url, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 3, , 4]);
                         return [4 /*yield*/, accessNaverApi(req)];
                     case 1:
-                        apiData = _b.sent();
+                        apiData = _a.sent();
                         console.log("apiData: ", apiData);
                         return [4 /*yield*/, accessNewsUrl(apiData)];
                     case 2:
-                        url = _b.sent();
+                        url = _a.sent();
                         console.log("url: ", url);
                         return [3 /*break*/, 4];
                     case 3:
-                        _a = _b.sent();
-                        console.error;
-                        return [3 /*break*/, 4];
+                        error_1 = _a.sent();
+                        console.log("여기서 에러입니당");
+                        throw error_1;
                     case 4: return [2 /*return*/];
                 }
             });
