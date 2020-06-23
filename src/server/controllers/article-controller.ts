@@ -6,6 +6,7 @@ import cheerio from "cheerio";
 import * as jwt from "jsonwebtoken";
 import urlencode from "urlencode";
 import bcrypt from "bcrypt";
+import iconv from "iconv-lite";
 import path from "path";
 import * as dotenv from "dotenv";
 import { request } from "http";
@@ -58,16 +59,30 @@ export default class articleController {
     function accessNewsUrl(data: Array<any>) {
       console.log("여기는 들어오나?");
       let linkArr: string[] = [];
-      return data.forEach((d) => {
+      data.forEach((d) => {
+        console.log("originallink: ", d.link);
         axios
-          .get(d.originallink)
-          .then((body) => {
-            linkArr.push(body.data);
-            return linkArr;
-            console.log("linkArr: ", linkArr);
+          .get(d.link)
+          .then((html) => {
+            const $ = cheerio.load(html.data, { decodeEntities: false }); //{ decodeEntities: false }
+            // console.log($);
+            const $body = $("div#articleBodyContents").html();
+
+            if ($body !== null) {
+              const strContents = Buffer.from($body);
+              // iconv = new iconv('euc-kr', 'UTF8')
+              let body = iconv.decode(strContents, "utf-8");
+
+              console.log("body; ", body);
+            }
+
+            // const $body = $("div #main_content")
+            //   .children("div #articleBodyContents")
+            //   .text();
           })
           .catch((err) => {
-            throw err.message;
+            console.log("에러입니당");
+            console.log(err.message);
           });
       });
     }
@@ -76,8 +91,9 @@ export default class articleController {
       console.log("apiData: ", apiData);
       const url: any = await accessNewsUrl(apiData);
       console.log("url: ", url);
-    } catch {
-      console.error;
+    } catch (error) {
+      console.log("여기서 에러입니당");
+      throw error;
     }
   }
 
