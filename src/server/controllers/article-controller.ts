@@ -60,18 +60,19 @@ export default class articleController {
       console.log("여기는 들어오나?");
       let linkArr: string[] = [];
       data.forEach((d) => {
-        console.log("originallink: ", d.link);
+        console.log("link: ", d.link);
         axios
-          .get(d.link)
+          .get(d.link, { responseType: "arraybuffer" })
           .then((html) => {
-            const $ = cheerio.load(html.data, { decodeEntities: false }); //{ decodeEntities: false }
-            // console.log($);
+            const $ = cheerio.load(html.data, { decodeEntities: false }); //
+            console.log("$: ", $);
             const $body = $("div#articleBodyContents").html();
+            console.log($body);
 
             if ($body !== null) {
-              const strContents = Buffer.from($body);
+              const strContents = new Buffer($body);
               // iconv = new iconv('euc-kr', 'UTF8')
-              let body = iconv.decode(strContents, "utf-8");
+              let body = iconv.decode(strContents, "EUC-KR").toString();
 
               console.log("body; ", body);
             }
