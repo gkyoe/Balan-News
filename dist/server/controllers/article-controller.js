@@ -101,17 +101,18 @@ var articleController = /** @class */ (function () {
                 console.log("여기는 들어오나?");
                 var linkArr = [];
                 data.forEach(function (d) {
-                    console.log("originallink: ", d.link);
+                    console.log("link: ", d.link);
                     axios_1.default
-                        .get(d.link)
+                        .get(d.link, { responseType: "arraybuffer" })
                         .then(function (html) {
-                        var $ = cheerio_1.default.load(html.data, { decodeEntities: false }); //{ decodeEntities: false }
-                        // console.log($);
+                        var $ = cheerio_1.default.load(html.data, { decodeEntities: false }); //
+                        console.log("$: ", $);
                         var $body = $("div#articleBodyContents").html();
+                        console.log($body);
                         if ($body !== null) {
-                            var strContents = Buffer.from($body);
+                            var strContents = new Buffer($body);
                             // iconv = new iconv('euc-kr', 'UTF8')
-                            var body = iconv_lite_1.default.decode(strContents, "utf-8").toString;
+                            var body = iconv_lite_1.default.decode(strContents, "EUC-KR").toString();
                             console.log("body; ", body);
                         }
                         // const $body = $("div #main_content")
