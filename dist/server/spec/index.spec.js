@@ -47,7 +47,7 @@ var models_1 = require("../models");
 require("dotenv");
 describe("Test를 시작하기 전에 ", function () {
     var user = mongoose_1.default.model("User", models_1.User.UserSchema);
-    beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+    before(function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, mongoose_1.default.connect("" + process.env.MONGO_DEV, {
@@ -60,7 +60,7 @@ describe("Test를 시작하기 전에 ", function () {
             }
         });
     }); });
-    afterEach(function () { return __awaiter(void 0, void 0, void 0, function () {
+    after(function () { return __awaiter(void 0, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, mongoose_1.default.disconnect()];
