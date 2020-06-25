@@ -11,7 +11,7 @@ import UserController from "../controllers/user-controller";
 describe("Test를 시작하기 전에 ", () => {
   const user = mongoose.model("User", User.UserSchema);
 
-  beforeEach(async () => {
+  before(async () => {
     await mongoose.connect(`${process.env.MONGO_DEV}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -29,7 +29,7 @@ describe("Test를 시작하기 전에 ", () => {
     //   });
   });
 
-  afterEach(async () => {
+  after(async () => {
     await mongoose.disconnect();
   });
 

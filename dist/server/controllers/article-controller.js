@@ -105,15 +105,15 @@ var articleController = /** @class */ (function () {
                     axios_1.default
                         .get(d.link, { responseType: "arraybuffer" })
                         .then(function (html) {
+                        var bufferHtml = new Buffer(html.data);
+                        var body = iconv_lite_1.default.decode(bufferHtml, "euc-kr").toString();
+                        console.log("body; ", body);
                         var $ = cheerio_1.default.load(html.data, { decodeEntities: false }); //
                         console.log("$: ", $);
                         var $body = $("div#articleBodyContents").html();
                         console.log($body);
                         if ($body !== null) {
-                            var strContents = new Buffer($body);
                             // iconv = new iconv('euc-kr', 'UTF8')
-                            var body = iconv_lite_1.default.decode(strContents, "EUC-KR").toString();
-                            console.log("body; ", body);
                         }
                         // const $body = $("div #main_content")
                         //   .children("div #articleBodyContents")

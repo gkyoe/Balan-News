@@ -64,18 +64,18 @@ export default class articleController {
         axios
           .get(d.link, { responseType: "arraybuffer" })
           .then((html) => {
+            const bufferHtml = new Buffer(html.data);
+            let body = iconv.decode(bufferHtml, "euc-kr").toString();
+
+            console.log("body; ", body);
             const $ = cheerio.load(html.data, { decodeEntities: false }); //
             console.log("$: ", $);
             const $body = $("div#articleBodyContents").html();
             console.log($body);
 
-            if ($body !== null) {
-              const strContents = new Buffer($body);
-              // iconv = new iconv('euc-kr', 'UTF8')
-              let body = iconv.decode(strContents, "EUC-KR").toString();
-
-              console.log("body; ", body);
-            }
+            // if ($body !== null) {
+            //   // iconv = new iconv('euc-kr', 'UTF8')
+            // }
 
             // const $body = $("div #main_content")
             //   .children("div #articleBodyContents")
