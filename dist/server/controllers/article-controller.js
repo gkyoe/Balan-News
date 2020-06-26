@@ -60,8 +60,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var cheerio_1 = __importDefault(require("cheerio"));
+var request_promise_1 = __importDefault(require("request-promise"));
 var urlencode_1 = __importDefault(require("urlencode"));
-var iconv_lite_1 = __importDefault(require("iconv-lite"));
+// import { Iconv } from "iconv";
+var Iconv = require("iconv").Iconv;
+var jschardet_1 = __importDefault(require("jschardet"));
 var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
 dotenv.config({
@@ -97,24 +100,34 @@ var articleController = /** @class */ (function () {
                     throw err.message;
                 });
             }
+            function anyToUtf8(str) {
+                var encoding = jschardet_1.default.detect(str).encoding;
+                console.log("source encoding = " + encoding);
+                var iconv = new Iconv(encoding, "utf-8//translit//ignore");
+                return iconv.convert(str).toString();
+            }
             function accessNewsUrl(data) {
                 console.log("여기는 들어오나?");
                 var linkArr = [];
                 data.forEach(function (d) {
                     console.log("link: ", d.link);
-                    axios_1.default
-                        .get(d.link, { responseType: "arraybuffer" })
+                    request_promise_1.default({
+                        url: d.link,
+                        encoding: null,
+                    })
+                        .then(anyToUtf8)
                         .then(function (html) {
-                        var bufferHtml = new Buffer(html.data);
-                        var body = iconv_lite_1.default.decode(bufferHtml, "euc-kr").toString();
-                        console.log("body; ", body);
-                        var $ = cheerio_1.default.load(html.data, { decodeEntities: false }); //
-                        console.log("$: ", $);
-                        var $body = $("div#articleBodyContents").html();
-                        console.log($body);
-                        if ($body !== null) {
-                            // iconv = new iconv('euc-kr', 'UTF8')
-                        }
+                        var $ = cheerio_1.default.load(html);
+                        var articleBodyContents = $("div#articleBodyContents").text();
+                        console.log("articleBodyContents: ", articleBodyContents);
+                        // let body = Iconv.decode(bufferHtml, "euc-kr").toString();
+                        // console.log("body; ", body);
+                        // const $ = cheerio.load(html.data, { decodeEntities: false }); //
+                        // // console.log("$: ", $);
+                        // console.log("div#articleBodyContents: ", $body);
+                        // if ($body !== null) {
+                        //   // iconv = new iconv('euc-kr', 'UTF8')
+                        // }
                         // const $body = $("div #main_content")
                         //   .children("div #articleBodyContents")
                         //   .text();
