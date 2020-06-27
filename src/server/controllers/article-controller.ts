@@ -20,6 +20,13 @@ dotenv.config({
     process.env.NODE_ENV == "production" ? ".env" : ".dev.env"
   ),
 });
+
+// declare module 'axios' {
+//   export interface AxiosRequestConfig {
+//     responseEncoding: string;
+//   }
+// }
+
 const secret: string | undefined = process.env.secret;
 
 interface Article {
@@ -69,20 +76,26 @@ export default class articleController {
       let linkArr: {}[] = [];
       apiResource.forEach((api) => {
         console.log("link: ", api.link);
-        rp({
-          url: api.link,
-          encoding: null,
-        })
-          .then(anyToUtf8)
-          .then((html) => {
-            let $ = cheerio.load(html);
-            let articleBodyContents = $("div#articleBodyContents").text();
-            console.log("articleBodyContents: ", articleBodyContents);
+        // rp({
+        //   url: api.link,
+        //   encoding: null,
+        // })
+        axios
+          .get(api.link, {
+            responseType: "arraybuffer",
+            responseEncoding: "binary",
           })
-          .catch((err) => {
-            console.log("에러입니당");
-            console.log(err.message);
-          });
+          .then((response) => console.log("responce: ", response));
+        // .then(anyToUtf8)
+        // .then((html) => {
+        //   let $ = cheerio.load(html);
+        //   let articleBodyContents = $("div#articleBodyContents").text();
+        //   console.log("articleBodyContents: ", articleBodyContents);
+        // })
+        // .catch((err) => {
+        //   console.log("에러입니당");
+        //   console.log(err.message);
+        // });
       });
     }
     try {

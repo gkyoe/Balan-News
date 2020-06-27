@@ -59,8 +59,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
-var cheerio_1 = __importDefault(require("cheerio"));
-var request_promise_1 = __importDefault(require("request-promise"));
 var urlencode_1 = __importDefault(require("urlencode"));
 // import { Iconv } from "iconv";
 var Iconv = require("iconv").Iconv;
@@ -84,7 +82,6 @@ var articleController = /** @class */ (function () {
                 var client_id = process.env.naverNewsApi_id;
                 var client_scret = process.env.naverNewsApi_ScretKey;
                 var options = {
-                    // url: api_url,
                     headers: {
                         "X-Naver-Client-Id": client_id,
                         "X-Naver-Client-Secret": client_scret,
@@ -106,36 +103,27 @@ var articleController = /** @class */ (function () {
                 var iconv = new Iconv(encoding, "utf-8//translit//ignore");
                 return iconv.convert(str).toString();
             }
-            function accessNewsUrl(data) {
-                console.log("여기는 들어오나?");
+            function crawlingNewsBody(apiResource) {
                 var linkArr = [];
-                data.forEach(function (d) {
-                    console.log("link: ", d.link);
-                    request_promise_1.default({
-                        url: d.link,
-                        encoding: null,
-                    })
-                        .then(anyToUtf8)
-                        .then(function (html) {
-                        var $ = cheerio_1.default.load(html);
-                        var articleBodyContents = $("div#articleBodyContents").text();
-                        console.log("articleBodyContents: ", articleBodyContents);
-                        // let body = Iconv.decode(bufferHtml, "euc-kr").toString();
-                        // console.log("body; ", body);
-                        // const $ = cheerio.load(html.data, { decodeEntities: false }); //
-                        // // console.log("$: ", $);
-                        // console.log("div#articleBodyContents: ", $body);
-                        // if ($body !== null) {
-                        //   // iconv = new iconv('euc-kr', 'UTF8')
-                        // }
-                        // const $body = $("div #main_content")
-                        //   .children("div #articleBodyContents")
-                        //   .text();
-                    })
-                        .catch(function (err) {
-                        console.log("에러입니당");
-                        console.log(err.message);
-                    });
+                apiResource.forEach(function (api) {
+                    console.log("link: ", api.link);
+                    // rp({
+                    //   url: api.link,
+                    //   encoding: null,
+                    // })
+                    axios_1.default
+                        .get(api.link)
+                        .then(function (response) { return console.log("responce: ", response); });
+                    // .then(anyToUtf8)
+                    // .then((html) => {
+                    //   let $ = cheerio.load(html);
+                    //   let articleBodyContents = $("div#articleBodyContents").text();
+                    //   console.log("articleBodyContents: ", articleBodyContents);
+                    // })
+                    // .catch((err) => {
+                    //   console.log("에러입니당");
+                    //   console.log(err.message);
+                    // });
                 });
             }
             var apiData, url, error_1;
@@ -147,7 +135,7 @@ var articleController = /** @class */ (function () {
                     case 1:
                         apiData = _a.sent();
                         console.log("apiData: ", apiData);
-                        return [4 /*yield*/, accessNewsUrl(apiData)];
+                        return [4 /*yield*/, crawlingNewsBody(apiData)];
                     case 2:
                         url = _a.sent();
                         console.log("url: ", url);
