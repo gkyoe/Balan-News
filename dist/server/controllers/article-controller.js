@@ -59,6 +59,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+var cheerio_1 = __importDefault(require("cheerio"));
+var request_promise_1 = __importDefault(require("request-promise"));
 var urlencode_1 = __importDefault(require("urlencode"));
 // import { Iconv } from "iconv";
 var Iconv = require("iconv").Iconv;
@@ -68,6 +70,11 @@ var dotenv = __importStar(require("dotenv"));
 dotenv.config({
     path: path_1.default.resolve(process.cwd(), process.env.NODE_ENV == "production" ? ".env" : ".dev.env"),
 });
+// declare module 'axios' {
+//   export interface AxiosRequestConfig {
+//     responseEncoding: string;
+//   }
+// }
 var secret = process.env.secret;
 var articleController = /** @class */ (function () {
     function articleController() {
@@ -107,23 +114,30 @@ var articleController = /** @class */ (function () {
                 var linkArr = [];
                 apiResource.forEach(function (api) {
                     console.log("link: ", api.link);
-                    // rp({
-                    //   url: api.link,
-                    //   encoding: null,
-                    // })
-                    axios_1.default
-                        .get(api.link)
-                        .then(function (response) { return console.log("responce: ", response); });
-                    // .then(anyToUtf8)
-                    // .then((html) => {
-                    //   let $ = cheerio.load(html);
-                    //   let articleBodyContents = $("div#articleBodyContents").text();
-                    //   console.log("articleBodyContents: ", articleBodyContents);
-                    // })
-                    // .catch((err) => {
-                    //   console.log("에러입니당");
-                    //   console.log(err.message);
-                    // });
+                    request_promise_1.default({
+                        url: api.link,
+                        encoding: null,
+                    })
+                        // axios
+                        //   .get(api.link, {
+                        //     responseType: "arraybuffer",
+                        //     responseEncoding: "binary",
+                        //   })
+                        //   .then((response) => console.log("responce: ", response));
+                        .then(anyToUtf8)
+                        .then(function (html) {
+                        var $ = cheerio_1.default.load(html);
+                        var src = $("div.press_logo").children("img").attr("src");
+                        var articleTitle = $("h3#articleTitle").text();
+                        var articleBodyContents = $("div#articleBodyContents").text();
+                        console.log("src: ", src);
+                        console.log("articleTitle: ", articleTitle);
+                        console.log("articleBodyContents: ", articleBodyContents);
+                    })
+                        .catch(function (err) {
+                        console.log("에러입니당");
+                        console.log(err.message);
+                    });
                 });
             }
             var apiData, url, error_1;

@@ -76,26 +76,30 @@ export default class articleController {
       let linkArr: {}[] = [];
       apiResource.forEach((api) => {
         console.log("link: ", api.link);
-        // rp({
-        //   url: api.link,
-        //   encoding: null,
-        // })
-        axios
-          .get(api.link, {
-            responseType: "arraybuffer",
-            responseEncoding: "binary",
+        rp({
+          url: api.link,
+          encoding: null,
+        })
+          // axios
+          //   .get(api.link, {
+          //     responseType: "arraybuffer",
+          //     responseEncoding: "binary",
+          //   })
+          //   .then((response) => console.log("responce: ", response));
+          .then(anyToUtf8)
+          .then((html) => {
+            let $ = cheerio.load(html);
+            let src = $("div.press_logo").children("img").attr("src");
+            let articleTitle = $("h3#articleTitle").text();
+            let articleBodyContents = $("div#articleBodyContents").text();
+            console.log("src: ", src);
+            console.log("articleTitle: ", articleTitle);
+            console.log("articleBodyContents: ", articleBodyContents);
           })
-          .then((response) => console.log("responce: ", response));
-        // .then(anyToUtf8)
-        // .then((html) => {
-        //   let $ = cheerio.load(html);
-        //   let articleBodyContents = $("div#articleBodyContents").text();
-        //   console.log("articleBodyContents: ", articleBodyContents);
-        // })
-        // .catch((err) => {
-        //   console.log("에러입니당");
-        //   console.log(err.message);
-        // });
+          .catch((err) => {
+            console.log("에러입니당");
+            console.log(err.message);
+          });
       });
     }
     try {
