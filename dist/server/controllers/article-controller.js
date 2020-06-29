@@ -110,37 +110,67 @@ var articleController = /** @class */ (function () {
                 var iconv = new Iconv(encoding, "utf-8//translit//ignore");
                 return iconv.convert(str).toString();
             }
-            function crawlingNewsBody(apiResource) {
-                var linkArr = [];
-                apiResource.forEach(function (api) {
-                    console.log("link: ", api.link);
-                    request_promise_1.default({
-                        url: api.link,
-                        encoding: null,
-                    })
-                        // axios
-                        //   .get(api.link, {
-                        //     responseType: "arraybuffer",
-                        //     responseEncoding: "binary",
-                        //   })
-                        //   .then((response) => console.log("responce: ", response));
-                        .then(anyToUtf8)
-                        .then(function (html) {
-                        var $ = cheerio_1.default.load(html);
-                        var src = $("div.press_logo").children("img").attr("src");
-                        var articleTitle = $("h3#articleTitle").text();
-                        var articleBodyContents = $("div#articleBodyContents").text();
-                        console.log("src: ", src);
-                        console.log("articleTitle: ", articleTitle);
-                        console.log("articleBodyContents: ", articleBodyContents);
-                    })
-                        .catch(function (err) {
-                        console.log("에러입니당");
-                        console.log(err.message);
+            function crawlingNewsBody(link) {
+                var contentLogo = { content: "", logo: "" };
+                request_promise_1.default({
+                    url: link,
+                    encoding: null,
+                })
+                    .then(anyToUtf8)
+                    .then(function (html) {
+                    var $ = cheerio_1.default.load(html);
+                    var src = $(".press_logo").children("img").attr("src");
+                    var articeBody = $("div#articeBody").text();
+                    var articleBodyContents = $("div#articleBodyContents").text();
+                    // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
+                    // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
+                    // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
+                    // console.log("src: ", src);
+                    // console.log("articeBody:", articeBody);
+                    // console.log("articleBodyContents: ", articleBodyContents);
+                    if (articeBody !== null) {
+                        contentLogo["content"] = articeBody;
+                    }
+                    else {
+                        contentLogo["content"] = articleBodyContents;
+                    }
+                    contentLogo["logo"] = src;
+                    // console.log("contentLogo: ", contentLogo);
+                });
+                console.log("contentLogo: ", contentLogo);
+                return contentLogo;
+            }
+            function LoopLink(apiResource) {
+                return __awaiter(this, void 0, void 0, function () {
+                    var addContentLogoToApi, _i, apiResource_1, api, newsBody, resultApi;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                addContentLogoToApi = function (obj, valueObj) {
+                                    obj["content"] = valueObj.content;
+                                    obj["logo"] = valueObj.logo;
+                                };
+                                _i = 0, apiResource_1 = apiResource;
+                                _a.label = 1;
+                            case 1:
+                                if (!(_i < apiResource_1.length)) return [3 /*break*/, 5];
+                                api = apiResource_1[_i];
+                                return [4 /*yield*/, crawlingNewsBody(api.link)];
+                            case 2:
+                                newsBody = _a.sent();
+                                return [4 /*yield*/, addContentLogoToApi(api, newsBody)];
+                            case 3:
+                                resultApi = _a.sent();
+                                _a.label = 4;
+                            case 4:
+                                _i++;
+                                return [3 /*break*/, 1];
+                            case 5: return [2 /*return*/, apiResource];
+                        }
                     });
                 });
             }
-            var apiData, url, error_1;
+            var apiData, result, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -149,10 +179,10 @@ var articleController = /** @class */ (function () {
                     case 1:
                         apiData = _a.sent();
                         console.log("apiData: ", apiData);
-                        return [4 /*yield*/, crawlingNewsBody(apiData)];
+                        return [4 /*yield*/, LoopLink(apiData)];
                     case 2:
-                        url = _a.sent();
-                        console.log("url: ", url);
+                        result = _a.sent();
+                        console.log("result: ", result);
                         return [3 /*break*/, 4];
                     case 3:
                         error_1 = _a.sent();

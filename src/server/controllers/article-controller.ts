@@ -35,6 +35,15 @@ interface Article {
   link: string;
   description: string;
   pubDate: string;
+  content: string | undefined;
+  logo: string | undefined;
+}
+
+// declare function NewsBody(o: Object | null): void;
+
+interface NewsContentLogo {
+  content: string | undefined;
+  logo: string | undefined;
 }
 
 export default class articleController {
@@ -72,41 +81,62 @@ export default class articleController {
       return iconv.convert(str).toString();
     }
 
-    function crawlingNewsBody(apiResource: Array<Article>) {
-      let linkArr: {}[] = [];
-      apiResource.forEach((api) => {
-        console.log("link: ", api.link);
-        rp({
-          url: api.link,
-          encoding: null,
-        })
-          // axios
-          //   .get(api.link, {
-          //     responseType: "arraybuffer",
-          //     responseEncoding: "binary",
-          //   })
-          //   .then((response) => console.log("responce: ", response));
-          .then(anyToUtf8)
-          .then((html) => {
-            let $ = cheerio.load(html);
-            let src = $("div.press_logo").children("img").attr("src");
-            let articleTitle = $("h3#articleTitle").text();
-            let articleBodyContents = $("div#articleBodyContents").text();
-            console.log("src: ", src);
-            console.log("articleTitle: ", articleTitle);
-            console.log("articleBodyContents: ", articleBodyContents);
-          })
-          .catch((err) => {
-            console.log("에러입니당");
-            console.log(err.message);
-          });
-      });
+    function crawlingNewsBody(link: string): NewsContentLogo {
+      const contentLogo: NewsContentLogo = { content: "", logo: "" };
+
+      rp({
+        url: link,
+        encoding: null,
+      })
+        .then(anyToUtf8)
+        .then((html) => {
+          let $ = cheerio.load(html);
+          let src = $(".press_logo").children("img").attr("src");
+          let articeBody = $("div#articeBody").text();
+          let articleBodyContents = $("div#articleBodyContents").text();
+          // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
+          // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
+          // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
+          // console.log("src: ", src);
+          // console.log("articeBody:", articeBody);
+          // console.log("articleBodyContents: ", articleBodyContents);
+
+          if (articeBody !== null) {
+            contentLogo["content"] = articeBody;
+          } else {
+            contentLogo["content"] = articleBodyContents;
+          }
+          contentLogo["logo"] = src;
+          // console.log("contentLogo: ", contentLogo);
+        });
+      console.log("contentLogo: ", contentLogo);
+      return contentLogo;
     }
+
+    async function LoopLink(apiResource: Array<Article>) {
+      //  apiResource.forEach((api) => {
+      //   let body = crawlingNewsBody(api.link);
+      //   console.log("body: ", body);
+      //   // api["content"] = body.content;
+      //   return api;
+      // });
+      const addContentLogoToApi = (obj: Article, valueObj: NewsContentLogo) => {
+        obj["content"] = valueObj.content;
+        obj["logo"] = valueObj.logo;
+      };
+
+      for (let api of apiResource) {
+        const newsBody = await crawlingNewsBody(api.link);
+        const resultApi = await addContentLogoToApi(api, newsBody);
+      }
+      return apiResource;
+    }
+
     try {
       const apiData: Array<Article> = await accessNaverApi(req);
       console.log("apiData: ", apiData);
-      const url: any = await crawlingNewsBody(apiData);
-      console.log("url: ", url);
+      const result: Array<Article> = await LoopLink(apiData);
+      console.log("result: ", result);
     } catch (error) {
       console.log("여기서 에러입니당");
       throw error;
