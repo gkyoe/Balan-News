@@ -7,12 +7,12 @@ import * as jwt from "jsonwebtoken";
 import rp from "request-promise";
 import urlencode from "urlencode";
 import bcrypt from "bcrypt";
-// import { Iconv } from "iconv";
-var Iconv = require("iconv").Iconv;
 import jschardet from "jschardet";
 import path from "path";
 import * as dotenv from "dotenv";
 import { request } from "http";
+
+var Iconv = require("iconv").Iconv;
 
 dotenv.config({
   path: path.resolve(
@@ -47,7 +47,7 @@ interface NewsContentLogo {
 }
 
 export default class articleController {
-  public async naverNews(req: Request, res: Response) {
+  public async loadNews(req: Request, res: Response) {
     function accessNaverApi(request: Request) {
       const encoded = urlencode(request.body.data);
       console.log(encoded); //%EB%82%A0%EC%94%A8
@@ -78,39 +78,58 @@ export default class articleController {
       const { encoding } = jschardet.detect(str);
       console.log("source encoding = " + encoding);
       const iconv = new Iconv(encoding, "utf-8//translit//ignore");
-      return iconv.convert(str).toString();
+      const encoing = iconv.convert(str).toString();
+      return encoing;
     }
 
-    function crawlingNewsBody(link: string): NewsContentLogo {
+    function crawlingNewsBody(link: string) {
       const contentLogo: NewsContentLogo = { content: "", logo: "" };
-
-      rp({
+      const binaryData = rp({
         url: link,
         encoding: null,
-      })
-        .then(anyToUtf8)
-        .then((html) => {
-          let $ = cheerio.load(html);
-          let src = $(".press_logo").children("img").attr("src");
-          let articeBody = $("div#articeBody").text();
-          let articleBodyContents = $("div#articleBodyContents").text();
-          // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
-          // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
-          // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
-          // console.log("src: ", src);
-          // console.log("articeBody:", articeBody);
-          // console.log("articleBodyContents: ", articleBodyContents);
+      });
+      return binaryData;
+      // .then((binaryData) => anyToUtf8(binaryData))
+      // .then((html) => {
+      //   let $ = cheerio.load(html);
+      //   let src = $(".press_logo").children("img").attr("src");
+      //   let articeBody = $("div#articeBody").text();
+      //   let articleBodyContents = $("div#articleBodyContents").text();
+      // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
+      // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
+      // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
+      // console.log("src: ", src);
+      // console.log("articeBody:", articeBody);
+      // console.log("articleBodyContents: ", articleBodyContents);
 
-          if (articeBody !== null) {
-            contentLogo["content"] = articeBody;
-          } else {
-            contentLogo["content"] = articleBodyContents;
-          }
-          contentLogo["logo"] = src;
-          // console.log("contentLogo: ", contentLogo);
-        });
-      console.log("contentLogo: ", contentLogo);
-      return contentLogo;
+      // if (articeBody !== null) {
+      //   contentLogo["content"] = articeBody;
+      // } else {
+      //   contentLogo["content"] = articleBodyContents;
+      // }
+      // contentLogo["logo"] = src;
+      // console.log("contentLogo: ", contentLogo);
+      // })
+      // console.log("contentLogo: ", contentLogo);
+      // return contentLogo;
+    }
+    function selectTagData(encodingHtml: string): Array<string | undefined> {
+      let twoDataArr: Array<string | undefined> = [];
+      let $ = cheerio.load(encodingHtml);
+      let src = $(".press_logo").children("img").attr("src");
+      let content =
+        $("div#articeBody").text() === null
+          ? $("div#articleBodyContents").text()
+          : $("div#articeBody").text();
+      // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
+      // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
+      // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
+      // console.log("src: ", src);
+      // console.log("articeBody:", articeBody);
+      // console.log("articleBodyContents: ", articleBodyContents);
+      twoDataArr.push(content);
+      twoDataArr.push(src);
+      return twoDataArr;
     }
 
     async function LoopLink(apiResource: Array<Article>) {
@@ -120,14 +139,21 @@ export default class articleController {
       //   // api["content"] = body.content;
       //   return api;
       // });
-      const addContentLogoToApi = (obj: Article, valueObj: NewsContentLogo) => {
-        obj["content"] = valueObj.content;
-        obj["logo"] = valueObj.logo;
+      const addContentLogoToApi = (
+        obj: Article,
+        valuearr: Array<string | undefined>
+      ) => {
+        obj["content"] = valuearr[0];
+        obj["logo"] = valuearr[1];
+        return obj;
       };
+      const naverNewsApi = await accessNaverApi(req);
 
       for (let api of apiResource) {
-        const newsBody = await crawlingNewsBody(api.link);
-        const resultApi = await addContentLogoToApi(api, newsBody);
+        const binaryData = await crawlingNewsBody(api.link);
+        const encodingData = await anyToUtf8(binaryData);
+        const crawlingData = await selectTagData(encodingData);
+        const resultApi = await addContentLogoToApi(api, crawlingData);
       }
       return apiResource;
     }
@@ -137,6 +163,7 @@ export default class articleController {
       console.log("apiData: ", apiData);
       const result: Array<Article> = await LoopLink(apiData);
       console.log("result: ", result);
+      await res.send(result).status(200);
     } catch (error) {
       console.log("여기서 에러입니당");
       throw error;

@@ -62,11 +62,10 @@ var axios_1 = __importDefault(require("axios"));
 var cheerio_1 = __importDefault(require("cheerio"));
 var request_promise_1 = __importDefault(require("request-promise"));
 var urlencode_1 = __importDefault(require("urlencode"));
-// import { Iconv } from "iconv";
-var Iconv = require("iconv").Iconv;
 var jschardet_1 = __importDefault(require("jschardet"));
 var path_1 = __importDefault(require("path"));
 var dotenv = __importStar(require("dotenv"));
+var Iconv = require("iconv").Iconv;
 dotenv.config({
     path: path_1.default.resolve(process.cwd(), process.env.NODE_ENV == "production" ? ".env" : ".dev.env"),
 });
@@ -108,64 +107,92 @@ var articleController = /** @class */ (function () {
                 var encoding = jschardet_1.default.detect(str).encoding;
                 console.log("source encoding = " + encoding);
                 var iconv = new Iconv(encoding, "utf-8//translit//ignore");
-                return iconv.convert(str).toString();
+                var encoing = iconv.convert(str).toString();
+                return encoing;
             }
             function crawlingNewsBody(link) {
                 var contentLogo = { content: "", logo: "" };
-                request_promise_1.default({
+                var binaryData = request_promise_1.default({
                     url: link,
                     encoding: null,
-                })
-                    .then(anyToUtf8)
-                    .then(function (html) {
-                    var $ = cheerio_1.default.load(html);
-                    var src = $(".press_logo").children("img").attr("src");
-                    var articeBody = $("div#articeBody").text();
-                    var articleBodyContents = $("div#articleBodyContents").text();
-                    // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
-                    // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
-                    // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
-                    // console.log("src: ", src);
-                    // console.log("articeBody:", articeBody);
-                    // console.log("articleBodyContents: ", articleBodyContents);
-                    if (articeBody !== null) {
-                        contentLogo["content"] = articeBody;
-                    }
-                    else {
-                        contentLogo["content"] = articleBodyContents;
-                    }
-                    contentLogo["logo"] = src;
-                    // console.log("contentLogo: ", contentLogo);
                 });
-                console.log("contentLogo: ", contentLogo);
-                return contentLogo;
+                return binaryData;
+                // .then((binaryData) => anyToUtf8(binaryData))
+                // .then((html) => {
+                //   let $ = cheerio.load(html);
+                //   let src = $(".press_logo").children("img").attr("src");
+                //   let articeBody = $("div#articeBody").text();
+                //   let articleBodyContents = $("div#articleBodyContents").text();
+                // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
+                // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
+                // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
+                // console.log("src: ", src);
+                // console.log("articeBody:", articeBody);
+                // console.log("articleBodyContents: ", articleBodyContents);
+                // if (articeBody !== null) {
+                //   contentLogo["content"] = articeBody;
+                // } else {
+                //   contentLogo["content"] = articleBodyContents;
+                // }
+                // contentLogo["logo"] = src;
+                // console.log("contentLogo: ", contentLogo);
+                // })
+                // console.log("contentLogo: ", contentLogo);
+                // return contentLogo;
+            }
+            function selectTagData(encodingHtml) {
+                var twoDataArr = [];
+                var $ = cheerio_1.default.load(encodingHtml);
+                var src = $(".press_logo").children("img").attr("src");
+                var content = $("div#articeBody").text() === null
+                    ? $("div#articleBodyContents").text()
+                    : $("div#articeBody").text();
+                // let articleTitleH3 = $("h3#articleTitle").text(); // H3 타이틀 제목
+                // let articleTitleH2 = $("h2").text(); // H2 타이틀 제목
+                // let articleInfo = $("span.author").children("em").text(); // 기사 날짜
+                // console.log("src: ", src);
+                // console.log("articeBody:", articeBody);
+                // console.log("articleBodyContents: ", articleBodyContents);
+                twoDataArr.push(content);
+                twoDataArr.push(src);
+                return twoDataArr;
             }
             function LoopLink(apiResource) {
                 return __awaiter(this, void 0, void 0, function () {
-                    var addContentLogoToApi, _i, apiResource_1, api, newsBody, resultApi;
+                    var addContentLogoToApi, naverNewsApi, _i, apiResource_1, api, binaryData, encodingData, crawlingData, resultApi;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                addContentLogoToApi = function (obj, valueObj) {
-                                    obj["content"] = valueObj.content;
-                                    obj["logo"] = valueObj.logo;
+                                addContentLogoToApi = function (obj, valuearr) {
+                                    obj["content"] = valuearr[0];
+                                    obj["logo"] = valuearr[1];
+                                    return obj;
                                 };
-                                _i = 0, apiResource_1 = apiResource;
-                                _a.label = 1;
+                                return [4 /*yield*/, accessNaverApi(req)];
                             case 1:
-                                if (!(_i < apiResource_1.length)) return [3 /*break*/, 5];
+                                naverNewsApi = _a.sent();
+                                _i = 0, apiResource_1 = apiResource;
+                                _a.label = 2;
+                            case 2:
+                                if (!(_i < apiResource_1.length)) return [3 /*break*/, 8];
                                 api = apiResource_1[_i];
                                 return [4 /*yield*/, crawlingNewsBody(api.link)];
-                            case 2:
-                                newsBody = _a.sent();
-                                return [4 /*yield*/, addContentLogoToApi(api, newsBody)];
                             case 3:
-                                resultApi = _a.sent();
-                                _a.label = 4;
+                                binaryData = _a.sent();
+                                return [4 /*yield*/, anyToUtf8(binaryData)];
                             case 4:
+                                encodingData = _a.sent();
+                                return [4 /*yield*/, selectTagData(encodingData)];
+                            case 5:
+                                crawlingData = _a.sent();
+                                return [4 /*yield*/, addContentLogoToApi(api, crawlingData)];
+                            case 6:
+                                resultApi = _a.sent();
+                                _a.label = 7;
+                            case 7:
                                 _i++;
-                                return [3 /*break*/, 1];
-                            case 5: return [2 /*return*/, apiResource];
+                                return [3 /*break*/, 2];
+                            case 8: return [2 /*return*/, apiResource];
                         }
                     });
                 });
@@ -174,7 +201,7 @@ var articleController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 4, , 5]);
                         return [4 /*yield*/, accessNaverApi(req)];
                     case 1:
                         apiData = _a.sent();
@@ -183,12 +210,15 @@ var articleController = /** @class */ (function () {
                     case 2:
                         result = _a.sent();
                         console.log("result: ", result);
-                        return [3 /*break*/, 4];
+                        return [4 /*yield*/, res.send(result).status(200)];
                     case 3:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 4:
                         error_1 = _a.sent();
                         console.log("여기서 에러입니당");
                         throw error_1;
-                    case 4: return [2 /*return*/];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
