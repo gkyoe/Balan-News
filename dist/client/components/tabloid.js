@@ -49,7 +49,7 @@ var Tabloid = /** @class */ (function (_super) {
     // crawlingNews = (url: string) => {
     //   axios
     //     .get(
-    //       // "https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=102&oid=003&aid=0009913386"
+    //       "https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=102&oid=003&aid=0009913386"
     //       url
     //     )
     //     .then(

@@ -13,6 +13,7 @@ export class Routes {
     app.route("/signin").post(this.userController.signin);
     app.route("/signup").post(this.userController.signup);
     // app.route("/googleNews").post(this.articleController.googleNews);
+    app.route("/searchKeywords").post(this.articleController.searchKeywords);
     app.route("/loadNews").post(this.articleController.loadNews);
   }
 }

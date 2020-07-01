@@ -80,10 +80,10 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     const keyword = this.state.keyword;
 
     axios
-      .post(`http://localhost:3000/naverNews`, { data: keyword })
+      .post(`http://localhost:3000/searchKeywords`, { data: keyword })
       .then((res) => {
         console.log("res.data", res.data);
-        this.setState({ articles: res.data.items });
+        this.setState({ articles: res.data });
       })
       .then(() => this.emptyArticleBody())
       // .then(() => this.crawlingNews())

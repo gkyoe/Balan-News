@@ -77,7 +77,7 @@ var Sidebar = /** @class */ (function (_super) {
             e.preventDefault();
             var keyword = _this.state.keyword;
             axios_1.default
-                .post("http://localhost:3000/naverNews", { data: keyword })
+                .post("http://localhost:3000/searchKeywords", { data: keyword })
                 .then(function (res) {
                 console.log("res.data", res.data);
                 _this.setState({ articles: res.data.items });
