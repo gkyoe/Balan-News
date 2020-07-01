@@ -8,6 +8,11 @@ import "dotenv";
 import { doesNotMatch, doesNotReject } from "assert";
 import UserController from "../controllers/user-controller";
 
+// before() 모든 테스트들이 수행되기전 단 한번만 실행된다
+// after() 모든 테스트들이 수행된후 단 한번만 실행된다
+// beforeEach() 각 테스트들이 수행되기전 실행된다
+// afterEach() 각 테스트들이 수행된후 실행된다
+
 describe("Test를 시작하기 전에 ", () => {
   const user = mongoose.model("User", User.UserSchema);
 

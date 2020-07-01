@@ -45,6 +45,10 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var chai_1 = require("chai");
 var models_1 = require("../models");
 require("dotenv");
+// before() 모든 테스트들이 수행되기전 단 한번만 실행된다
+// after() 모든 테스트들이 수행된후 단 한번만 실행된다
+// beforeEach() 각 테스트들이 수행되기전 실행된다
+// afterEach() 각 테스트들이 수행된후 실행된다
 describe("Test를 시작하기 전에 ", function () {
     var user = mongoose_1.default.model("User", models_1.User.UserSchema);
     before(function () { return __awaiter(void 0, void 0, void 0, function () {
