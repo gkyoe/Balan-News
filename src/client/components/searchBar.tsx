@@ -12,6 +12,8 @@ interface searchProps {
     link: string;
     description: string;
     pubDate: string;
+    content: string | undefined;
+    logo: string | undefined;
   }[];
   keyword: string;
   limit: number;

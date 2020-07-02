@@ -75,30 +75,30 @@ export default class articleController {
   }
 
   public async loadNews(req: Request, res: Response) {
-    function accessNaverApi(request: Request) {
-      const encoded = urlencode(request.body.data);
-      const limit = 5;
-      const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
-      const client_id = process.env.naverNewsApi_id;
-      const client_scret = process.env.naverNewsApi_ScretKey;
+    // function accessNaverApi(request: Request) {
+    //   const encoded = urlencode(request.body.data);
+    //   const limit = 5;
+    //   const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
+    //   const client_id = process.env.naverNewsApi_id;
+    //   const client_scret = process.env.naverNewsApi_ScretKey;
 
-      const options = {
-        headers: {
-          "X-Naver-Client-Id": client_id,
-          "X-Naver-Client-Secret": client_scret,
-        },
-      };
+    //   const options = {
+    //     headers: {
+    //       "X-Naver-Client-Id": client_id,
+    //       "X-Naver-Client-Secret": client_scret,
+    //     },
+    //   };
 
-      return axios
-        .get(api_url, options)
-        .then((result: any) => {
-          // console.log("result.data.items: ", result.data.items);
-          return result.data.items;
-        })
-        .catch((err) => {
-          throw err.message;
-        });
-    }
+    //   return axios
+    //     .get(api_url, options)
+    //     .then((result: any) => {
+    //       // console.log("result.data.items: ", result.data.items);
+    //       return result.data.items;
+    //     })
+    //     .catch((err) => {
+    //       throw err.message;
+    //     });
+    // }
 
     function anyToUtf8(str: Buffer) {
       const { encoding } = jschardet.detect(str);
@@ -129,7 +129,7 @@ export default class articleController {
       return twoDataArr;
     }
 
-    async function LoopLink(apiData: Array<Article>) {
+    async function LoopLink(apiData: Article) {
       //  apiResource.forEach((api) => {
       //   let body = crawlingNewsBody(api.link);
       //   console.log("body: ", body);
@@ -146,19 +146,19 @@ export default class articleController {
       };
       // const naverNewsApi = await accessNaverApi(req);
 
-      for (let api of apiData) {
-        const binaryData = await crawlingNewsBody(api.link);
-        const encodingData = await anyToUtf8(binaryData);
-        const crawlingData = await selectTagData(encodingData);
-        const resultApi = await addContentLogoToApi(api, crawlingData);
-      }
+      // for (let api of apiData) {
+      const binaryData = await crawlingNewsBody(apiData.link);
+      const encodingData = await anyToUtf8(binaryData);
+      const crawlingData = await selectTagData(encodingData);
+      const resultApi = await addContentLogoToApi(apiData, crawlingData);
+      // }
       return apiData;
     }
 
     try {
-      const apiData: Array<Article> = await accessNaverApi(req);
-      console.log("apiData: ", apiData);
-      const result: Array<Article> = await LoopLink(apiData);
+      // const apiData: Array<Article> = await accessNaverApi(req);
+      // console.log("apiData: ", apiData);
+      const result: Article = await LoopLink(req.body);
       console.log("result: ", result);
       await res.send(result).status(200);
     } catch (error) {

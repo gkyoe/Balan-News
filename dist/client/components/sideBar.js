@@ -80,7 +80,7 @@ var Sidebar = /** @class */ (function (_super) {
                 .post("http://localhost:3000/searchKeywords", { data: keyword })
                 .then(function (res) {
                 console.log("res.data", res.data);
-                _this.setState({ articles: res.data.items });
+                _this.setState({ articles: res.data });
             })
                 .then(function () { return _this.emptyArticleBody(); })
                 // .then(() => this.crawlingNews())
@@ -105,6 +105,7 @@ var Sidebar = /** @class */ (function (_super) {
         _this.deleteArticleBody = function (data) {
             _this.setState(__assign(__assign({}, _this.state), { selectedArticles: _this.state.selectedArticles.filter(function (art) { return art.originallink !== data.originallink; }) }));
         };
+        //새로운 키워드로 검색 시 이미 선택된 article 을 삭제한다.
         _this.emptyArticleBody = function () {
             var checkCbx = document.querySelectorAll("input[type='checkbox']");
             console.log("checkCbx: ", checkCbx);

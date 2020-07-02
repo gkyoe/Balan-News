@@ -107,28 +107,28 @@ var articleController = /** @class */ (function () {
     };
     articleController.prototype.loadNews = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            function accessNaverApi(request) {
-                var encoded = urlencode_1.default(request.body.data);
-                var limit = 5;
-                var api_url = "https://openapi.naver.com/v1/search/news.json?query=" + encoded + "&display=" + limit + "&start=1&sort=sim";
-                var client_id = process.env.naverNewsApi_id;
-                var client_scret = process.env.naverNewsApi_ScretKey;
-                var options = {
-                    headers: {
-                        "X-Naver-Client-Id": client_id,
-                        "X-Naver-Client-Secret": client_scret,
-                    },
-                };
-                return axios_1.default
-                    .get(api_url, options)
-                    .then(function (result) {
-                    // console.log("result.data.items: ", result.data.items);
-                    return result.data.items;
-                })
-                    .catch(function (err) {
-                    throw err.message;
-                });
-            }
+            // function accessNaverApi(request: Request) {
+            //   const encoded = urlencode(request.body.data);
+            //   const limit = 5;
+            //   const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
+            //   const client_id = process.env.naverNewsApi_id;
+            //   const client_scret = process.env.naverNewsApi_ScretKey;
+            //   const options = {
+            //     headers: {
+            //       "X-Naver-Client-Id": client_id,
+            //       "X-Naver-Client-Secret": client_scret,
+            //     },
+            //   };
+            //   return axios
+            //     .get(api_url, options)
+            //     .then((result: any) => {
+            //       // console.log("result.data.items: ", result.data.items);
+            //       return result.data.items;
+            //     })
+            //     .catch((err) => {
+            //       throw err.message;
+            //     });
+            // }
             function anyToUtf8(str) {
                 var encoding = jschardet_1.default.detect(str).encoding;
                 console.log("source encoding = " + encoding);
@@ -156,7 +156,7 @@ var articleController = /** @class */ (function () {
             }
             function LoopLink(apiData) {
                 return __awaiter(this, void 0, void 0, function () {
-                    var addContentLogoToApi, _i, apiData_1, api, binaryData, encodingData, crawlingData, resultApi;
+                    var addContentLogoToApi, binaryData, encodingData, crawlingData, resultApi;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
@@ -165,54 +165,42 @@ var articleController = /** @class */ (function () {
                                     obj["logo"] = valuearr[1];
                                     return obj;
                                 };
-                                _i = 0, apiData_1 = apiData;
-                                _a.label = 1;
+                                return [4 /*yield*/, crawlingNewsBody(apiData.link)];
                             case 1:
-                                if (!(_i < apiData_1.length)) return [3 /*break*/, 7];
-                                api = apiData_1[_i];
-                                return [4 /*yield*/, crawlingNewsBody(api.link)];
-                            case 2:
                                 binaryData = _a.sent();
                                 return [4 /*yield*/, anyToUtf8(binaryData)];
-                            case 3:
+                            case 2:
                                 encodingData = _a.sent();
                                 return [4 /*yield*/, selectTagData(encodingData)];
-                            case 4:
+                            case 3:
                                 crawlingData = _a.sent();
-                                return [4 /*yield*/, addContentLogoToApi(api, crawlingData)];
-                            case 5:
+                                return [4 /*yield*/, addContentLogoToApi(apiData, crawlingData)];
+                            case 4:
                                 resultApi = _a.sent();
-                                _a.label = 6;
-                            case 6:
-                                _i++;
-                                return [3 /*break*/, 1];
-                            case 7: return [2 /*return*/, apiData];
+                                // }
+                                return [2 /*return*/, apiData];
                         }
                     });
                 });
             }
-            var apiData, result, error_1;
+            var result, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
-                        return [4 /*yield*/, accessNaverApi(req)];
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, LoopLink(req.body)];
                     case 1:
-                        apiData = _a.sent();
-                        console.log("apiData: ", apiData);
-                        return [4 /*yield*/, LoopLink(apiData)];
-                    case 2:
                         result = _a.sent();
                         console.log("result: ", result);
                         return [4 /*yield*/, res.send(result).status(200)];
-                    case 3:
+                    case 2:
                         _a.sent();
-                        return [3 /*break*/, 5];
-                    case 4:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_1 = _a.sent();
                         console.log("여기서 에러입니당");
                         throw error_1;
-                    case 5: return [2 /*return*/];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

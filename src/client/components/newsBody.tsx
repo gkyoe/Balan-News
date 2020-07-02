@@ -7,6 +7,8 @@ interface newsBodyProps {
     link: string;
     description: string;
     pubDate: string;
+    content: string | undefined;
+    logo: string | undefined;
   };
   key: number;
 }
@@ -27,9 +29,9 @@ export default class ArticleList extends React.Component<
       <div>
         <div>{this.props.news.title}</div>
         <div>{this.props.news.pubDate}</div>
-        {/* <div>{this.props.news.originallink}</div>
-        <div>{this.props.news.link}</div> */}
-        <div>{this.props.news.description}</div>
+        <div>{this.props.news.originallink}</div>
+        <div>{this.props.news.link}</div>
+        <div>{this.props.news.content}</div>
       </div>
     );
   }
