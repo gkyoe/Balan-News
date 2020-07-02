@@ -36,39 +36,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
+var axios_1 = __importDefault(require("axios"));
 var newsBody_1 = __importDefault(require("./newsBody"));
 require("./searchBar.css");
 var Tabloid = /** @class */ (function (_super) {
     __extends(Tabloid, _super);
     function Tabloid(props) {
         var _this = _super.call(this, props) || this;
+        _this.requestCrawlingNews = function (apiCollection) {
+            axios_1.default.post("http://localhost:3000/loadNews", { data: apiCollection }).then(function (response) {
+                // if (response.status === 200) {
+                console.log("response: ", response);
+                // } else {
+                //   //
+                // }
+            }, function (error) { return console.log("여기 에러인가?: ", error); });
+        };
         _this.state = {};
+        _this.requestCrawlingNews = _this.requestCrawlingNews.bind(_this);
         return _this;
-        // this.crawlingNews = this.crawlingNews.bind(this);
     }
-    // crawlingNews = (url: string) => {
-    //   axios
-    //     .get(
-    //       "https://news.naver.com/main/read.nhn?mode=LSD&mid=sec&sid1=102&oid=003&aid=0009913386"
-    //       url
-    //     )
-    //     .then(
-    //       (response) => {
-    //         if (response.status === 200) {
-    //           const html = response.data;
-    //           const $ = cheerio.load(html);
-    //           // return $;
-    //           console.log("$: ", $);
-    //           console.log("연결은 됨");
-    //         } else {
-    //           console.log("status코드 200아님");
-    //         }
-    //       },
-    //       (error) => console.log("여기 에러인가?: ", error)
-    //     );
-    // };
     Tabloid.prototype.render = function () {
+        var _this = this;
         return (React.createElement("ul", null, this.props.news.map(function (data, idx) {
+            _this.requestCrawlingNews(data);
             // console.log(this.crawlingNews(data.link));
             return (React.createElement("div", null,
                 React.createElement(newsBody_1.default, { news: data, key: idx + 100 })));

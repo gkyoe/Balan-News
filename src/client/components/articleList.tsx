@@ -9,6 +9,8 @@ interface ListProps {
     link: string;
     description: string;
     pubDate: string;
+    content: string | undefined;
+    logo: string | undefined;
   };
   checkedBox: NodeListOf<HTMLInputElement> | null;
   key: number;

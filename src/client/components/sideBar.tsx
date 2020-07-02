@@ -22,6 +22,8 @@ interface SidebarState {
     link: string;
     description: string;
     pubDate: string;
+    content: string | undefined;
+    logo: string | undefined;
   }[];
   selectedArticles: {
     title: string;
@@ -29,6 +31,8 @@ interface SidebarState {
     link: string;
     description: string;
     pubDate: string;
+    content: string | undefined;
+    logo: string | undefined;
   }[];
 }
 
@@ -38,6 +42,8 @@ interface Selected {
   link: string;
   description: string;
   pubDate: string;
+  content: string | undefined;
+  logo: string | undefined;
 }
 
 export class Sidebar extends React.Component<SidebarProps, SidebarState> {
@@ -118,6 +124,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     });
   };
 
+  //새로운 키워드로 검색 시 이미 선택된 article 을 삭제한다.
   emptyArticleBody = (): void => {
     let checkCbx: NodeListOf<Element> = document.querySelectorAll(
       "input[type='checkbox']"

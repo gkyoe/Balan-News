@@ -44,7 +44,9 @@ var ArticleList = /** @class */ (function (_super) {
         return (React.createElement("div", null,
             React.createElement("div", null, this.props.news.title),
             React.createElement("div", null, this.props.news.pubDate),
-            React.createElement("div", null, this.props.news.description)));
+            React.createElement("div", null, this.props.news.originallink),
+            React.createElement("div", null, this.props.news.link),
+            React.createElement("div", null, this.props.news.content)));
     };
     return ArticleList;
 }(React.Component));
