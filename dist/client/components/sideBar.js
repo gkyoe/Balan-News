@@ -63,6 +63,7 @@ var Sidebar = /** @class */ (function (_super) {
     __extends(Sidebar, _super);
     function Sidebar(props) {
         var _this = _super.call(this, props) || this;
+        //toggle bar 클릭 시, searchBar가 접거나 펴거나 한다.
         _this.handleCloseToggle = function (e) {
             e.preventDefault();
             if (_this.state.transform === 0) {
@@ -73,6 +74,7 @@ var Sidebar = /** @class */ (function (_super) {
             }
             console.log(_this.state.transform);
         };
+        //검색을 눌렀을 때, naver news api에 해당 키워드 정보를 요청한다.
         _this.handleSubmitSearching = function (e) {
             e.preventDefault();
             var keyword = _this.state.keyword;
@@ -89,11 +91,23 @@ var Sidebar = /** @class */ (function (_super) {
             });
             console.log(_this.state.articles);
         };
+        //새로운 키워드를 검색했을 때 state의 key를 변경한다.
         _this.handleChangeKeyword = function (event) {
             // const { name, value } = event.target;
             _this.setState({ keyword: event.target.value });
             console.log(_this.state);
         };
+        _this.requestCrawlingNews = function (apicollection) {
+            axios_1.default.post("http://localhost:3000/loadNews", apicollection).then(function (response) {
+                // if (response.status === 200) {
+                return response.data;
+                console.log("response: ", response.data);
+                // } else {
+                //   //
+                // }
+            }, function (error) { return console.log("여기 에러인가?: ", error); });
+        };
+        // checkbox가 선택됐을 때 해당 기사 정보를 selectedArticles 에 추가한다.
         _this.addArticleBody = function (
         // event: React.ChangeEvent<HTMLInputElement>,
         selectedArticle) {
@@ -102,6 +116,16 @@ var Sidebar = /** @class */ (function (_super) {
                 selectedArticles: __spreadArrays(prevState.selectedArticles, [selectedArticle]),
             }); });
         };
+        // addArticleBody = (selectedArticle: Selected) => {
+        //   this.setState({
+        //     ...this.state,
+        //     selectedArticles: this.state.selectedArticles.map((art) => {
+        //       this.requestCrawlingNews(art)
+        //     }
+        //     ),
+        //   });
+        // };
+        //checkbox가 해제됐을 때 해당 기사 정보를 selectedArticles 에 제거한다.
         _this.deleteArticleBody = function (data) {
             _this.setState(__assign(__assign({}, _this.state), { selectedArticles: _this.state.selectedArticles.filter(function (art) { return art.originallink !== data.originallink; }) }));
         };
@@ -133,8 +157,8 @@ var Sidebar = /** @class */ (function (_super) {
         _this.addArticleBody = _this.addArticleBody.bind(_this);
         _this.deleteArticleBody = _this.deleteArticleBody.bind(_this);
         _this.emptyArticleBody = _this.emptyArticleBody.bind(_this);
+        _this.requestCrawlingNews = _this.requestCrawlingNews.bind(_this);
         return _this;
-        // this.crawlingNews = this.crawlingNews.bind(this);
     }
     Sidebar.prototype.render = function () {
         var transform = this.state.transform;

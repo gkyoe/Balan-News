@@ -67,9 +67,10 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.addArticleBody = this.addArticleBody.bind(this);
     this.deleteArticleBody = this.deleteArticleBody.bind(this);
     this.emptyArticleBody = this.emptyArticleBody.bind(this);
-    // this.crawlingNews = this.crawlingNews.bind(this);
+    this.requestCrawlingNews = this.requestCrawlingNews.bind(this);
   }
 
+  //toggle bar 클릭 시, searchBar가 접거나 펴거나 한다.
   handleCloseToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
     if (this.state.transform === 0) {
@@ -80,6 +81,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     console.log(this.state.transform);
   };
 
+  //검색을 눌렀을 때, naver news api에 해당 키워드 정보를 요청한다.
   handleSubmitSearching = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
@@ -99,12 +101,28 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     console.log(this.state.articles);
   };
 
+  //새로운 키워드를 검색했을 때 state의 key를 변경한다.
   handleChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>): void => {
     // const { name, value } = event.target;
     this.setState({ keyword: event.target.value });
     console.log(this.state);
   };
 
+  requestCrawlingNews = (apicollection: Selected) => {
+    axios.post(`http://localhost:3000/loadNews`, apicollection).then(
+      (response): Selected => {
+        // if (response.status === 200) {
+        return response.data;
+        console.log("response: ", response.data);
+        // } else {
+        //   //
+        // }
+      },
+      (error) => console.log("여기 에러인가?: ", error)
+    );
+  };
+
+  // checkbox가 선택됐을 때 해당 기사 정보를 selectedArticles 에 추가한다.
   addArticleBody = (
     // event: React.ChangeEvent<HTMLInputElement>,
     selectedArticle: any
@@ -115,6 +133,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     }));
   };
 
+  // addArticleBody = (selectedArticle: Selected) => {
+  //   this.setState({
+  //     ...this.state,
+  //     selectedArticles: this.state.selectedArticles.map((art) => {
+  //       this.requestCrawlingNews(art)
+  //     }
+
+  //     ),
+  //   });
+  // };
+
+  //checkbox가 해제됐을 때 해당 기사 정보를 selectedArticles 에 제거한다.
   deleteArticleBody = (data: Selected): void => {
     this.setState({
       ...this.state,

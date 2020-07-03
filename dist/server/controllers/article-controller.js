@@ -107,28 +107,6 @@ var articleController = /** @class */ (function () {
     };
     articleController.prototype.loadNews = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            // function accessNaverApi(request: Request) {
-            //   const encoded = urlencode(request.body.data);
-            //   const limit = 5;
-            //   const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
-            //   const client_id = process.env.naverNewsApi_id;
-            //   const client_scret = process.env.naverNewsApi_ScretKey;
-            //   const options = {
-            //     headers: {
-            //       "X-Naver-Client-Id": client_id,
-            //       "X-Naver-Client-Secret": client_scret,
-            //     },
-            //   };
-            //   return axios
-            //     .get(api_url, options)
-            //     .then((result: any) => {
-            //       // console.log("result.data.items: ", result.data.items);
-            //       return result.data.items;
-            //     })
-            //     .catch((err) => {
-            //       throw err.message;
-            //     });
-            // }
             function anyToUtf8(str) {
                 var encoding = jschardet_1.default.detect(str).encoding;
                 console.log("source encoding = " + encoding);
@@ -160,6 +138,7 @@ var articleController = /** @class */ (function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
+                                console.log("LoopLink 함수 매개변수: ", apiData);
                                 addContentLogoToApi = function (obj, valuearr) {
                                     obj["content"] = valuearr[0];
                                     obj["logo"] = valuearr[1];
