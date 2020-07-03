@@ -75,31 +75,6 @@ export default class articleController {
   }
 
   public async loadNews(req: Request, res: Response) {
-    // function accessNaverApi(request: Request) {
-    //   const encoded = urlencode(request.body.data);
-    //   const limit = 5;
-    //   const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
-    //   const client_id = process.env.naverNewsApi_id;
-    //   const client_scret = process.env.naverNewsApi_ScretKey;
-
-    //   const options = {
-    //     headers: {
-    //       "X-Naver-Client-Id": client_id,
-    //       "X-Naver-Client-Secret": client_scret,
-    //     },
-    //   };
-
-    //   return axios
-    //     .get(api_url, options)
-    //     .then((result: any) => {
-    //       // console.log("result.data.items: ", result.data.items);
-    //       return result.data.items;
-    //     })
-    //     .catch((err) => {
-    //       throw err.message;
-    //     });
-    // }
-
     function anyToUtf8(str: Buffer) {
       const { encoding } = jschardet.detect(str);
       console.log("source encoding = " + encoding);
@@ -130,12 +105,7 @@ export default class articleController {
     }
 
     async function LoopLink(apiData: Article) {
-      //  apiResource.forEach((api) => {
-      //   let body = crawlingNewsBody(api.link);
-      //   console.log("body: ", body);
-      //   // api["content"] = body.content;
-      //   return api;
-      // });
+      console.log("LoopLink 함수 매개변수: ", apiData);
       const addContentLogoToApi = (
         obj: Article,
         valuearr: Array<string | undefined>

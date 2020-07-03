@@ -5,6 +5,9 @@ import cors from "cors";
 import cheerio from "cheerio";
 import NewsBody from "./newsBody";
 import "./searchBar.css";
+import { Article } from "../../server/models";
+import { rejects } from "assert";
+import { resolve } from "url";
 
 interface Article {
   title: string;
@@ -29,41 +32,83 @@ interface tabloidProps {
   }[];
 }
 
-interface tabloidState {}
+interface tabloidState {
+  upadateNews: {
+    title: string;
+    originallink: string;
+    link: string;
+    description: string;
+    pubDate: string;
+    content: string | undefined;
+    logo: string | undefined;
+  }[];
+}
 
 export default class Tabloid extends React.Component<
   tabloidProps,
   tabloidState
 > {
-  constructor(props: tabloidProps) {
+  constructor(props: tabloidProps, state: tabloidState) {
     super(props);
-    this.state = {};
+    this.state = {
+      upadateNews: [],
+    };
     this.requestCrawlingNews = this.requestCrawlingNews.bind(this);
   }
 
-  requestCrawlingNews = (apiCollection: Article) => {
-    axios.post(`http://localhost:3000/loadNews`, { data: apiCollection }).then(
-      (response): Article => {
-        // if (response.status === 200) {
+  requestCrawlingNews = (apicollection: Article) => {
+    axios
+      .post(`http://localhost:3000/loadNews`, apicollection)
+      .then((response) => {
         return response.data;
-        console.log("response: ", response.data);
-        // } else {
-        //   //
-        // }
-      },
-      (error) => console.log("여기 에러인가?: ", error)
-    );
+      })
+      .then((value) => {
+        this.setState({ ...this.state, upadateNews: value });
+      })
+      .catch((error) => error.message);
   };
+
+  // componentWillReceiveProps(props: tabloidProps) {
+  //   console.log("실행은 되나?");
+  //   props.news.map((el) => {
+  //     this.requestCrawlingNews(el);
+  //   });
+  // }
+
+  static async getDerivedStateFromProps(
+    nextprops: tabloidProps,
+    nextstate: tabloidState
+  ) {
+    console.log("getDerivedStateFromProps is working");
+
+    let updateCollection = await nextprops.news.map((el) => {
+      axios
+        .post(`http://localhost:3000/loadNews`, el)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log("getDerivedStateFromProps status is 200");
+            console.log("response data is: ", response.data);
+
+            return response.data;
+          } else {
+            // console.log("getDerivedStateFromProps return null");
+            return null;
+          }
+        })
+        .catch((error) => error.message);
+    });
+    await console.log("updateCollection: ", updateCollection);
+  }
 
   render() {
     return (
       <ul>
-        {this.props.news.map((data, idx) => {
-          let crawlingData = this.requestCrawlingNews(data);
+        {this.state.upadateNews.map((data, idx) => {
+          // let crawlingData = this.requestCrawlingNews(data);
           // console.log(this.crawlingNews(data.link));
           return (
             <div>
-              <NewsBody news={crawlingData} key={idx + 100}></NewsBody>
+              <NewsBody news={data} key={idx + 100}></NewsBody>
             </div>
           );
         })}
