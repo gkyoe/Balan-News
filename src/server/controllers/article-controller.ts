@@ -50,7 +50,7 @@ export default class articleController {
   public async searchKeywords(req: Request, res: Response) {
     // await function accessNaverApi(request: Request) {
     const encoded = urlencode(req.body.data);
-    const limit = 5;
+    const limit = 40;
     const api_url = `https://openapi.naver.com/v1/search/news.json?query=${encoded}&display=${limit}&start=1&sort=sim`;
     const client_id = process.env.naverNewsApi_id;
     const client_scret = process.env.naverNewsApi_ScretKey;

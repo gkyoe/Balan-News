@@ -83,7 +83,7 @@ var articleController = /** @class */ (function () {
             var encoded, limit, api_url, client_id, client_scret, options;
             return __generator(this, function (_a) {
                 encoded = urlencode_1.default(req.body.data);
-                limit = 5;
+                limit = 40;
                 api_url = "https://openapi.naver.com/v1/search/news.json?query=" + encoded + "&display=" + limit + "&start=1&sort=sim";
                 client_id = process.env.naverNewsApi_id;
                 client_scret = process.env.naverNewsApi_ScretKey;
