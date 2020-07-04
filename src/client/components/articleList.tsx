@@ -1,6 +1,17 @@
 import * as React from "react";
 import Tbloid from "./tabloid";
 import "./articleList.css";
+import axios from "axios";
+
+interface Article {
+  title: string;
+  originallink: string;
+  link: string;
+  description: string;
+  pubDate: string;
+  content: string | undefined;
+  logo: string | undefined;
+}
 
 interface ListProps {
   news: {
@@ -31,26 +42,40 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
   }
 
   render() {
-    // const checkedBox = this.props.checkedBox;
-    // console.log(checkedBox);
-    // let articleBody: any;
-
-    const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCheck = async (e: React.ChangeEvent<HTMLInputElement>) => {
       // let checkCbx: NodeListOf<Element> = document.querySelectorAll(
       //   "input[type='checkbox']:checked"
       // );
-      const slectedArticle = this.props.news;
-      if (e.target.checked) {
-        // articleBody = <Tbloid news={this.props.news}></Tbloid>;
-        this.props.addArticleBody(slectedArticle);
-      } else if (!e.target.checked) {
-        // this.props.emptyArticleBody(() =>
-        //   this.props.addArticleBody(slectedArticle)()
-        // );
-        console.log("!e.target.checked: ", e.target.checked);
-        this.props.deleteArticleBody(slectedArticle);
-      }
+      let checkedBoolean = e.target.checked;
+
+      const checkClickBox = (checked: boolean, data: Article) => {
+        if (checked) {
+          // articleBody = <Tbloid news={this.props.news}></Tbloid>;
+          this.props.addArticleBody(data);
+        } else if (!checked) {
+          // this.props.emptyArticleBody(() =>
+          //   this.props.addArticleBody(slectedArticle)()
+          // );
+          console.log("!e.target.checked: ", checked);
+          this.props.deleteArticleBody(data);
+        }
+      };
+
+      const addCrawlindData = (preData: Article) => {
+        axios
+          .post(`http://localhost:3000/loadNews`, preData)
+          .then((response) => {
+            console.log("=====여기는 들어오나?=====");
+            console.log("==들어온 데이터는?== ", response.data);
+            checkClickBox(checkedBoolean, response.data);
+          })
+          .catch((error) => error.message);
+      };
+
+      const selectedArticle = await this.props.news;
+      await addCrawlindData(selectedArticle);
     };
+
     return (
       <div>
         <li className="article-title">
