@@ -77,13 +77,14 @@ export default class articleController {
   public async loadNews(req: Request, res: Response) {
     function anyToUtf8(str: Buffer) {
       const { encoding } = jschardet.detect(str);
-      console.log("source encoding = " + encoding);
+      // console.log("source encoding = " + encoding);
       const iconv = new Iconv(encoding, "utf-8//translit//ignore");
       const encoing = iconv.convert(str).toString();
       return encoing;
     }
 
     function crawlingNewsBody(link: string) {
+      console.log("====link: ", link);
       const contentLogo: NewsContentLogo = { content: "", logo: "" };
       const binaryData = rp({
         url: link,
@@ -95,17 +96,22 @@ export default class articleController {
     function selectTagData(encodingHtml: string): Array<string | undefined> {
       let twoDataArr: Array<string | undefined> = [];
       let $ = cheerio.load(encodingHtml);
+      console.log("$: ", $);
       let src = $(".press_logo").children("img").attr("src");
-      let content =
-        $("div#articeBody").text() === null
-          ? $("div#articleBodyContents").text()
-          : $("div#articeBody").text();
+      let articleBodyContents = $("div#articleBodyContents").text();
+      let articeBody = $("div#articeBody").text();
+
+      let content = articleBodyContents ? articleBodyContents : articeBody;
+
+      // console.log("=-=-=-=-=-=-=content: ", content);
+      // console.log("=-=-=-=-=-=-=articleBodyContents: ", articleBodyContents);
+
       twoDataArr.push(content, src);
       return twoDataArr;
     }
 
     async function LoopLink(apiData: Article) {
-      console.log("LoopLink 함수 매개변수: ", apiData);
+      // console.log("LoopLink 함수 매개변수: ", apiData);
       const addContentLogoToApi = (
         obj: Article,
         valuearr: Array<string | undefined>
