@@ -109,12 +109,13 @@ var articleController = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             function anyToUtf8(str) {
                 var encoding = jschardet_1.default.detect(str).encoding;
-                console.log("source encoding = " + encoding);
+                // console.log("source encoding = " + encoding);
                 var iconv = new Iconv(encoding, "utf-8//translit//ignore");
                 var encoing = iconv.convert(str).toString();
                 return encoing;
             }
             function crawlingNewsBody(link) {
+                console.log("====link: ", link);
                 var contentLogo = { content: "", logo: "" };
                 var binaryData = request_promise_1.default({
                     url: link,
@@ -125,10 +126,13 @@ var articleController = /** @class */ (function () {
             function selectTagData(encodingHtml) {
                 var twoDataArr = [];
                 var $ = cheerio_1.default.load(encodingHtml);
+                console.log("$: ", $);
                 var src = $(".press_logo").children("img").attr("src");
-                var content = $("div#articeBody").text() === null
-                    ? $("div#articleBodyContents").text()
-                    : $("div#articeBody").text();
+                var articleBodyContents = $("div#articleBodyContents").text();
+                var articeBody = $("div#articeBody").text();
+                var content = articleBodyContents ? articleBodyContents : articeBody;
+                console.log("=-=-=-=-=-=-=content: ", content);
+                console.log("=-=-=-=-=-=-=articleBodyContents: ", articleBodyContents);
                 twoDataArr.push(content, src);
                 return twoDataArr;
             }
@@ -138,7 +142,6 @@ var articleController = /** @class */ (function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                console.log("LoopLink 함수 매개변수: ", apiData);
                                 addContentLogoToApi = function (obj, valuearr) {
                                     obj["content"] = valuearr[0];
                                     obj["logo"] = valuearr[1];
