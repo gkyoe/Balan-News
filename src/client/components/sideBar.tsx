@@ -1,10 +1,13 @@
 import * as React from "react";
 import { Link, Route, Switch, BrowserRouter, Router } from "react-router-dom";
+import { Layout, Menu, Button } from "antd";
 import axios from "axios";
 import cheerio from "cheerio";
 import SearchBar from "./searchBar";
 import Tabloid from "./tabloid";
+// import Sider from "antd/lib/layout/Sider";
 import "./sideBar.css";
+const { Header, Content, Footer, Sider } = Layout;
 
 interface SidebarProps {}
 
@@ -172,51 +175,40 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     const transform = this.state.transform;
     console.log(transform);
     return (
-      <table>
-        <tbody>
-          <tr
+      <Layout>
+        <Sider width={600}>
+          <div
+            className="side-bar"
             style={{
+              width: this.state.width,
+              minHeight: this.state.height,
               transform: `translateX(${this.state.transform}px)`, //470
             }}
           >
-            <th>
-              <div
-                className="side-bar"
-                style={{
-                  width: this.state.width,
-                  minHeight: this.state.height,
-                  transform: `translateX(${this.state.transform}px)`, //470
-                }}
-              >
-                <SearchBar
-                  articles={this.state.articles}
-                  keyword={this.state.keyword}
-                  limit={this.state.limit}
-                  count={this.state.count}
-                  handleSubmitSearching={this.handleSubmitSearching}
-                  handleChangeKeyword={this.handleChangeKeyword}
-                  addArticleBody={this.addArticleBody}
-                  deleteArticleBody={this.deleteArticleBody}
-                  // emptyArticleBody={this.emptyArticleBody}
-                />
-              </div>
-            </th>
-            <th>
-              <div
-                className="toggle-bar"
-                style={{
-                  width: 50,
-                  minHeight: this.state.height,
-                }}
-                onClick={this.handleCloseToggle}
-              ></div>
-            </th>
-            <th>
-              <Tabloid news={this.state.selectedArticles}></Tabloid>
-            </th>
-          </tr>
-        </tbody>
-      </table>
+            <SearchBar
+              articles={this.state.articles}
+              keyword={this.state.keyword}
+              limit={this.state.limit}
+              count={this.state.count}
+              handleSubmitSearching={this.handleSubmitSearching}
+              handleChangeKeyword={this.handleChangeKeyword}
+              addArticleBody={this.addArticleBody}
+              deleteArticleBody={this.deleteArticleBody}
+            />
+          </div>
+
+          <div
+            className="toggle-bar"
+            style={{
+              width: 50,
+              minHeight: this.state.height,
+            }}
+            onClick={this.handleCloseToggle}
+          ></div>
+        </Sider>
+
+        <Tabloid news={this.state.selectedArticles}></Tabloid>
+      </Layout>
     );
   }
 }

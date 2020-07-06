@@ -1,4 +1,9 @@
 .article-title {
+  width: 200vh;
+  color: white;
   font-size: 13px;
   text-align: left;
 }
+
+@import "~antd/dist/antd.css";
+/* @import "~antd/lib/style/themes/default.less"; */

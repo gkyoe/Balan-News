@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Checkbox } from "antd";
 import Tbloid from "./tabloid";
 import "./articleList.css";
 import axios from "axios";
@@ -50,13 +51,8 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
 
       const checkClickBox = (checked: boolean, data: Article) => {
         if (checked) {
-          // articleBody = <Tbloid news={this.props.news}></Tbloid>;
           this.props.addArticleBody(data);
         } else if (!checked) {
-          // this.props.emptyArticleBody(() =>
-          //   this.props.addArticleBody(slectedArticle)()
-          // );
-          console.log("!e.target.checked: ", checked);
           this.props.deleteArticleBody(data);
         }
       };
@@ -87,7 +83,6 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
           />
           {this.props.news.title}
         </li>
-        {/* {articleBody} */}
       </div>
     );
   }
