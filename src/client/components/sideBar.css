@@ -1,12 +1,14 @@
-.side-bar {
+/* .side-bar {
   border: red 3px solid;
-}
+} */
 
 /* .search-bar {
   width: 400px;
 } */
 
-.toggle-bar {
+/* .toggle-bar {
   width: 20px;
   border: blue 3px solid;
-}
+} */
+
+@import "~antd/dist/antd.css";

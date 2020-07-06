@@ -38,29 +38,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 var React = __importStar(require("react"));
 var react_router_dom_1 = require("react-router-dom");
+var antd_1 = require("antd");
 var login_1 = __importDefault(require("./login"));
 var signup_1 = __importDefault(require("./signup"));
 var sideBar_1 = __importDefault(require("./sideBar"));
 require("./app.css");
+var Header = antd_1.Layout.Header, Content = antd_1.Layout.Content, Footer = antd_1.Layout.Footer, Sider = antd_1.Layout.Sider;
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     App.prototype.render = function () {
-        return (React.createElement("div", null,
-            React.createElement("ul", null,
-                React.createElement("div", { className: "home-3button" },
-                    React.createElement(react_router_dom_1.Link, { to: "/" },
-                        React.createElement("button", { className: "home-button" }, "Home")),
-                    React.createElement(react_router_dom_1.Link, { to: "/signin" },
-                        React.createElement("button", { className: "login-button" }, "\uB85C\uADF8\uC778")),
-                    React.createElement(react_router_dom_1.Link, { to: "/signup" },
-                        React.createElement("button", { className: "signup-button" }, "\uD68C\uC6D0\uAC00\uC785")))),
-            React.createElement(react_router_dom_1.Switch, null,
-                React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: sideBar_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/signin", component: login_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default }))));
+        return (React.createElement(antd_1.Layout, null,
+            React.createElement("div", null,
+                React.createElement(Header, null,
+                    React.createElement("ul", null,
+                        React.createElement("div", { className: "home-3button" },
+                            React.createElement(react_router_dom_1.Link, { to: "/" },
+                                React.createElement(antd_1.Button, { type: "primary" }, "Home")),
+                            React.createElement(react_router_dom_1.Link, { to: "/signin" },
+                                React.createElement(antd_1.Button, { type: "primary" }, "\uB85C\uADF8\uC778")),
+                            React.createElement(react_router_dom_1.Link, { to: "/signup" },
+                                React.createElement(antd_1.Button, { type: "primary" }, "\uD68C\uC6D0\uAC00\uC785"))))),
+                React.createElement(react_router_dom_1.Switch, null,
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: sideBar_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/signin", component: login_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/signup", component: signup_1.default })))));
     };
     return App;
 }(React.Component));

@@ -131,8 +131,8 @@ var articleController = /** @class */ (function () {
                 var articleBodyContents = $("div#articleBodyContents").text();
                 var articeBody = $("div#articeBody").text();
                 var content = articleBodyContents ? articleBodyContents : articeBody;
-                console.log("=-=-=-=-=-=-=content: ", content);
-                console.log("=-=-=-=-=-=-=articleBodyContents: ", articleBodyContents);
+                // console.log("=-=-=-=-=-=-=content: ", content);
+                // console.log("=-=-=-=-=-=-=articleBodyContents: ", articleBodyContents);
                 twoDataArr.push(content, src);
                 return twoDataArr;
             }

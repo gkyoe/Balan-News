@@ -50,14 +50,13 @@ var SearchBar = /** @class */ (function (_super) {
     SearchBar.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "search-Zone" },
-            React.createElement(React.Fragment, null,
-                React.createElement("form", { onSubmit: this.props.handleSubmitSearching },
-                    React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword }),
-                    React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
-                React.createElement("div", { className: "newsList" },
-                    React.createElement("ul", { className: "article-list" }, this.props.articles.map(function (contact, idx) {
-                        return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox, addArticleBody: _this.props.addArticleBody, deleteArticleBody: _this.props.deleteArticleBody }));
-                    }))))));
+            React.createElement("form", { onSubmit: this.props.handleSubmitSearching },
+                React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword }),
+                React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
+            React.createElement("div", { className: "newsList" },
+                React.createElement("ul", { className: "article-list" }, this.props.articles.map(function (contact, idx) {
+                    return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox, addArticleBody: _this.props.addArticleBody, deleteArticleBody: _this.props.deleteArticleBody }));
+                })))));
     };
     return SearchBar;
 }(React.Component));

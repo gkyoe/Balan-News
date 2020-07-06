@@ -92,14 +92,9 @@ var ArticleList = /** @class */ (function (_super) {
                         checkedBoolean = e.target.checked;
                         checkClickBox = function (checked, data) {
                             if (checked) {
-                                // articleBody = <Tbloid news={this.props.news}></Tbloid>;
                                 _this.props.addArticleBody(data);
                             }
                             else if (!checked) {
-                                // this.props.emptyArticleBody(() =>
-                                //   this.props.addArticleBody(slectedArticle)()
-                                // );
-                                console.log("!e.target.checked: ", checked);
                                 _this.props.deleteArticleBody(data);
                             }
                         };

@@ -55,10 +55,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Sidebar = void 0;
 var React = __importStar(require("react"));
+var antd_1 = require("antd");
 var axios_1 = __importDefault(require("axios"));
 var searchBar_1 = __importDefault(require("./searchBar"));
 var tabloid_1 = __importDefault(require("./tabloid"));
+// import Sider from "antd/lib/layout/Sider";
 require("./sideBar.css");
+var Header = antd_1.Layout.Header, Content = antd_1.Layout.Content, Footer = antd_1.Layout.Footer, Sider = antd_1.Layout.Sider;
 var Sidebar = /** @class */ (function (_super) {
     __extends(Sidebar, _super);
     function Sidebar(props) {
@@ -163,25 +166,19 @@ var Sidebar = /** @class */ (function (_super) {
     Sidebar.prototype.render = function () {
         var transform = this.state.transform;
         console.log(transform);
-        return (React.createElement("table", null,
-            React.createElement("tbody", null,
-                React.createElement("tr", { style: {
+        return (React.createElement(antd_1.Layout, null,
+            React.createElement(Sider, { width: 600 },
+                React.createElement("div", { className: "side-bar", style: {
+                        width: this.state.width,
+                        minHeight: this.state.height,
                         transform: "translateX(" + this.state.transform + "px)",
                     } },
-                    React.createElement("th", null,
-                        React.createElement("div", { className: "side-bar", style: {
-                                width: this.state.width,
-                                minHeight: this.state.height,
-                                transform: "translateX(" + this.state.transform + "px)",
-                            } },
-                            React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody }))),
-                    React.createElement("th", null,
-                        React.createElement("div", { className: "toggle-bar", style: {
-                                width: 50,
-                                minHeight: this.state.height,
-                            }, onClick: this.handleCloseToggle })),
-                    React.createElement("th", null,
-                        React.createElement(tabloid_1.default, { news: this.state.selectedArticles }))))));
+                    React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody })),
+                React.createElement("div", { className: "toggle-bar", style: {
+                        width: 50,
+                        minHeight: this.state.height,
+                    }, onClick: this.handleCloseToggle })),
+            React.createElement(tabloid_1.default, { news: this.state.selectedArticles })));
     };
     return Sidebar;
 }(React.Component));
