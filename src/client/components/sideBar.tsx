@@ -85,8 +85,8 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
   };
 
   //검색을 눌렀을 때, naver news api에 해당 키워드 정보를 요청한다.
-  handleSubmitSearching = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  handleSubmitSearching = (): void => {
+    // e.preventDefault();
 
     const keyword = this.state.keyword;
 
@@ -135,17 +135,6 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       selectedArticles: [...prevState.selectedArticles, selectedArticle],
     }));
   };
-
-  // addArticleBody = (selectedArticle: Selected) => {
-  //   this.setState({
-  //     ...this.state,
-  //     selectedArticles: this.state.selectedArticles.map((art) => {
-  //       this.requestCrawlingNews(art)
-  //     }
-
-  //     ),
-  //   });
-  // };
 
   //checkbox가 해제됐을 때 해당 기사 정보를 selectedArticles 에 제거한다.
   deleteArticleBody = (data: Selected): void => {

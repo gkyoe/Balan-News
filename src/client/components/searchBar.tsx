@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Link, Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, Input, Form } from "antd";
 import Sidebar from "react-sidebar";
 import axios from "axios";
 import ArticleList from "./articleList";
 import Sider from "antd/lib/layout/Sider";
 import "./searchBar.css";
+
+const { Search } = Input;
 
 interface searchProps {
   articles: {
@@ -46,19 +48,29 @@ export default class SearchBar extends React.Component<
     return (
       <div className="search-Zone">
         {/* <React.Fragment> */}
-        <form onSubmit={this.props.handleSubmitSearching}>
-          <input
-            className="searchbar"
-            name="searchbar"
-            type="text"
-            placeholder="키워드를 검색하세요."
-            value={this.props.keyword}
-            onChange={this.props.handleChangeKeyword}
-          />
-          <button className="searchBtn" type="submit">
-            검색
-          </button>
-        </form>
+        {/* <Form> */}
+        {/* <form onSubmit={this.props.handleSubmitSearching}> */}
+        {/* <Form.Item> */}
+        <Input.Search
+          className="searchbar"
+          name="searchbar"
+          type="text"
+          placeholder="키워드를 검색하세요."
+          value={this.props.keyword}
+          onChange={this.props.handleChangeKeyword}
+          onSearch={this.props.handleSubmitSearching}
+          enterButton="Search"
+        />
+        <Button
+          type="primary"
+          className="searchBtn"
+          htmlType="submit"
+          onClick={this.props.handleSubmitSearching}
+        >
+          검색
+        </Button>
+        {/* </Form.Item> */}
+        {/* </Form> */}
         <div className="newsList">
           {/* <ul className="article-list" onChange={this.handleCheckedOn}> */}
           <ul className="article-list">
