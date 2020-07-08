@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Link, Route, Switch, BrowserRouter, Router } from "react-router-dom";
-import { Layout, Menu, Button } from "antd";
+import { Layout, Menu, Button, Row, Col } from "antd";
 import axios from "axios";
 import cheerio from "cheerio";
 import SearchBar from "./searchBar";
 import Tabloid from "./tabloid";
 // import Sider from "antd/lib/layout/Sider";
+import { blue } from "@ant-design/colors";
 import "./sideBar.css";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -15,6 +16,7 @@ interface SidebarState {
   width: number;
   height: string;
   transform: number;
+  collapsed: boolean;
   keyword: string;
   limit: number;
   count: number;
@@ -56,6 +58,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       width: 450,
       height: "100vh",
       transform: 0,
+      collapsed: false,
       keyword: "",
       limit: 3,
       count: 0,
@@ -65,6 +68,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     };
 
     this.handleCloseToggle = this.handleCloseToggle.bind(this);
+    this.onCollapse = this.onCollapse.bind(this);
     this.handleSubmitSearching = this.handleSubmitSearching.bind(this);
     this.handleChangeKeyword = this.handleChangeKeyword.bind(this);
     this.addArticleBody = this.addArticleBody.bind(this);
@@ -82,6 +86,11 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
       this.setState({ transform: 0 });
     }
     console.log(this.state.transform);
+  };
+
+  onCollapse = (collapsed: boolean) => {
+    console.log("collapsed: ", collapsed);
+    this.setState({ collapsed });
   };
 
   //검색을 눌렀을 때, naver news api에 해당 키워드 정보를 요청한다.
@@ -165,41 +174,88 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     console.log(transform);
     return (
       <Layout>
-        <Sider width={600}>
-          <div
-            className="side-bar"
-            style={{
-              width: this.state.width,
-              minHeight: this.state.height,
-              transform: `translateX(${this.state.transform}px)`, //470
-            }}
-          >
-            <SearchBar
-              articles={this.state.articles}
-              keyword={this.state.keyword}
-              limit={this.state.limit}
-              count={this.state.count}
-              handleSubmitSearching={this.handleSubmitSearching}
-              handleChangeKeyword={this.handleChangeKeyword}
-              addArticleBody={this.addArticleBody}
-              deleteArticleBody={this.deleteArticleBody}
-            />
-          </div>
-
-          <div
-            className="toggle-bar"
-            style={{
-              width: 50,
-              minHeight: this.state.height,
-            }}
-            onClick={this.handleCloseToggle}
-          ></div>
-        </Sider>
-
-        <Tabloid news={this.state.selectedArticles}></Tabloid>
+        <Row>
+          <Col span={12}>
+            <div
+              className="side-bar"
+              style={{
+                width: this.state.width,
+                minHeight: this.state.height,
+                transform: `translateX(${this.state.transform}px)`, //470
+              }}
+            >
+              <SearchBar
+                articles={this.state.articles}
+                keyword={this.state.keyword}
+                limit={this.state.limit}
+                count={this.state.count}
+                handleSubmitSearching={this.handleSubmitSearching}
+                handleChangeKeyword={this.handleChangeKeyword}
+                addArticleBody={this.addArticleBody}
+                deleteArticleBody={this.deleteArticleBody}
+                onCollapse={this.onCollapse}
+                collapsed={this.state.collapsed}
+              />
+            </div>
+          </Col>
+          <Col span={1} className="toggle">
+            <div
+              className="toggle-bar"
+              style={{
+                width: 50,
+                minHeight: this.state.height,
+              }}
+              onClick={this.handleCloseToggle}
+            ></div>
+          </Col>
+          <Col span={11}>
+            <Tabloid news={this.state.selectedArticles}></Tabloid>
+          </Col>
+        </Row>
       </Layout>
     );
   }
 }
 
 export default Sidebar;
+
+// return (
+//   <Layout>
+//     <Row>
+//     <Sider width={600}>
+//       <div
+//         className="side-bar"
+//         style={{
+//           width: this.state.width,
+//           minHeight: this.state.height,
+//           transform: `translateX(${this.state.transform}px)`, //470
+//         }}
+//       >
+//         <SearchBar
+//           articles={this.state.articles}
+//           keyword={this.state.keyword}
+//           limit={this.state.limit}
+//           count={this.state.count}
+//           handleSubmitSearching={this.handleSubmitSearching}
+//           handleChangeKeyword={this.handleChangeKeyword}
+//           addArticleBody={this.addArticleBody}
+//           deleteArticleBody={this.deleteArticleBody}
+//           onCollapse={this.onCollapse}
+//           collapsed={this.state.collapsed}
+//         />
+//       </div>
+
+//       <div
+//         className="toggle-bar"
+//         style={{
+//           width: 50,
+//           minHeight: this.state.height,
+//         }}
+//         onClick={this.handleCloseToggle}
+//       ></div>
+//     </Sider>
+
+//     <Tabloid news={this.state.selectedArticles}></Tabloid>
+//     </Row>
+//   </Layout>
+// );

@@ -4,10 +4,11 @@ import { Layout, Menu, Button, Input, Form } from "antd";
 import Sidebar from "react-sidebar";
 import axios from "axios";
 import ArticleList from "./articleList";
-import Sider from "antd/lib/layout/Sider";
+// import Sider from "antd/lib/layout/Sider";
 import "./searchBar.css";
 
 const { Search } = Input;
+const { Header, Content, Footer, Sider } = Layout;
 
 interface searchProps {
   articles: {
@@ -26,6 +27,8 @@ interface searchProps {
   handleChangeKeyword: any;
   addArticleBody: any;
   deleteArticleBody: any;
+  onCollapse: any;
+  collapsed: boolean;
   // emptyArticleBody: any;
 }
 
@@ -46,12 +49,13 @@ export default class SearchBar extends React.Component<
 
   render() {
     return (
+      // <Sider
+      //   collapsible
+      //   collapsed={this.props.collapsed}
+      //   onCollapse={this.props.onCollapse}
+      // >
       <div className="search-Zone">
-        {/* <React.Fragment> */}
-        {/* <Form> */}
-        {/* <form onSubmit={this.props.handleSubmitSearching}> */}
-        {/* <Form.Item> */}
-        <Input.Search
+        <Search
           className="searchbar"
           name="searchbar"
           type="text"
@@ -61,16 +65,6 @@ export default class SearchBar extends React.Component<
           onSearch={this.props.handleSubmitSearching}
           enterButton="Search"
         />
-        <Button
-          type="primary"
-          className="searchBtn"
-          htmlType="submit"
-          onClick={this.props.handleSubmitSearching}
-        >
-          검색
-        </Button>
-        {/* </Form.Item> */}
-        {/* </Form> */}
         <div className="newsList">
           {/* <ul className="article-list" onChange={this.handleCheckedOn}> */}
           <ul className="article-list">
@@ -90,8 +84,8 @@ export default class SearchBar extends React.Component<
             })}
           </ul>
         </div>
-        {/* </React.Fragment> */}
       </div>
+      // </Sider>
     );
   }
 }
