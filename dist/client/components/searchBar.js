@@ -36,8 +36,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __importStar(require("react"));
+var antd_1 = require("antd");
 var articleList_1 = __importDefault(require("./articleList"));
 require("./searchBar.css");
+var Search = antd_1.Input.Search;
 var SearchBar = /** @class */ (function (_super) {
     __extends(SearchBar, _super);
     function SearchBar(props) {
@@ -50,9 +52,8 @@ var SearchBar = /** @class */ (function (_super) {
     SearchBar.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "search-Zone" },
-            React.createElement("form", { onSubmit: this.props.handleSubmitSearching },
-                React.createElement("input", { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword }),
-                React.createElement("button", { className: "searchBtn", type: "submit" }, "\uAC80\uC0C9")),
+            React.createElement(antd_1.Input.Search, { className: "searchbar", name: "searchbar", type: "text", placeholder: "\uD0A4\uC6CC\uB4DC\uB97C \uAC80\uC0C9\uD558\uC138\uC694.", value: this.props.keyword, onChange: this.props.handleChangeKeyword, onSearch: this.props.handleSubmitSearching, enterButton: "Search" }),
+            React.createElement(antd_1.Button, { type: "primary", className: "searchBtn", htmlType: "submit", onClick: this.props.handleSubmitSearching }, "\uAC80\uC0C9"),
             React.createElement("div", { className: "newsList" },
                 React.createElement("ul", { className: "article-list" }, this.props.articles.map(function (contact, idx) {
                     return (React.createElement(articleList_1.default, { news: contact, key: idx, limit: _this.props.limit, count: _this.props.count, checkedBox: _this.state.checkedBox, addArticleBody: _this.props.addArticleBody, deleteArticleBody: _this.props.deleteArticleBody }));

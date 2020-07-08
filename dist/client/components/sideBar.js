@@ -78,8 +78,8 @@ var Sidebar = /** @class */ (function (_super) {
             console.log(_this.state.transform);
         };
         //검색을 눌렀을 때, naver news api에 해당 키워드 정보를 요청한다.
-        _this.handleSubmitSearching = function (e) {
-            e.preventDefault();
+        _this.handleSubmitSearching = function () {
+            // e.preventDefault();
             var keyword = _this.state.keyword;
             axios_1.default
                 .post("http://localhost:3000/searchKeywords", { data: keyword })
@@ -119,15 +119,6 @@ var Sidebar = /** @class */ (function (_super) {
                 selectedArticles: __spreadArrays(prevState.selectedArticles, [selectedArticle]),
             }); });
         };
-        // addArticleBody = (selectedArticle: Selected) => {
-        //   this.setState({
-        //     ...this.state,
-        //     selectedArticles: this.state.selectedArticles.map((art) => {
-        //       this.requestCrawlingNews(art)
-        //     }
-        //     ),
-        //   });
-        // };
         //checkbox가 해제됐을 때 해당 기사 정보를 selectedArticles 에 제거한다.
         _this.deleteArticleBody = function (data) {
             _this.setState(__assign(__assign({}, _this.state), { selectedArticles: _this.state.selectedArticles.filter(function (art) { return art.originallink !== data.originallink; }) }));
