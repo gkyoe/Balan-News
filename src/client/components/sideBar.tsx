@@ -197,8 +197,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 collapsed={this.state.collapsed}
               />
             </div>
-          </Col>
-          <Col span={1} className="toggle">
+
             <div
               className="toggle-bar"
               style={{
