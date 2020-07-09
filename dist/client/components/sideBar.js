@@ -59,7 +59,6 @@ var antd_1 = require("antd");
 var axios_1 = __importDefault(require("axios"));
 var searchBar_1 = __importDefault(require("./searchBar"));
 var tabloid_1 = __importDefault(require("./tabloid"));
-// import Sider from "antd/lib/layout/Sider";
 require("./sideBar.css");
 var Header = antd_1.Layout.Header, Content = antd_1.Layout.Content, Footer = antd_1.Layout.Footer, Sider = antd_1.Layout.Sider;
 var Sidebar = /** @class */ (function (_super) {
@@ -76,6 +75,10 @@ var Sidebar = /** @class */ (function (_super) {
                 _this.setState({ transform: 0 });
             }
             console.log(_this.state.transform);
+        };
+        _this.onCollapse = function (collapsed) {
+            console.log("collapsed: ", collapsed);
+            _this.setState({ collapsed: collapsed });
         };
         //검색을 눌렀을 때, naver news api에 해당 키워드 정보를 요청한다.
         _this.handleSubmitSearching = function () {
@@ -138,6 +141,7 @@ var Sidebar = /** @class */ (function (_super) {
             width: 450,
             height: "100vh",
             transform: 0,
+            collapsed: false,
             keyword: "",
             limit: 3,
             count: 0,
@@ -146,6 +150,7 @@ var Sidebar = /** @class */ (function (_super) {
             selectedArticles: [],
         };
         _this.handleCloseToggle = _this.handleCloseToggle.bind(_this);
+        _this.onCollapse = _this.onCollapse.bind(_this);
         _this.handleSubmitSearching = _this.handleSubmitSearching.bind(_this);
         _this.handleChangeKeyword = _this.handleChangeKeyword.bind(_this);
         _this.addArticleBody = _this.addArticleBody.bind(_this);
@@ -158,20 +163,61 @@ var Sidebar = /** @class */ (function (_super) {
         var transform = this.state.transform;
         console.log(transform);
         return (React.createElement(antd_1.Layout, null,
-            React.createElement(Sider, { width: 600 },
-                React.createElement("div", { className: "side-bar", style: {
-                        width: this.state.width,
-                        minHeight: this.state.height,
-                        transform: "translateX(" + this.state.transform + "px)",
-                    } },
-                    React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody })),
-                React.createElement("div", { className: "toggle-bar", style: {
-                        width: 50,
-                        minHeight: this.state.height,
-                    }, onClick: this.handleCloseToggle })),
-            React.createElement(tabloid_1.default, { news: this.state.selectedArticles })));
+            React.createElement(antd_1.Row, null,
+                React.createElement(antd_1.Col, { span: 12 },
+                    React.createElement("div", { className: "side-bar", style: {
+                            width: this.state.width,
+                            minHeight: this.state.height,
+                            transform: "translateX(" + this.state.transform + "px)",
+                        } },
+                        React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody, onCollapse: this.onCollapse, collapsed: this.state.collapsed }))),
+                React.createElement(antd_1.Col, { span: 1, className: "toggle" },
+                    React.createElement("div", { className: "toggle-bar", style: {
+                            width: 50,
+                            minHeight: this.state.height,
+                        }, onClick: this.handleCloseToggle })),
+                React.createElement(antd_1.Col, { span: 11 },
+                    React.createElement(tabloid_1.default, { news: this.state.selectedArticles })))));
     };
     return Sidebar;
 }(React.Component));
 exports.Sidebar = Sidebar;
 exports.default = Sidebar;
+// return (
+//   <Layout>
+//     <Row>
+//     <Sider width={600}>
+//       <div
+//         className="side-bar"
+//         style={{
+//           width: this.state.width,
+//           minHeight: this.state.height,
+//           transform: `translateX(${this.state.transform}px)`, //470
+//         }}
+//       >
+//         <SearchBar
+//           articles={this.state.articles}
+//           keyword={this.state.keyword}
+//           limit={this.state.limit}
+//           count={this.state.count}
+//           handleSubmitSearching={this.handleSubmitSearching}
+//           handleChangeKeyword={this.handleChangeKeyword}
+//           addArticleBody={this.addArticleBody}
+//           deleteArticleBody={this.deleteArticleBody}
+//           onCollapse={this.onCollapse}
+//           collapsed={this.state.collapsed}
+//         />
+//       </div>
+//       <div
+//         className="toggle-bar"
+//         style={{
+//           width: 50,
+//           minHeight: this.state.height,
+//         }}
+//         onClick={this.handleCloseToggle}
+//       ></div>
+//     </Sider>
+//     <Tabloid news={this.state.selectedArticles}></Tabloid>
+//     </Row>
+//   </Layout>
+// );
