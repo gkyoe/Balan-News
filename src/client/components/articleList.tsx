@@ -1,8 +1,11 @@
 import * as React from "react";
 import { Checkbox } from "antd";
 import Tbloid from "./tabloid";
+import { Layout, Menu } from "antd";
 import "./articleList.css";
 import axios from "axios";
+
+const { Header, Sider, Content } = Layout;
 
 interface Article {
   title: string;
@@ -31,6 +34,7 @@ interface ListProps {
   addArticleBody: any;
   deleteArticleBody: any;
   // emptyArticleBody: any;
+  collapsed: boolean;
 }
 
 interface ListState {}
@@ -73,7 +77,11 @@ export default class ArticleList extends React.Component<ListProps, ListState> {
     };
 
     return (
-      <div>
+      <div
+        style={
+          this.props.collapsed ? { display: "none" } : { display: "block" }
+        }
+      >
         <li className="article-title">
           <input
             className="select-checkbox"
