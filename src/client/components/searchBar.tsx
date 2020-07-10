@@ -29,6 +29,7 @@ interface searchProps {
   deleteArticleBody: any;
   onCollapse: any;
   collapsed: boolean;
+  toggle: any;
   // emptyArticleBody: any;
 }
 
@@ -49,43 +50,48 @@ export default class SearchBar extends React.Component<
 
   render() {
     return (
-      // <Sider
-      //   collapsible
-      //   collapsed={this.props.collapsed}
-      //   onCollapse={this.props.onCollapse}
-      // >
-      <div className="search-Zone">
-        <Search
-          className="searchbar"
-          name="searchbar"
-          type="text"
-          placeholder="키워드를 검색하세요."
-          value={this.props.keyword}
-          onChange={this.props.handleChangeKeyword}
-          onSearch={this.props.handleSubmitSearching}
-          enterButton="Search"
-        />
-        <div className="newsList">
-          {/* <ul className="article-list" onChange={this.handleCheckedOn}> */}
-          <ul className="article-list">
-            {this.props.articles.map((contact, idx) => {
-              return (
-                <ArticleList
-                  news={contact}
-                  key={idx}
-                  limit={this.props.limit}
-                  count={this.props.count}
-                  checkedBox={this.state.checkedBox}
-                  addArticleBody={this.props.addArticleBody}
-                  deleteArticleBody={this.props.deleteArticleBody}
-                  // emptyArticleBody={this.props.emptyArticleBody}
-                />
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-      // </Sider>
+      <Layout>
+        <Sider
+          className="sider"
+          trigger={null}
+          collapsible
+          collapsed={this.props.collapsed}
+          width={600}
+        >
+          <div className="search-Zone">
+            <Search
+              className="searchbar"
+              name="searchbar"
+              type="text"
+              placeholder="키워드를 검색하세요."
+              value={this.props.keyword}
+              onChange={this.props.handleChangeKeyword}
+              onSearch={this.props.handleSubmitSearching}
+              enterButton="Search"
+            />
+            <div className="newsList">
+              {/* <ul className="article-list" onChange={this.handleCheckedOn}> */}
+              <ul className="article-list">
+                {this.props.articles.map((contact, idx) => {
+                  return (
+                    <ArticleList
+                      news={contact}
+                      key={idx}
+                      limit={this.props.limit}
+                      count={this.props.count}
+                      checkedBox={this.state.checkedBox}
+                      addArticleBody={this.props.addArticleBody}
+                      deleteArticleBody={this.props.deleteArticleBody}
+                      // emptyArticleBody={this.props.emptyArticleBody}
+                      collapsed={this.props.collapsed}
+                    />
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        </Sider>
+      </Layout>
     );
   }
 }

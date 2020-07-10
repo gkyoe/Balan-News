@@ -137,6 +137,11 @@ var Sidebar = /** @class */ (function (_super) {
             });
             _this.setState(__assign(__assign({}, _this.state), { selectedArticles: [] }));
         };
+        _this.toggle = function () {
+            _this.setState({
+                collapsed: !_this.state.collapsed,
+            });
+        };
         _this.state = {
             width: 450,
             height: "100vh",
@@ -163,20 +168,10 @@ var Sidebar = /** @class */ (function (_super) {
         var transform = this.state.transform;
         console.log(transform);
         return (React.createElement(antd_1.Layout, null,
-            React.createElement(antd_1.Row, null,
-                React.createElement(antd_1.Col, { span: 12 },
-                    React.createElement("div", { className: "side-bar", style: {
-                            width: this.state.width,
-                            minHeight: this.state.height,
-                            transform: "translateX(" + this.state.transform + "px)",
-                        } },
-                        React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody, onCollapse: this.onCollapse, collapsed: this.state.collapsed }))),
-                React.createElement(antd_1.Col, { span: 1, className: "toggle" },
-                    React.createElement("div", { className: "toggle-bar", style: {
-                            width: 50,
-                            minHeight: this.state.height,
-                        }, onClick: this.handleCloseToggle })),
-                React.createElement(antd_1.Col, { span: 11 },
+            React.createElement(Sider, { className: "sider", trigger: null, collapsible: true, collapsed: this.state.collapsed },
+                React.createElement(searchBar_1.default, { articles: this.state.articles, keyword: this.state.keyword, limit: this.state.limit, count: this.state.count, handleSubmitSearching: this.handleSubmitSearching, handleChangeKeyword: this.handleChangeKeyword, addArticleBody: this.addArticleBody, deleteArticleBody: this.deleteArticleBody, onCollapse: this.onCollapse, collapsed: this.state.collapsed })),
+            React.createElement(antd_1.Layout, { className: "site-layout" },
+                React.createElement(Content, null,
                     React.createElement(tabloid_1.default, { news: this.state.selectedArticles })))));
     };
     return Sidebar;

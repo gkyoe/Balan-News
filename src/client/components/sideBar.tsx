@@ -7,6 +7,13 @@ import SearchBar from "./searchBar";
 import Tabloid from "./tabloid";
 // import Sider from "antd/lib/layout/Sider";
 import { blue } from "@ant-design/colors";
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import "./sideBar.css";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -39,6 +46,7 @@ interface SidebarState {
     content: string | undefined;
     logo: string | undefined;
   }[];
+  // toggle: any;
 }
 
 interface Selected {
@@ -75,6 +83,7 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.deleteArticleBody = this.deleteArticleBody.bind(this);
     this.emptyArticleBody = this.emptyArticleBody.bind(this);
     this.requestCrawlingNews = this.requestCrawlingNews.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   //toggle bar 클릭 시, searchBar가 접거나 펴거나 한다.
@@ -169,48 +178,70 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     this.setState({ ...this.state, selectedArticles: [] });
   };
 
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  };
+
   render() {
     const transform = this.state.transform;
     console.log(transform);
     return (
-      <Layout>
-        <Row>
-          <Col span={12}>
-            <div
-              className="side-bar"
-              style={{
-                width: this.state.width,
-                minHeight: this.state.height,
-                transform: `translateX(${this.state.transform}px)`, //470
-              }}
-            >
-              <SearchBar
-                articles={this.state.articles}
-                keyword={this.state.keyword}
-                limit={this.state.limit}
-                count={this.state.count}
-                handleSubmitSearching={this.handleSubmitSearching}
-                handleChangeKeyword={this.handleChangeKeyword}
-                addArticleBody={this.addArticleBody}
-                deleteArticleBody={this.deleteArticleBody}
-                onCollapse={this.onCollapse}
-                collapsed={this.state.collapsed}
-              />
-            </div>
+      <Layout style={{ minHeight: "100vh" }}>
+        <Sider
+          className="sider"
+          trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
+          width={600}
+        >
+          {/* <div
+            className="side-bar"
+            style={{
+              width: this.state.width,
+              minHeight: this.state.height,
+              transform: `translateX(${this.state.transform}px)`, //470
+            }}
+          > */}
+          <SearchBar
+            articles={this.state.articles}
+            keyword={this.state.keyword}
+            limit={this.state.limit}
+            count={this.state.count}
+            handleSubmitSearching={this.handleSubmitSearching}
+            handleChangeKeyword={this.handleChangeKeyword}
+            addArticleBody={this.addArticleBody}
+            deleteArticleBody={this.deleteArticleBody}
+            onCollapse={this.onCollapse}
+            collapsed={this.state.collapsed}
+            toggle={this.toggle}
+          />
+          {/* </div> */}
 
-            <div
-              className="toggle-bar"
-              style={{
-                width: 50,
-                minHeight: this.state.height,
-              }}
-              onClick={this.handleCloseToggle}
-            ></div>
-          </Col>
-          <Col span={11}>
+          {/* <div
+            className="toggle-bar"
+            style={{
+              width: 50,
+              minHeight: this.state.height,
+            }}
+            onClick={this.handleCloseToggle}
+          ></div> */}
+        </Sider>
+        <Layout className="site-layout">
+          <Header className="site-layout-background" style={{ padding: 0 }}>
+            {React.createElement(
+              this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: this.toggle,
+              }
+            )}
+          </Header>
+          <Content>
             <Tabloid news={this.state.selectedArticles}></Tabloid>
-          </Col>
-        </Row>
+          </Content>
+        </Layout>
       </Layout>
     );
   }
